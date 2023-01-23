@@ -139,6 +139,8 @@ class bc_Updater {
 						'Description'	=> $this->plugin["Description"],
 						'Updates'		=> $this->github_response['body'],
 					),
+					'banners'			=> ["low" => plugin_dir_url( PLUGIN_FILE_URL ) . '/banner-772x250.jpg', "high" => plugin_dir_url( PLUGIN_FILE_URL ) . '/banner-1544x500.jpg'],
+					//'icons'				=> ['default' => plugin_dir_url( PLUGIN_FILE_URL ) . '/icon.svg'],
 					'download_link'		=> $this->github_response['zipball_url']
 				);
 

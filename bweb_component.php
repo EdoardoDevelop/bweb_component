@@ -26,7 +26,7 @@ if( ! class_exists( 'bc_Updater' ) ){
 $updater = new bc_Updater( __FILE__ );
 $updater->set_username( 'EdoardoDevelop' );
 $updater->set_repository( 'bweb_component' );
-$updater->authorize( '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' ); // Your auth code goes here for private repos
+//$updater->authorize( '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' ); // Your auth code goes here for private repos
 
 $updater->initialize();
 
