@@ -2,162 +2,177 @@
 
 defined( 'ABSPATH' ) || exit;
 
+class bc_Updater {
 
-if( ! class_exists( 'bcUpdateChecker' ) ) {
+	private $file;
 
-	class bcUpdateChecker{
+	private $plugin;
 
-		public $plugin_slug;
-		public $version;
-		public $cache_key;
-		public $cache_allowed;
+	private $basename;
 
-		public function __construct() {
+	private $active;
 
-			$this->plugin_slug = plugin_basename( PLUGIN_FILE_URL );
-			$this->version = '1.1.1';
-			$this->cache_key = 'bweb_component_upd';
-			$this->cache_allowed = false;
+	private $username;
 
-			add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
-			add_filter( 'site_transient_update_plugins', array( $this, 'update' ) );
-			add_action( 'upgrader_process_complete', array( $this, 'purge' ), 10, 2 );
+	private $repository;
 
-		}
+	private $authorize_token;
 
-		public function request(){
+	private $github_response;
 
-			$remote = get_transient( $this->cache_key );
+	public function __construct( $file ) {
 
-			if( false === $remote || ! $this->cache_allowed ) {
+		$this->file = $file;
 
-				$remote = wp_remote_get(
-					'http://www.bwebagency.it/wp-content/uploads/info.json',
-					array(
-						'timeout' => 10,
-						'headers' => array(
-							'Accept' => 'application/json'
-						)
-					)
-				);
+		add_action( 'admin_init', array( $this, 'set_plugin_properties' ) );
 
-				if(
-					is_wp_error( $remote )
-					|| 200 !== wp_remote_retrieve_response_code( $remote )
-					|| empty( wp_remote_retrieve_body( $remote ) )
-				) {
-					return false;
-				}
-
-				set_transient( $this->cache_key, $remote, DAY_IN_SECONDS );
-
-			}
-
-			$remote = json_decode( wp_remote_retrieve_body( $remote ) );
-
-			return $remote;
-
-		}
-
-
-		function info( $res, $action, $args ) {
-
-			// print_r( $action );
-			// print_r( $args );
-
-			// do nothing if you're not getting plugin information right now
-			if( 'plugin_information' !== $action ) {
-				return $res;
-			}
-
-			// do nothing if it is not our plugin
-			if( $this->plugin_slug !== $args->slug ) {
-				return $res;
-			}
-
-			// get updates
-			$remote = $this->request();
-
-			if( ! $remote ) {
-				return $res;
-			}
-
-			$res = new stdClass();
-
-			$res->name = $remote->name;
-			$res->slug = $remote->slug;
-			$res->version = $remote->version;
-			$res->tested = $remote->tested;
-			$res->requires = $remote->requires;
-			$res->author = $remote->author;
-			$res->author_profile = $remote->author_profile;
-			$res->download_link = $remote->download_url;
-			$res->trunk = $remote->download_url;
-			$res->requires_php = $remote->requires_php;
-			$res->last_updated = $remote->last_updated;
-
-			$res->sections = array(
-				'description' => $remote->sections->description,
-				'installation' => $remote->sections->installation,
-				'changelog' => $remote->sections->changelog
-			);
-
-			if( ! empty( $remote->banners ) ) {
-				$res->banners = array(
-					'low' => $remote->banners->low,
-					'high' => $remote->banners->high
-				);
-			}
-
-			return $res;
-
-		}
-
-		public function update( $transient ) {
-
-			if ( empty($transient->checked ) ) {
-				return $transient;
-			}
-
-			$remote = $this->request();
-
-			if(
-				$remote
-				&& version_compare( $this->version, $remote->version, '<' )
-				&& version_compare( $remote->requires, get_bloginfo( 'version' ), '<=' )
-				&& version_compare( $remote->requires_php, PHP_VERSION, '<' )
-			) {
-				$res = new stdClass();
-				$res->slug = $this->plugin_slug;
-				$res->plugin = plugin_basename( PLUGIN_FILE_URL ); // misha-update-plugin/misha-update-plugin.php
-				$res->new_version = $remote->version;
-				$res->tested = $remote->tested;
-				$res->package = $remote->download_url;
-
-				$transient->response[ $res->plugin ] = $res;
-
-	    }
-
-			return $transient;
-
-		}
-
-		public function purge( $upgrader, $options ){
-
-			if (
-				$this->cache_allowed
-				&& 'update' === $options['action']
-				&& 'plugin' === $options[ 'type' ]
-			) {
-				// just clean the cache when new plugin version is installed
-				delete_transient( $this->cache_key );
-			}
-
-		}
-
-
+		return $this;
 	}
 
-	new bcUpdateChecker();
+	public function set_plugin_properties() {
+		$this->plugin	= get_plugin_data( $this->file );
+		$this->basename = plugin_basename( $this->file );
+		$this->active	= is_plugin_active( $this->basename );
+	}
 
+	public function set_username( $username ) {
+		$this->username = $username;
+	}
+
+	public function set_repository( $repository ) {
+		$this->repository = $repository;
+	}
+
+	public function authorize( $token ) {
+		$this->authorize_token = $token;
+	}
+
+	private function get_repository_info() {
+	    if ( is_null( $this->github_response ) ) { // Do we have a response?
+			$args = array();
+	        $request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases', $this->username, $this->repository ); // Build URI
+
+	        if( $this->authorize_token ) { // Is there an access token?
+		          $args['headers']['Authorization'] = "Bearer {$this->authorize_token}"; // Set the headers
+	        }
+
+	        $response = json_decode( wp_remote_retrieve_body( wp_remote_get( $request_uri, $args ) ), true ); // Get JSON and parse it
+
+	        if( is_array( $response ) ) { // If it is an array
+	            $response = current( $response ); // Get the first item
+	        }
+
+	        $this->github_response = $response; // Set it to our property
+	    }
+	}
+
+	public function initialize() {
+		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'modify_transient' ), 10, 1 );
+		add_filter( 'plugins_api', array( $this, 'plugin_popup' ), 10, 3);
+		add_filter( 'upgrader_post_install', array( $this, 'after_install' ), 10, 3 );
+		
+		// Add Authorization Token to download_package
+		add_filter( 'upgrader_pre_download',
+			function() {
+				add_filter( 'http_request_args', [ $this, 'download_package' ], 15, 2 );
+				return false; // upgrader_pre_download filter default return value.
+			}
+		);
+	}
+
+	public function modify_transient( $transient ) {
+
+		if( property_exists( $transient, 'checked') ) { // Check if transient has a checked property
+
+			if( $checked = $transient->checked ) { // Did Wordpress check for updates?
+
+				$this->get_repository_info(); // Get the repo info
+
+				$out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ], 'gt' ); // Check if we're out of date
+
+				if( $out_of_date ) {
+
+					$new_files = $this->github_response['zipball_url']; // Get the ZIP
+
+					$slug = current( explode('/', $this->basename ) ); // Create valid slug
+
+					$plugin = array( // setup our plugin info
+						'url' => $this->plugin["PluginURI"],
+						'slug' => $slug,
+						'package' => $new_files,
+						'new_version' => $this->github_response['tag_name']
+					);
+
+					$transient->response[$this->basename] = (object) $plugin; // Return it in response
+				}
+			}
+		}
+
+		return $transient; // Return filtered transient
+	}
+
+	public function plugin_popup( $result, $action, $args ) {
+
+		if( ! empty( $args->slug ) ) { // If there is a slug
+			
+			if( $args->slug == current( explode( '/' , $this->basename ) ) ) { // And it's our slug
+
+				$this->get_repository_info(); // Get our repo info
+
+				// Set it to an array
+				$plugin = array(
+					'name'				=> $this->plugin["Name"],
+					'slug'				=> $this->basename,
+					'requires'					=> '6.0.0',
+					'tested'						=> '6.1.1',
+					/*'rating'						=> '100.0',
+					'num_ratings'				=> '10823',
+					'downloaded'				=> '14249',
+					'added'							=> '2016-01-05',*/
+					'version'			=> $this->github_response['tag_name'],
+					'author'			=> $this->plugin["AuthorName"],
+					'author_profile'	=> $this->plugin["AuthorURI"],
+					'last_updated'		=> $this->github_response['published_at'],
+					'homepage'			=> $this->plugin["PluginURI"],
+					'short_description' => $this->plugin["Description"],
+					'sections'			=> array(
+						'Description'	=> $this->plugin["Description"],
+						'Updates'		=> $this->github_response['body'],
+					),
+					'download_link'		=> $this->github_response['zipball_url']
+				);
+
+				return (object) $plugin; // Return the data
+			}
+
+		}
+		return $result; // Otherwise return default
+	}
+	
+	public function download_package( $args, $url ) {
+
+		if ( null !== $args['filename'] ) {
+			if( $this->authorize_token ) { 
+				$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->authorize_token}" ) ) );
+			}
+		}
+		
+		remove_filter( 'http_request_args', [ $this, 'download_package' ] );
+
+		return $args;
+	}
+
+	public function after_install( $response, $hook_extra, $result ) {
+		global $wp_filesystem; // Get global FS object
+
+		$install_directory = plugin_dir_path( $this->file ); // Our plugin directory
+		$wp_filesystem->move( $result['destination'], $install_directory ); // Move files to the plugin dir
+		$result['destination'] = $install_directory; // Set the destination for the rest of the stack
+
+		if ( $this->active ) { // If it was active
+			activate_plugin( $this->basename ); // Reactivate
+		}
+
+		return $result;
+	}
 }
