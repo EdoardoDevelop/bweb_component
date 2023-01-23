@@ -1,0 +1,14 @@
+.allegato-metabox-list li {
+    margin: 10px 10px 10px 0;
+    cursor: move;
+    overflow: hidden;
+  }
+  .allegato-metabox-list li .button{
+    vertical-align: middle;
+  }
+  .image-preview{
+    width: 60%;
+  }
+  #allegati{
+    min-width: 100%;
+  }

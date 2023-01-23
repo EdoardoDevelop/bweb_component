@@ -1,0 +1,40 @@
+.table_module .form-table{
+    display: block;
+}
+.table_module .form-table tbody{
+    display: flex;
+    flex-wrap: wrap;
+}
+.table_module .form-table tbody tr{
+    flex: 0 0 15%;
+    display: flex;
+    margin: 10px;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 13px rgb(0 0 0 / 20%);
+    min-width: 200px;
+    justify-content: right;
+}
+
+
+.table_module .form-table tbody tr th{
+    padding: 15px;
+    width: 100%;
+    font-weight: normal;
+}
+.table_module .form-table tbody tr td{
+    margin: 0;
+}
+.component_title{
+    display: flex;
+    vertical-align: middle;
+    height: 100%;
+    align-items: center;
+}
+.component_title .dashicons,.component_title  .dashicons-before:before{
+    width: 26px;
+    height: 26px;
+    font-size: 26px;
+    margin: 5px;
+}

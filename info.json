@@ -1,0 +1,21 @@
+{
+	"name" : "Bweb Component",
+	"slug" : "bweb_component",
+	"author" : "<a href='https://bwebagency.it.com'>Bweb Agency</a>",
+	"author_profile" : "https://bwebagency.it.com",
+	"version" : "1.0.0",
+	"download_url" : "http://www.bwebagency.it/wp-content/uploads/bweb_component.zip",
+	"requires" : "5.8.0",
+	"tested" : "6.1.1",
+	"requires_php" : "8.0",
+	"last_updated" : "2022-12-11 00:00:00",
+	"sections" : {
+		"description" : "Plugin per la gestione dello sviluppo di siti",
+		"installation" : "Click the activate button and that's it.",
+		"changelog" : "<h4>1.0 –  1 dicembre 2022</h4><ul><li>Bug fixes.</li><li>Initital release.</li></ul>"
+	},
+	"banners" : {
+		"low" : "https://www.bwebagency.it/wp-content/uploads/banner-772x250-1.jpg",
+		"high" : "https://www.bwebagency.it/wp-content/uploads/banner-1544x500-1.jpg"
+	}
+}
