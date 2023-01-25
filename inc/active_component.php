@@ -10,7 +10,9 @@ class BwebActiveComponent {
         
         if ( is_array( $this->bweb_component_settings_options ) ) {
             foreach ($this->bweb_component_settings_options as $foldername){
-                require plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/index.php';
+                if(file_exists(plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/index.php')){
+                    require plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/index.php';
+                }
             }
         }
         if( is_array(get_option( '_component_compare' )) && is_array($this->bweb_component_settings_options) ){
@@ -43,11 +45,16 @@ class BwebActiveComponent {
             $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
 
             if(filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
-                
-                require $foldername . '/index.php';
-
+                if(file_exists($foldername . '/index.php')){
+                    require $foldername . '/index.php';
+                }
             endif;
         
+        }
+
+        /**********CUSTOM SCRIPT INTO THEME */
+        foreach (glob(get_template_directory() ."/component/*.php") as $filename){
+            require $filename;
         }
 
     }

@@ -65,7 +65,7 @@ class BcFavicon {
 
 		add_settings_field(
 			'src_img_favicon', // id
-			'', // title
+			'<button type="submit" class="upload_image_button button">Seleziona immagine</button>', // title
 			array( $this, 'src_img_favicon_callback' ), // callback
 			'bc_favicon-settings-admin', // page
 			'bc_favicon_settings_setting_section' // section
@@ -109,8 +109,7 @@ class BcFavicon {
         
         ?>
             <img src="<?php echo $src; ?>" id="bc_favicon_img" style="width: 300px;">
-            <br><br>
-            <button type="submit" class="upload_image_button button">Seleziona immagine</button>
+            
         <?php
         
         printf(

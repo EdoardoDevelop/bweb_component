@@ -1,8 +1,8 @@
 <?php
 /**
- * ID: roles_editor
- * Name: Permessi Utenti
- * Description: Modifica la visualizzazione in basa al tipo di utente
+ * ID: hide_menu
+ * Name: Nascondi menu admin
+ * Description: Nascondi i menu nell'area amministrativa in base al ruolo utente
  * Icon: dashicons-admin-users
  * 
  */

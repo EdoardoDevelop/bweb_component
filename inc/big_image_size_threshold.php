@@ -4,7 +4,7 @@
 // completely disable image size threshold
 add_filter( 'big_image_size_threshold', '__return_false' );
 
-// increase the image size threshold to 6000px
+// increase the image size threshold
 function bcomponent_upload_big_image_size_threshold( $threshold ) {
 	return 6000; // new threshold
 }

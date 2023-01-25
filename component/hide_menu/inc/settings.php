@@ -6,22 +6,23 @@ class bcroles {
 
         add_action( 'admin_menu', array( $this, 'bc_roles_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bcrole_settings_page_init' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue' ) );
     }
     public function bc_roles_add_plugin_page() {
 		add_submenu_page(
             'bweb-component',
-			'Roles Editor', // page_title
-			'Roles Editor', // menu_title
+			'Hide Menu', // page_title
+			'Hide Menu', // menu_title
 			'manage_options', // capability
-			'bc-roles', // menu_slug
+			'bc-hide-menu', // menu_slug
 			array( $this, 'bc_roles_create_admin_page' ) // function
 		);
 	}
     public function bc_roles_create_admin_page() {
 		$this->bcrole_settings_option = get_option( 'bcrole_settings_option' );
     ?>
-		<div class="wrap">
-			<h2>Roles Editor</h2>
+		<div id="setting_hide_menu" class="wrap">
+			<h2>Hide Menu</h2>
 			<p></p>
 			<?php settings_errors(); ?>
             
@@ -76,11 +77,41 @@ class bcroles {
 	public function select_menu_admin_callback() {
 		global $menu, $submenu;
 		/*$role = get_role( $_GET['role'] );*/
+		?>
+		<div id="table_menu">
+			<div class="table_menu_column">
+				<h4>Menu/Submenu</h4>
+				<?php
+				if(is_array($menu)){
+				foreach($menu as $m => $m_value) : 
+					
+					if($m_value[4] != 'wp-menu-separator'){
+                        printf(
+                            '<div class="row_menu">%s</div>',
+                            $m_value[0]
+                        );
+                        if(isset( $submenu[$m_value[2]] ) ){
+                            foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
+                                if($sm_value[2]!=$m_value[2]):
+                                    printf(
+										'<div class="row_smenu">- %s</div>',
+										$sm_value[0]
+									);
+                                endif;
+                            endforeach;
+                        }
+					}
+				endforeach;
+				}
 
+				?>
+			</div>
+		<?php
 		foreach($this->get_editable_roles() as $x => $x_value) :
 			if ( $x != 'administrator' ) :
-				echo '<div style="border: 1px solid #ccc; display: inline-block; margin: 10px; min-width: 300px; padding: 20px">';
-                echo '<h2>'.$x_value['name'].'</h2>';
+				echo '<div class="table_menu_column chk">';
+                echo '<h4>'.$x_value['name'].'</h4>';
+				if(is_array($menu)){
 				foreach($menu as $m => $m_value) : 
 					/*
 						[0] => Bacheca 
@@ -93,31 +124,32 @@ class bcroles {
 					*/
 					if($m_value[4] != 'wp-menu-separator'){
                         printf(
-                            '<label><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s>%s</label><br>',
+                            '<div class="row_menu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
                             $x,
                             $m_value[2],
-                            ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : '',
-                            $m_value[0]
+                            ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
                         );
                         if(isset( $submenu[$m_value[2]] ) ){
                             foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
                                 if($sm_value[2]!=$m_value[2]):
                                     printf(
-                                        '<label style="margin-left:20px"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s>%s</label><br>',
+                                        '<div class="row_smenu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
                                         $x,
                                         $sm_value[2],
-                                        ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $sm_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : '',
-                                        $sm_value[0]
+                                        ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $sm_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
                                     );
                                 endif;
                             endforeach;
                         }
 					}
 				endforeach;
+				}
 				echo '</div>';
 			endif;
 		endforeach;
-
+		?>
+		</div>
+		<?php
 	}
 
 	public function get_editable_roles() {
@@ -128,6 +160,13 @@ class bcroles {
 	
 		return $editable_roles;
 	}
+
+	public function load_enqueue($hook){
+		if($hook == 'bweb-component_page_bc-hide-menu'){
+			wp_enqueue_style( 'bc_hidemenu_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'/component/hide_menu/assets/style.css');
+			//wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
+		}
+    }
 
 }
 $bcroles = new bcroles();

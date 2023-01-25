@@ -1,6 +1,13 @@
 <?php
+/**
+ * ID: disable_comment
+ * Name: Disabilita commenti
+ * Description: 
+ * Icon: dashicons-welcome-comments
+ * 
+ */
 
-add_action('admin_init', function () {
+ add_action('admin_init', function () {
     // Redirect any user trying to access comments page
     global $pagenow;
     

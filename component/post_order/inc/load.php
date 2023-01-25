@@ -1,32 +1,5 @@
 <?php
 /**
-* Uninstall hook
-*/
-
-/*register_uninstall_hook( __FILE__, 'bcpo_uninstall' );
-function bcpo_uninstall()
-{
-	
-	bcpo_uninstall_db_terms();
-	
-	delete_option( 'bcpo_activation' ); // old version before than 3.1.0
-	delete_option( 'bcpo_ver' );
-}
-
-// drop term_order COLUMN to $wpdb->terms TABLE
-function bcpo_uninstall_db_terms()
-{
-	global $wpdb;
-	$result = $wpdb->query( "DESCRIBE $wpdb->terms `term_order`" );
-	if ( $result ){
-		$query = "ALTER TABLE $wpdb->terms DROP `term_order`";
-		$result = $wpdb->query( $query );
-	}
-}*/
-
-
-
-/**
 * Class & Method
 */
 
@@ -74,24 +47,6 @@ class Bcpo
 		
 	}
 	
-	/**
-	* Method
-	*/
-	/*function bcpo_activation()
-	{
-		global $wpdb;
-		
-		// add term_order COLUMN to $wpdb->terms TABLE
-		$result = $wpdb->query( "DESCRIBE $wpdb->terms `term_order`" );
-		if ( !$result ) {
-			$query = "ALTER TABLE $wpdb->terms ADD `term_order` INT( 4 ) NULL DEFAULT '0'";
-			$result = $wpdb->query( $query );
-		}
-		
-		
-		update_option( 'bcpo_ver', BCPO_VER );
-	}*/
-
 	
 	function admin_menu()
 	{

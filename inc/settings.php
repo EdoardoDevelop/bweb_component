@@ -2,7 +2,6 @@
 
 class BwebComponentSettings {
 	private $bweb_component_settings_options;
-	private $bweb_component_enable_php_value;
 
 	public function __construct() {	}
 
@@ -31,7 +30,6 @@ class BwebComponentSettings {
 
 	public function bweb_component_settings_create_admin_page() {
 		$this->bweb_component_settings_options = get_option( 'bweb_component_active' ); 
-		$this->bweb_component_enable_php_value = get_option( 'bweb_component_php_value' ); 
 		
 		?>
 
@@ -117,32 +115,12 @@ class BwebComponentSettings {
 		);
 	}
 
-	public function upload_max_filesize_setting() {
-		printf(
-			'<input type="text" name="upload_max_filesize" value="%s" disabled>',
-			ini_get( 'upload_max_filesize' )
-		);
-		
-	}
-	public function post_max_size_setting() {
-		
-		printf(
-			'<input type="text" name="post_max_size" value="%s" disabled>',
-			ini_get( 'post_max_size' )
-		);
-		
-	}
-	public function max_execution_time_setting() {
-		
-		printf(
-			'<input type="text" name="max_execution_time" value="%s" disabled>',
-			ini_get( 'max_execution_time' )
-		);
-	}
 
-    public function load_enqueue(){
-		wp_enqueue_style( 'bc_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'assets/css/style.css');
-		wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
+    public function load_enqueue($hook){
+		if($hook == 'toplevel_page_bweb-component'){
+			wp_enqueue_style( 'bc_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'assets/css/style.css');
+			wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
+		}
     }
 
 	public function register_bwebcomponent_category( $categories ) {

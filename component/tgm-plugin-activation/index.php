@@ -158,8 +158,10 @@
 
     }
 
-    public function load_enqueue(){
-		wp_enqueue_style( 'bc_install_plugin_css', plugin_dir_url( __FILE__ ).'assets/style.css');
+    public function load_enqueue($hook){
+        if($hook == 'bweb-component_page_bc-install-plugin'){
+		    wp_enqueue_style( 'bc_install_plugin_css', plugin_dir_url( __FILE__ ).'assets/style.css');
+        }
     }
 
 }
