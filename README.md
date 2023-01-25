@@ -11,7 +11,8 @@ Script attivabili/disattivabili:
 - Generatore di tema (implementazione di swup e scrollreveal)
 - Modifica upload/memory limit
 - Disabilita commenti
-Script non disattivabili
+
+Script non disattivabili:
 - Plugin consigliati
 - Login WP customizzato con preload
 - Modifica risoluzione massima upload immagini
