@@ -31,7 +31,10 @@
     vertical-align: middle;
     height: 100%;
     align-items: center;
+    color: #1d2327;
+    text-decoration: none;
 }
+label.component_title{cursor: text;}
 .component_title .dashicons,.component_title  .dashicons-before:before{
     width: 26px;
     height: 26px;

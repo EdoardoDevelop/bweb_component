@@ -15,7 +15,7 @@
                 //if(y < max_fields){ //max input box allowed
                     //y++; //text box increment
                     var out = '';
-                    out += '<div style="margin:20px 0;background-color: #f1f1f1;border: 1px solid #ccc;padding: 20px;" class="input_fields_group_box_wrap" attr_n=".narray."><strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][namegroup]"/>';
+                    out += '<div style="margin:20px 0;background-color: #fff;border: 1px solid #ccc;padding: 20px;" class="input_fields_group_box_wrap" attr_n=".narray."><strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][namegroup]"/>';
                     out += ' <a href="#" class="remove_group button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a>';
                     out += '<div><br><?php   
                     $args_custom_post_types = array(

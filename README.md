@@ -1,5 +1,6 @@
 # bweb_component
 Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/script attivabili solo se necessario.
+
 Script attivabili/disattivabili:
 - Custom Post Type (con card gutenberg block)
 - Custom fileds
@@ -11,6 +12,8 @@ Script attivabili/disattivabili:
 - Generatore di tema (implementazione di swup e scrollreveal)
 - Modifica upload/memory limit
 - Disabilita commenti
+- Custom dashboard
+- Tema Light Admin
 
 Script non disattivabili:
 - Plugin consigliati
@@ -18,3 +21,5 @@ Script non disattivabili:
 - Modifica risoluzione massima upload immagini
 - Salvataggio Debug fatal error log file in base alla data
 
+work in progress:
+- Contact form

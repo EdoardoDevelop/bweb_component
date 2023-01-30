@@ -34,7 +34,7 @@ class BwebComponentSettings {
 		?>
 
 		<div class="wrap bc_settings_table">
-			<h2>Bweb Component</h2>
+			<h2 class="wp-heading-inline">Bweb Component</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 
@@ -52,6 +52,7 @@ class BwebComponentSettings {
 	<?php }
 
 	public function bweb_component_settings_page_init() {
+		global $submenu;
 		register_setting(
 			'bweb_component_settings_option_group', // option_group
 			'bweb_component_active' // option_name
@@ -73,11 +74,15 @@ class BwebComponentSettings {
                     $icon = '<span class="dashicons '.$data['Icon'].'"></span>';
                 }
 
+				$h = '<label class="component_title">'.$icon.'<span>'.$data['Name'].'</span></label>';
+				
+				if ( $this->find_my_menu_item($data['ID'], true) ) {
+					$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['Name'].'</span></a>';
+				}
 				if(!filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
-                    
 					add_settings_field(
 						'c_'.$data['ID'], // id
-						'<label class="component_title" for="component_'.$data['ID'].'">'.$icon.'<span>'.$data['Name'].'</span></label>', // title
+						$h, // title
 						array($this,'chk_callback'), // callback
 						'bweb-component-settings-admin', // page
 						'bweb_component_check_section', // section
@@ -86,7 +91,7 @@ class BwebComponentSettings {
 				else:
 					add_settings_field(
 						'component_autoload_'.$data['ID'], // id
-						'<div class="component_title">'.$icon.'<span>'.$data['Name'].'</span></div>', // title
+						$h, // title
 						function(){echo '<input type="checkbox" disabled checked>';}, // callback
 						'bweb-component-settings-admin', // page
 						'bweb_component_check_section' // section
@@ -98,6 +103,26 @@ class BwebComponentSettings {
 		
 	}
 
+	public function find_my_menu_item( $handle, $sub = false ){
+		if( !is_admin() || (defined('DOING_AJAX') && DOING_AJAX) )
+		  	return false;
+		global $menu, $submenu;
+		$check_menu = $sub ? $submenu : $menu;
+		if( empty( $check_menu ) )
+		  	return false;
+		foreach( $check_menu as $k => $item ){
+			if( $sub ){
+				foreach( $item as $sm ){
+				if($handle == $sm[2])
+					return true;
+				}
+			} else {
+				if( $handle == $item[2] )
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];

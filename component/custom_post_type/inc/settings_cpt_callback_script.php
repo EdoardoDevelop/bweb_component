@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
             //alert(x)
             var out = '';
             out += '<?php
-            echo '<div class="custompost_group_box_wrap"><div style="margin:20px;background-color: #f1f1f1;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
+            echo '<div class="custompost_group_box_wrap"><div style="margin:20px;background-color: #fff;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
             echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type][.narray.][name]"/>';
             echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
             echo '<strong>Gutenberg:</strong> ';

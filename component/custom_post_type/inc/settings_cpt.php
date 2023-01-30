@@ -7,7 +7,7 @@ class BcCustomPostTypeOptions {
 		add_action( 'admin_menu', array( $this, 'bc_custom_post_type_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bc_custom_post_type_page_init' ) );
         global $pagenow;
-        if($pagenow=='admin.php' && $_GET['page']=='bc-custom-post-type'){
+        if($pagenow=='admin.php' && $_GET['page']=='bc_custom_post_type'){
             add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue') );
             add_action('admin_footer', array($this, 'custombox_callback_script'));
         }
@@ -19,7 +19,7 @@ class BcCustomPostTypeOptions {
 			'Custom Post Type', // page_title
 			'Custom Post Type', // menu_title
 			'manage_options', // capability
-			'bc-custom-post-type', // menu_slug
+			'bc_custom_post_type', // menu_slug
 			array( $this, 'bc_custom_post_type_create_admin_page' ) // function
 		);
 	}
@@ -33,7 +33,7 @@ class BcCustomPostTypeOptions {
 		</div>
 
 		<div class="wrap">
-			<h2>Custom Post Type</h2>
+			<h2 class="wp-heading-inline">Custom Post Type</h2>
 			<p></p>
 			<?php settings_errors(); ?>
             <?php

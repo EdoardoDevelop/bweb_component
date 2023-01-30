@@ -33,6 +33,7 @@ class BCwplogin {
             }
 
             #login{position:relative;}
+            .interim-login #login{margin: 0 auto;}
             .login form{background-color: #fff;box-shadow: 0px 0px 16px rgba(0, 0, 0, .5); }
             .login h1 a {background-image: none !important; width: auto !important; height: auto !important; text-indent: 0 !important; color: #02a1fa; }
             .icon_login{

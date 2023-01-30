@@ -29,4 +29,13 @@ $updater->set_repository( 'bweb_component' );
 
 $updater->initialize();
 
-
+function change_footer_admin () {
+	echo 'Wordpress. Bweb Component plugin';
+}
+add_filter('admin_footer_text', 'change_footer_admin');
+  
+function change_footer_version() {
+	global $wp_version;
+	return 'Version WP '.$wp_version.' - B.C. '.get_plugin_data( __FILE__ )['Version'];
+}
+add_filter( 'update_footer', 'change_footer_version', 9999 );

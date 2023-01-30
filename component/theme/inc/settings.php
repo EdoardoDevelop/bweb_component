@@ -22,7 +22,7 @@ class BcThemeSettings {
 			'Impostazioni Tema', // page_title
 			'Impostazioni Tema', // menu_title
 			'manage_options', // capability
-			'bctheme-settings', // menu_slug
+			'theme', // menu_slug
 			array( $this, 'bctheme_settings_create_admin_page' ) // function
 		);
 
@@ -32,7 +32,7 @@ class BcThemeSettings {
 		$this->bctheme_settings_options = get_option( 'bctheme_settings_option' ); ?>
 
 		<div class="wrap">
-			<h2>Impostazioni Tema</h2>
+			<h2 class="wp-heading-inline">Impostazioni Tema</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 

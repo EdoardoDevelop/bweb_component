@@ -26,7 +26,7 @@ class bcmaintenance {
 			'Sito in manutenzione', // page_title
 			'Sito in manutenzione', // menu_title
 			'manage_options', // capability
-			'bc-maintenance', // menu_slug
+			'maintenance', // menu_slug
 			array( $this, 'bc_maintenance_create_admin_page' ) // function
 		);
 	}
@@ -35,7 +35,7 @@ class bcmaintenance {
         ?>
 
 		<div class="wrap">
-			<h2>Sito in manutenzione</h2>
+			<h2 class="wp-heading-inline">Sito in manutenzione</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 

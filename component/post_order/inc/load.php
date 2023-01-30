@@ -55,7 +55,7 @@ class Bcpo
 			'Post Order', // page_title
 			'Post Order', // menu_title
 			'manage_options', // capability
-			'bcpo-settings', // menu_slug
+			'post_order', // menu_slug
 			array( $this, 'admin_page' ) // function
 		);
 	}
@@ -370,7 +370,7 @@ class Bcpo
 			}
 		}
 		
-		wp_redirect( 'admin.php?page=bcpo-settings&msg=update' );
+		wp_redirect( 'admin.php?page=post_order&msg=update' );
 	}
 	
 	

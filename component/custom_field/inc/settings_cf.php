@@ -19,7 +19,7 @@ class BcCustomFieldOptions {
 			'Custom Field', // page_title
 			'Custom Field', // menu_title
 			'manage_options', // capability
-			'bc-custom-field', // menu_slug
+			'bc_custom_field', // menu_slug
 			array( $this, 'bc_custom_field_create_admin_page' ) // function
 		);
 	}
@@ -30,7 +30,7 @@ class BcCustomFieldOptions {
         ?>
 
 		<div class="wrap">
-			<h2>Custom Field</h2>
+			<h2 class="wp-heading-inline">Custom Field</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 

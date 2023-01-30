@@ -27,7 +27,7 @@
 			'Plugin', // page_title
 			'Plugin', // menu_title
 			'manage_options', // capability
-			'bc-install-plugin', // menu_slug
+			'tgm-plugin-activation', // menu_slug
 			array( $this, 'bc_install_plugin_create_admin_page' ) // function
 		);
 	}
@@ -36,7 +36,7 @@
         ?>
 
 		<div class="wrap" id="bc-install-plugin">
-			<h2>BC Install Plugin</h2>
+			<h2 class="wp-heading-inline">BC Install Plugin</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 
@@ -132,7 +132,7 @@
         $config = array(
             'id'           => 'BCInstallPlugin',                 // Unique ID for hashing notices for multiple instances of TGMPA.
             'default_path' => '',                      // Default absolute path to bundled plugins.
-            'menu'         => 'bc-install-plugin', // Menu slug.
+            'menu'         => 'tgm-plugin-activation', // Menu slug.
             'parent_slug'  => '',            // Parent menu slug.
             'capability'   => 'manage_options',    // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
             'has_notices'  => true,                    // Show admin notices or not.
@@ -159,7 +159,7 @@
     }
 
     public function load_enqueue($hook){
-        if($hook == 'bweb-component_page_bc-install-plugin'){
+        if($hook == 'bweb-component_page_tgm-plugin-activation'){
 		    wp_enqueue_style( 'bc_install_plugin_css', plugin_dir_url( __FILE__ ).'assets/style.css');
         }
     }

@@ -66,7 +66,7 @@ class BcCustomPostTypeCreate {
                     'labels'                => $labels,
                     'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'page-attributes', 'post-formats', 'excerpt' ),
                     //'taxonomies'            => array( 'category', 'post_tag' ),
-                    'hierarchical'          => false,
+                    'hierarchical'          => true,
                     'public'                => true,
                     'show_ui'               => true,
                     'show_in_menu'          => true,

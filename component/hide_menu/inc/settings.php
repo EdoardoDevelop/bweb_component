@@ -14,7 +14,7 @@ class bcroles {
 			'Hide Menu', // page_title
 			'Hide Menu', // menu_title
 			'manage_options', // capability
-			'bc-hide-menu', // menu_slug
+			'hide_menu', // menu_slug
 			array( $this, 'bc_roles_create_admin_page' ) // function
 		);
 	}
@@ -22,7 +22,7 @@ class bcroles {
 		$this->bcrole_settings_option = get_option( 'bcrole_settings_option' );
     ?>
 		<div id="setting_hide_menu" class="wrap">
-			<h2>Hide Menu</h2>
+			<h2 class="wp-heading-inline">Hide Menu</h2>
 			<p></p>
 			<?php settings_errors(); ?>
             
@@ -123,12 +123,17 @@ class bcroles {
 						[6] => dashicons-dashboard 
 					*/
 					if($m_value[4] != 'wp-menu-separator'){
-                        printf(
-                            '<div class="row_menu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
-                            $x,
-                            $m_value[2],
-                            ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
-                        );
+						
+						if($m_value[2] != 'index.php'){
+							printf(
+								'<div class="row_menu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
+								$x,
+								$m_value[2],
+								( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
+							);
+						}else{
+							echo '<div class="row_menu"></div>';
+						}
                         if(isset( $submenu[$m_value[2]] ) ){
                             foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
                                 if($sm_value[2]!=$m_value[2]):
@@ -162,7 +167,7 @@ class bcroles {
 	}
 
 	public function load_enqueue($hook){
-		if($hook == 'bweb-component_page_bc-hide-menu'){
+		if($hook == 'bweb-component_page_hide_menu'){
 			wp_enqueue_style( 'bc_hidemenu_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'/component/hide_menu/assets/style.css');
 			//wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
 		}

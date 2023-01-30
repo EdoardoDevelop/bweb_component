@@ -26,7 +26,7 @@ class bcumlSettings {
 			'Upload/memory limit', // page_title
 			'Upload/memory limit', // menu_title
 			'manage_options', // capability
-			'bcuml-settings', // menu_slug
+			'upload_memory_limit', // menu_slug
 			array( $this, 'bc_uml_settings_create_admin_page' ) // function
 		);
         
@@ -38,7 +38,7 @@ class bcumlSettings {
 		?>
 
 		<div class="wrap bc_settings_table">
-			<h2>Upload/memory limit</h2>
+			<h2 class="wp-heading-inline">Upload/memory limit</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 

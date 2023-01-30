@@ -8,7 +8,7 @@ $bcpo_tags = isset( $bcpo_options['tags'] ) ? $bcpo_options['tags'] : array();
 
 <div class="wrap">
 
-<h2><?php _e( 'Post Order Settings', 'bcpo' ); ?></h2>
+<h2 class="wp-heading-inline"><?php _e( 'Post Order Settings', 'bcpo' ); ?></h2>
 
 <?php if ( isset($_GET['msg'] )) : ?>
 <div id="message" class="updated below-h2">

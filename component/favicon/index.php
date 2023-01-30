@@ -1,6 +1,6 @@
 <?php
 /**
- * ID: favico
+ * ID: favicon
  * Name: Favicon
  * Description: 
  * Icon: dashicons-format-image

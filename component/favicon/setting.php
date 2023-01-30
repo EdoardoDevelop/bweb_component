@@ -19,7 +19,7 @@ class BcFavicon {
 			'Favicon', // page_title
 			'Favicon', // menu_title
 			'manage_options', // capability
-			'bcfavicon-settings', // menu_slug
+			'favicon', // menu_slug
 			array( $this, 'bcfavicon_settings_create_admin_page' ) // function
 		);
 
@@ -30,7 +30,7 @@ class BcFavicon {
         ?>
 
 		<div class="wrap">
-			<h2>Generatore di favicon</h2>
+			<h2 class="wp-heading-inline">Generatore di favicon</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 
