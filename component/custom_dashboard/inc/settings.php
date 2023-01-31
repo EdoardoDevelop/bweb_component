@@ -13,22 +13,9 @@ class Bccustom_dashboard {
         add_action('admin_head', function(){
             remove_submenu_page('index.php', 'index.php' );
         });
-        //add_action( 'admin_enqueue_scripts', array( $this, 'bccustom_dashboard_load_scripts_admin' ));
-		global $pagenow;
-		if($pagenow=='admin.php' && $_GET['page']=='custom_dashboard'){
-			wp_enqueue_script( 'jquery' );
-			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 'jquery-ui-draggable' );
-			wp_enqueue_script( 'jquery-ui-droppable' );
-			wp_enqueue_script( 'jquery-ui-touch', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/jquery.ui.touch-punch.min.js', array( 'jquery' ), null, true );
-			wp_enqueue_script( 'dashjs', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/script.js', array( 'jquery' ), null, true );
-			wp_enqueue_style( 'dashcss', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_dashboard/assets/style.css');
-		}
-		if(($pagenow=='index.php' || $pagenow=='admin.php') && $_GET['page']=='dashboard'){
-			wp_enqueue_style( 'dashcss', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_dashboard/assets/style.css');
-		}
+        add_action( 'admin_enqueue_scripts', array( $this, 'bccustom_dashboard_load_scripts_admin' ));
 
-    }
+	}
     public function bccustom_dashboard_redirect_dashboard() {
 
         if( is_admin() ) {
@@ -115,6 +102,9 @@ class Bccustom_dashboard {
         if(isset( $input['html_dash'] )){
 			$sanitary_values['html_dash'] = $input['html_dash'];
 		}
+        if(isset( $input['id_dash_bg'] )){
+			$sanitary_values['id_dash_bg'] = $input['id_dash_bg'];
+		}
         
         return $sanitary_values;
     }
@@ -150,6 +140,29 @@ class Bccustom_dashboard {
 			
 		</div>
 		<?php
+		$default_dash_bg = plugins_url('../assets/bg_dash.jpg', __FILE__);
+
+        $src_dash_bg = $default_dash_bg;
+        if(isset( $this->bc_custom_dashboard_options['id_dash_bg'] )){
+            if ( !empty( $this->bc_custom_dashboard_options['id_dash_bg'] ) ) {
+                $src_dash_bg = wp_get_attachment_url($this->bc_custom_dashboard_options['id_dash_bg']);
+            }
+        }
+        
+        ?>	
+		<br><br>
+            <img src="<?php echo $src_dash_bg; ?>" id="preview_dash_bg" style="width: 300px;">
+			<br>
+            <button type="submit" class="upload_image_button button">Seleziona immagine di sfondo</button>
+            <button type="submit" class="default_image_button button" attr-default="<?php echo $default_dash_bg; ?>">Ripristina immagine di sfondo</button>
+        <?php
+        
+        printf(
+			'<input type="hidden" name="bc_custom_dashboard_options[id_dash_bg]" id="id_dash_bg" value="%s">',
+            isset( $this->bc_custom_dashboard_options['id_dash_bg'] ) ? esc_attr( $this->bc_custom_dashboard_options['id_dash_bg']) : ''
+		);
+
+
 		printf(
 			'<textarea name="bc_custom_dashboard_options[html_dash]" id="html_dash" class="hidden">%s</textarea>',
 			( isset( $this->bc_custom_dashboard_options['html_dash'] )) ? esc_attr( $this->bc_custom_dashboard_options['html_dash']) : ''
@@ -201,9 +214,45 @@ class Bccustom_dashboard {
     }
 
     public function bccustom_dashboard_load_scripts_admin(){
-        
+        global $pagenow;
+		if($pagenow=='admin.php' && $_GET['page']=='custom_dashboard'){
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
+			wp_enqueue_script( 'jquery-ui-draggable' );
+			wp_enqueue_script( 'jquery-ui-droppable' );
+			wp_enqueue_media();
+			wp_enqueue_script( 'jquery-ui-touch', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/jquery.ui.touch-punch.min.js', array( 'jquery' ), null, true );
+			wp_enqueue_script( 'dashjs', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/script.js', array( 'jquery' ), null, true );
+			wp_enqueue_style( 'dashcss', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_dashboard/assets/style.css');
+			
+		}
+		if(($pagenow=='index.php' || $pagenow=='admin.php') && $_GET['page']=='dashboard'){
+			wp_enqueue_style( 'dashcss', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_dashboard/assets/style.css');
+			add_action('admin_head', array($this,'src_dash_bg'));
+
+			
+		}
 		//wp_enqueue_script( 'bccustom_dashboard_settings_js', plugin_dir_url( __FILE__ ).'assets/script.js');
     }
+
+	public function src_dash_bg() {
+		$default_dash_bg = plugins_url('../assets/bg_dash.jpg', __FILE__);
+		$src_dash_bg = $default_dash_bg;
+		
+		if(isset( $this->bc_custom_dashboard_options['id_dash_bg'] )){
+            if ( !empty( $this->bc_custom_dashboard_options['id_dash_bg'] ) ) {
+                $src_dash_bg = wp_get_attachment_url($this->bc_custom_dashboard_options['id_dash_bg']);
+            }
+        }
+		echo '<style>
+			#wpwrap{
+				background-image: url('.$src_dash_bg.');
+				background-position: bottom right;
+				background-size: cover;
+				background-repeat: no-repeat;
+			} 
+		</style>';
+	}
 
     
 

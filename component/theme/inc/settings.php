@@ -13,7 +13,7 @@ class BcThemeSettings {
 		add_action( 'admin_menu', array( $this, 'bctheme_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bctheme_settings_page_init' ) );
 		add_action('admin_enqueue_scripts', array( $this, 'codemirror_enqueue_scripts' ));
-		add_action('admin_footer-bweb-component_page_bctheme-settings', array( $this, 'codemirror_snippet' ));
+		add_action('admin_footer-bweb-component_page_theme', array( $this, 'codemirror_snippet' ));
 	}
 
 	public function bctheme_settings_add_plugin_page() {
@@ -673,7 +673,7 @@ class BcThemeSettings {
 	public function codemirror_enqueue_scripts($hook){
 		
 
-		if($hook == 'bweb-component_page_bctheme-settings'){
+		if($hook == 'bweb-component_page_theme'){
 			wp_enqueue_script( 'bcTheme-scrollreveal-scripts', plugin_dir_url( PLUGIN_FILE_URL ) .'component/theme/assets/js/scrollreveal.min.js', array( 'jquery' ),'', true );
 			wp_enqueue_code_editor(array('type' => 'text/html'));
 			

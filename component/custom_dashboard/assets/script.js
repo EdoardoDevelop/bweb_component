@@ -211,4 +211,42 @@ jQuery(function($){
 
         });
 
+
+    var file_frame;
+    $('.upload_image_button').click(function(e) {
+        e.preventDefault();
+        if (file_frame) file_frame.close();
+
+        file_frame = wp.media.frames.file_frame = wp.media({
+            library: {
+                type: [ 
+                    'image',
+                  ]
+            }
+          });
+
+          file_frame.on('select', function() {
+            var selection = file_frame.state().get('selection');
+      
+            selection.map(function(a, i) {
+              var attachment = a.toJSON();
+              
+              //console.log(attachment);
+
+              $('#preview_dash_bg').attr('src', attachment.url);
+              $('#id_dash_bg').val(attachment.id);
+      
+            });
+          });
+      
+          
+          file_frame.open();
+    });
+    $('.default_image_button').click(function(e) {
+        e.preventDefault();
+        $('#preview_dash_bg').attr('src', $(this).attr('attr-default'));
+        $('#id_dash_bg').val('');
+
+    });
+
 });

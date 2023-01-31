@@ -118,9 +118,11 @@ class BcFavicon {
 		);
     }
 
-    public function bcfavicon_load_scripts_admin(){
-        wp_enqueue_media();
-		wp_enqueue_script( 'bcfavicon_settings_js', plugin_dir_url( __FILE__ ).'assets/script.js');
+    public function bcfavicon_load_scripts_admin($hook){
+        if($hook == 'bweb-component_page_favicon'){
+            wp_enqueue_media();
+		    wp_enqueue_script( 'bcfavicon_settings_js', plugin_dir_url( __FILE__ ).'assets/script.js');
+        }
     }
 
     public function public_favicon(){

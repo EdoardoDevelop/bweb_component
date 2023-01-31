@@ -130,12 +130,12 @@
     width: auto;
 }
 
-.dashboard_page_dashboard #wpwrap{
+/*.dashboard_page_dashboard #wpwrap{
     background-image: url('bg_dash.jpg');
     background-position: bottom right;
     background-size: cover;
     background-repeat: no-repeat;
-}
+}*/
 
 .dashboard_page_dashboard .wrap{text-align: center; overflow: hidden;}
 
@@ -182,4 +182,8 @@ h1{
     padding: 10px;
     margin: 15px 0;
     box-shadow: 0 0 3px rgb(0,0,0,0.2);
+}
+#preview_dash_bg{
+    width: 300px;
+    box-shadow: 0 0 6px rgb(0,0,0,0.3);
 }

@@ -403,6 +403,7 @@ body {
   #wpadminbar > #wp-toolbar span.ab-label,
   #wpadminbar > #wp-toolbar span.noticon {
     color: #3b4b5d;
+    overflow: hidden;
   }
   
   #wpadminbar .ab-icon,
