@@ -154,6 +154,7 @@ jQuery(function($){
                 },
                 drop: function( event, ui ) {
                     $(ui.helper).remove();
+                    $( "*" ).removeClass('d_opacity');
                 }
             });
             item_widget_box_icons = $( ".item_widget" ).droppable({
