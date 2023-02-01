@@ -4,7 +4,7 @@ Plugin Name: Bweb Component
 Plugin URI: https://github.com/EdoardoDevelop/bweb_component/
 Description: Custom Post Type, Custom Fields, Contact Form, Custom Maintenance, Custom Theme, Custom page Login, Custom access role
 Author: Edoardo Monti (Bweb)
-Version: 1.0.2
+Version: 1.0.3
 Author URI: https://www.bwebagency.it/
 */
 if (!defined("ABSPATH")) {
