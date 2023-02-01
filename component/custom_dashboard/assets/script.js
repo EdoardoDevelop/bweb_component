@@ -21,9 +21,11 @@ jQuery(function($){
                 revertDuration: 100,
                 start: function( event, ui ) {
                     $( ".item_widget .box_icons" ).addClass('box_icons-state-accept');
+                    $( "#adminmenu a.ui-draggable-handle, .form-table th, #trash_dash, #submit, .button_box_icon, #cont_n_col, #cont_bg_dash" ).addClass('d_opacity');
                 },
                 stop: function( event, ui ) {
                     $( ".item_widget .box_icons" ).removeClass('box_icons-state-accept');
+                    $( "*" ).removeClass('d_opacity');
                 }
 
             });
@@ -32,16 +34,24 @@ jQuery(function($){
                 tolerance: "pointer",
                 placeholder: "ui-sortable-highlight",
                 axis: "x",
+                start: function(){
+                    $( "#adminmenu a.ui-draggable-handle, .form-table th, #trash_dash, #submit, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
+                },
                 stop: function(){
                     $( ".boxwidget:not(.ui-sortable-placeholder)" ).removeAttr('style');
+                    $( "*" ).removeClass('d_opacity');
                 }
             });
             boxwidget = $( ".boxwidget" ).sortable({
                 revert: 100,
                 tolerance: "pointer",
                 placeholder: "ui-sortable-highlight",
+                start: function(){
+                    $( "#adminmenu a.ui-draggable-handle, .form-table th, #submit, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
+                },
                 stop: function(){
                     $( ".item_widget:not(.ui-sortable-placeholder)" ).removeAttr('style');
+                    $( "*" ).removeClass('d_opacity');
                 }
             });
             boxwidget.disableSelection();
@@ -60,13 +70,18 @@ jQuery(function($){
                 revert: "invalid",
                 stop: function( event, ui ) {
                     
+                    $( "*" ).removeClass('d_opacity');
                     $( ".item_widget" ).draggable("instance");
                     refresh_d();
                     
                 },
                 start: function( event, ui ) {
-                    $('#submit').focus();
-                }
+                    $('.button_box_icon').focus();
+                },
+                drag:function( event, ui ) {
+                    $( "#adminmenu a.ui-draggable-handle, .form-table th, #trash_dash, #submit, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
+                },
+                
                 
             });
             
@@ -77,7 +92,11 @@ jQuery(function($){
                 helper: 'clone',
                 tolerance: "pointer",
                 stop: function( event, ui ) {
+                    $( "*" ).removeClass('d_opacity');
                     refresh_d();
+                },
+                start: function(){
+                    $( "#adminmenu a.ui-draggable-handle, #submit, #trash_dash, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
                 }
             });
             add_element_item_widget_select = $( ".add_element .item_widget_select" ).draggable({
@@ -91,9 +110,13 @@ jQuery(function($){
                 },
                 stop: function( event, ui ) {
                     
+                    $( "*" ).removeClass('d_opacity');
                     //$( ".item_widget:not(.ui-sortable-placeholder)" ).removeAttr('style');
                     $( ".item_widget" ).draggable("instance");
                     refresh_d();
+                },
+                start: function(){
+                    $( "#adminmenu a.ui-draggable-handle, #submit, #trash_dash, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
                 },
                 tolerance: "pointer"
             });
@@ -106,9 +129,13 @@ jQuery(function($){
                     return $('<div class="item_widget">'+t+'</div>');
                 },
                 stop: function( event, ui ) {
+                    $( "*" ).removeClass('d_opacity');
                     //$( ".item_widget:not(.ui-sortable-placeholder)" ).removeAttr('style');
                     $( ".item_widget" ).draggable("instance");
                     refresh_d();
+                },
+                start: function(){
+                    $( "#adminmenu a.ui-draggable-handle, #submit, #trash_dash, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
                 },
                 tolerance: "pointer"
             });
@@ -129,7 +156,7 @@ jQuery(function($){
                     $(ui.helper).remove();
                 }
             });
-            item_widget_box_icons = $( ".item_widget .box_icons" ).droppable({
+            item_widget_box_icons = $( ".item_widget" ).droppable({
                 accept: select_dashicons_dashicons,
                 classes: {
                     "ui-droppable-hover": "box_icons-state-active"
@@ -137,8 +164,12 @@ jQuery(function($){
                 helper: "clone",
                 revert: "invalid",
                 drop: function( event, ui ) {
-                    $(event.target).removeClass().addClass('box_icons').addClass('dashicons').addClass(ui.helper.attr('atr-class'));
-                    $( ".item_widget .dashicons" ).draggable("instance");
+                    //$(event.target).removeClass().addClass('box_icons').addClass('dashicons').addClass(ui.helper.attr('atr-class'));
+                    if($('.box_icons',event.target).length){
+                        $('.box_icons',event.target).remove();
+                        $('a', event.target).prepend('<span class="box_icons dashicons '+ui.helper.attr('atr-class')+'">');
+                        $( ".item_widget .dashicons" ).draggable("instance");
+                    }
                     //$(ui.helper).remove();
                     
                 }

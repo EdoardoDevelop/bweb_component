@@ -69,11 +69,12 @@
 
 .box_icons-state-accept{
     width: 25px;
+    height: 25px;
     border: 2px dashed rgb(26, 205, 6);
     display: inline-block;
     font-size: 28px;
 }
-.box_icons-state-active{
+.box_icons-state-active .box_icons{
     width: 25px;
     border: 2px dashed rgb(23, 6, 205);
     display: inline-block;
@@ -213,6 +214,16 @@ h1{
     box-shadow: 0 0 3px rgb(0,0,0,0.2);
 }
 #preview_dash_bg{
-    width: 300px;
-    box-shadow: 0 0 6px rgb(0,0,0,0.3);
+    width: 90%;
+    box-shadow: 0 0 5px rgb(0,0,0,0.3);
+    margin: 10px;
+}
+#cont_bg_dash {
+    display: none;
+}
+#bg_dash{
+    text-align: center;
+}
+.d_opacity{
+    opacity: 0.2;
 }

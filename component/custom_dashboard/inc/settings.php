@@ -139,6 +139,10 @@ class Bccustom_dashboard {
 		?>
 			
 		</div>
+		<br><br>
+		<a href="#TB_inline?&width=360&height=400&inlineId=cont_bg_dash" class="thickbox button-secondary">Cambia sfondo</a>
+		<div id="cont_bg_dash">
+		<div id="bg_dash">
 		<?php
 		$default_dash_bg = plugins_url('../assets/bg_dash.jpg', __FILE__);
 
@@ -150,10 +154,10 @@ class Bccustom_dashboard {
         }
         
         ?>	
-		<br><br>
-            <img src="<?php echo $src_dash_bg; ?>" id="preview_dash_bg" style="width: 300px;">
+            <img src="<?php echo $src_dash_bg; ?>" id="preview_dash_bg">
 			<br>
             <button type="submit" class="upload_image_button button">Seleziona immagine di sfondo</button>
+			<br><br>
             <button type="submit" class="default_image_button button" attr-default="<?php echo $default_dash_bg; ?>">Ripristina immagine di sfondo</button>
         <?php
         
@@ -161,6 +165,10 @@ class Bccustom_dashboard {
 			'<input type="hidden" name="bc_custom_dashboard_options[id_dash_bg]" id="id_dash_bg" value="%s">',
             isset( $this->bc_custom_dashboard_options['id_dash_bg'] ) ? esc_attr( $this->bc_custom_dashboard_options['id_dash_bg']) : ''
 		);
+		?>
+		</div>
+		</div>
+		<?php
 
 
 		printf(
@@ -220,6 +228,7 @@ class Bccustom_dashboard {
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-draggable' );
 			wp_enqueue_script( 'jquery-ui-droppable' );
+			add_thickbox();
 			wp_enqueue_media();
 			wp_enqueue_script( 'jquery-ui-touch', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/jquery.ui.touch-punch.min.js', array( 'jquery' ), null, true );
 			wp_enqueue_script( 'dashjs', plugin_dir_url(PLUGIN_FILE_URL).'component/custom_dashboard/assets/script.js', array( 'jquery' ), null, true );
