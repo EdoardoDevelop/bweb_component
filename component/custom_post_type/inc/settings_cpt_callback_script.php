@@ -52,7 +52,8 @@ jQuery(document).ready(function($) {
         
     $(".input_fields_wrap").on("click",".remove_field", function(e){ 
         e.preventDefault(); 
-        $(this).parent('div').remove();
+        var c = confirm('Confermi la cancellazione?');
+        if (c) $(this).parent('div').remove();
     });
 
     $(".input_fields_wrap").delegate(".add_tax_custompost_button","click",function(e){ 
@@ -76,7 +77,8 @@ jQuery(document).ready(function($) {
 
     $(".input_fields_wrap").delegate(".remove_tax_custompost","click", function(e){ 
         e.preventDefault(); 
-        $(this).parent('div').remove();
+        var c = confirm('Confermi la cancellazione?');
+        if (c) $(this).parent('div').remove();
     });
 
 

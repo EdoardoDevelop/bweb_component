@@ -105,8 +105,10 @@ jQuery(function($){
                 helper: function(e) {
                     var type = $(this).attr('attr-type');
                     var id = $('#id'+type+' option:selected' ).val();
-                    var title = $('#id'+type+' option:selected' ).text();
-                    return $('<div class="item_widget"><a href="http://localsite.ddns.net/test/wp-admin/post.php?post='+id+'&action=edit" ><span class="box_icons"></span>'+title+'</a></div></div>');
+                    
+                        var title = $('#id'+type+' option:selected' ).text();
+                        return $('<div class="item_widget"><a href="http://localsite.ddns.net/test/wp-admin/post.php?post='+id+'&action=edit" ><span class="box_icons"></span>'+title+'</a></div></div>');
+                    
                 },
                 stop: function( event, ui ) {
                     
@@ -115,7 +117,12 @@ jQuery(function($){
                     $( ".item_widget" ).draggable("instance");
                     refresh_d();
                 },
-                start: function(){
+                start: function( event, ui){
+                    var type = $(this).attr('attr-type');
+                    var id = $('#id'+type+' option:selected' ).val();
+                    if(id === undefined){
+                        return false;
+                    }
                     $( "#adminmenu a.ui-draggable-handle, #submit, #trash_dash, .button_box_icon, #cont_n_col, #select_dashicons, #cont_bg_dash" ).addClass('d_opacity');
                 },
                 tolerance: "pointer"

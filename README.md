@@ -5,7 +5,6 @@ Script attivabili/disattivabili:
 - Custom Post Type (con card gutenberg block)
 - Custom fileds
 - Sito in manutenzione
-- Generatore di favicon da immagine
 - Ordinamento post/page
 - Nascondi menu admin
 - Slider block (Gutenberg)
@@ -13,7 +12,7 @@ Script attivabili/disattivabili:
 - Modifica upload/memory limit
 - Disabilita commenti
 - Custom dashboard
-- Tema Light Admin
+- Custom Tema Admin
 
 Script non disattivabili:
 - Plugin consigliati

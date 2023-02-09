@@ -3,6 +3,7 @@
 
 
 class BcCptBlock {
+	private $custom_field;
 
     public function __construct() {
         
@@ -22,17 +23,17 @@ class BcCptBlock {
 		);
 		$custom_post_types = get_post_types( $args_custom_post_types, 'objects' );
 
-        $custom_field = [];
+        $this->custom_field = [];
         if(get_option( 'bc_settings_cf' ) !== null) {
             if(isset(get_option( 'bc_settings_cf' )['custom_field_group']) && is_array(get_option( 'bc_settings_cf' )['custom_field_group'])) {
-                $custom_field = get_option( 'bc_settings_cf' )['custom_field_group'];
+                $this->custom_field = get_option( 'bc_settings_cf' )['custom_field_group'];
             }
         }
         
         //wp_register_script( 'cpt-gutenberg-server-side-render-x', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_post_type/inc/server-side-render-x.js');
         wp_register_script( 'cpt-gutenberg-block', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_post_type/inc/cpt-block.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components','wp-server-side-render' ) );
         wp_localize_script( 'cpt-gutenberg-block', 'cpt', $custom_post_types );
-        wp_localize_script( 'cpt-gutenberg-block', 'cf', $custom_field );
+        wp_localize_script( 'cpt-gutenberg-block', 'cf', $this->custom_field );
         wp_localize_script( 'cpt-gutenberg-block', 'imagesize', wp_get_registered_image_subsizes() );
         register_block_type('bc/cpt-block', array(
             'api_version'     => 2,
@@ -56,6 +57,15 @@ class BcCptBlock {
                     'default' => 3
                 ),
                 's_chk_field' => array(
+                    'type' => 'string'
+                ),
+                'c_field_1' => array(
+                    'type' => 'string'
+                ),
+                'c_field_2' => array(
+                    'type' => 'string'
+                ),
+                'c_field_3' => array(
                     'type' => 'string'
                 ),
                 'el_title' => array(
@@ -160,6 +170,9 @@ class BcCptBlock {
                     }
                     
                     $html .= ' class="col-md'.$n.' card-home-item">';
+                    if(isset($atts[ 'c_field_1' ]) && $atts[ 'c_field_1' ] != '---'){
+                        $html .= $this->get_val_custom_filed($post_id, $atts[ 'c_field_1' ]);
+                    }
                     if(isset($atts[ 'isImageShow' ]) && $atts[ 'isImageShow' ]){
                         if( has_post_thumbnail($post_id) ) {
                         $html .= '<div class="image_card"><img src="'.wp_get_attachment_image_src(get_post_thumbnail_id($post_id), $atts[ 'imgSize' ])[0].'" class="card-home-img" ></div>';
@@ -170,12 +183,18 @@ class BcCptBlock {
                         $title_link = 'href="'.esc_url( get_permalink( $post_id ) ).'"'; 
                     }
                     $html .= '<'.$atts[ 'el_title' ].' '.$title_link.' '.$onclik.' class="title">'.esc_html( get_the_title( $post_id ) ).'</'.$atts[ 'el_title' ].'>';
+                    if(isset($atts[ 'c_field_2' ]) && $atts[ 'c_field_2' ] != '---'){
+                        $html .= $this->get_val_custom_filed($post_id, $atts[ 'c_field_2' ]);
+                    }
                     if(isset($atts[ 'isTextShow' ]) && $atts[ 'isTextShow' ]){
                         if(isset($atts[ 'typeText' ]) && $atts[ 'typeText' ]=='excerpt'){
                             $html .= '<p>'.get_the_excerpt().'</p>';
                         }else{
                             $html .= '<p>'.get_the_content().'</p>';
                         }
+                    }
+                    if(isset($atts[ 'c_field_3' ]) && $atts[ 'c_field_3' ] != '---'){
+                        $html .= $this->get_val_custom_filed($post_id, $atts[ 'c_field_3' ]);
                     }
                     if(isset($atts[ 'isButtonShow' ]) && $atts[ 'isButtonShow' ]){
                         $html .= '<a href="'.esc_url( get_permalink( $post_id ) ).'" '.$onclik.' class="btn btn_card">'.$atts[ 'textButton' ].'</a>';
@@ -194,6 +213,75 @@ class BcCptBlock {
             endif;
         }
         
+        return $html;
+    }
+
+    public function get_val_custom_filed($post_id, $c_field){
+        $html = '';
+        foreach($this->custom_field as $narray => $v ){
+            foreach($v['field'] as $field ){
+                $namefield = sanitize_title($v['namegroup']) . '_' . sanitize_title($field['namefield']);
+                if($namefield == $c_field){
+                    if($field['type'] == 'text'){
+                        $html .= '<span>'.get_post_meta( $post_id, $namefield, true ).'</span>';
+                    }
+                    if($field['type'] == 'textarea'){
+                        $html .= '<div>'.html_entity_decode(get_post_meta( $post_id, $namefield, true )).'</siv>';
+                    }
+                    if($field['type'] == 'checkbox'){
+                        $html .= '<span class="chk_field_post '.$namefield.'">'.$field['namefield'].': '.get_post_meta( $post_id, $namefield, true ).'</span>';
+                    }
+                    if($field['type'] == 'calendario'){
+                        $post_field = get_post_meta( $post_id, $namefield, true );
+
+                        $dateD = date(" j", strtotime($field));
+                        $dateM = date(" M", strtotime($field));
+                        $dateY = date(" Y", strtotime($field));
+                        $html .= '<span>'.$dateD.'-'.$dateM.'-'.$dateY.'</span>';
+                    }
+                    if($field['type'] == 'editor'){
+                        $html .= '<div>'.html_entity_decode(get_post_meta( $post_id, $namefield, true )).'</div>';
+                    }
+                    if($field['type'] == 'allegato'){
+                        $post_field = get_post_meta( $post_id, $namefield, true );
+                        if(isset($post_field) && is_array($post_field)):
+                            for( $i = 0; $i < count( $post_field ); $i++ ):
+                                $file_documenti = $post_field[$i];
+                                $ext = substr($file_documenti, -4);
+                                $arrtype = explode("/", $file_documenti);
+                                $arrtype_more = explode(".", $arrtype[count($arrtype)-1]);
+                                if(is_array($arrtype_more)) {
+                                    $arrtype = $arrtype_more;
+                                }
+                                $type = "file";
+                                if(is_array($arrtype)){
+                                    $type = $arrtype[count($arrtype)-1];
+                                }
+                                $ptitle = str_replace("-", " ", basename($file_documenti, $ext));
+                                $ptitle = str_replace("_", " ", $ptitle);
+                                echo '<a target="_blank" href="'.$file_documenti.'">'.$ptitle.'</a>';
+                            endfor;
+                          endif;
+                    }
+                    if($field['type'] == 'checkbox_post'){
+                        $post_field = get_post_meta( $post_id, $namefield, true );
+                        if(isset($field) && is_array($field)):
+                            $html .= '<div>';
+                            for( $i = 0; $i < count( $field ); $i++ ):
+                                $ID = $field[$i];
+                                $html .= '<a href="'.esc_url( get_permalink( $ID ) ).'">'.get_the_title($ID).'</a>';
+                                if($i < count( $field )){
+                                    $html .= ' <span class="checkbox_post_separator">-</span> ';
+                                }
+                            endfor;
+                            $html .= '</div>';
+                        endif;
+                    }
+                }
+
+            }
+        }
+
         return $html;
     }
 

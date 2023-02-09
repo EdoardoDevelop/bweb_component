@@ -58,7 +58,7 @@
                                 echo '<a href="#TB_inline?&inlineId=Coden'.$narray2.'" class="thickbox" style="float:right; text-decoration:none"><span class="dashicons dashicons-code-standards"></span></a>';
                                 echo '<div id="Coden'.$narray2.'" class="hidden"><pre>';
                                 $txtinfo_field = sanitize_title($v['namegroup']) . '_' . sanitize_title($v2['namefield']);
-                                echo '$field_'.$txtinfo_field.' = get_post_meta( $post->ID, \''.$txtinfo_field.'\', true );<br>';
+                                echo '$field = get_post_meta( $post->ID, \''.$txtinfo_field.'\', true );<br>';
                                 if(isset( $valuetype ) && $valuetype === 'multipleimg'){
                                     echo 'if(isset($field_'.$txtinfo_field.') && is_array($field_'.$txtinfo_field.')):<br>';
                                     echo '  foreach ($field_'.$txtinfo_field.' as $key => $value) : <br>';
@@ -68,9 +68,9 @@
                                     echo 'endif;';
                                 }
                                 if(isset( $valuetype ) && $valuetype === 'allegato'){
-                                    echo 'if(isset($field_'.$txtinfo_field.') && is_array($field_'.$txtinfo_field.')):<br>';
-                                    echo '  for( $i = 0; $i < count( $field_'.$txtinfo_field.' ); $i++ ):<br>';
-                                    echo '      $file_documenti = $field_'.$txtinfo_field.'[$i];<br>';
+                                    echo 'if(isset($field) && is_array($field)):<br>';
+                                    echo '  for( $i = 0; $i < count( $field ); $i++ ):<br>';
+                                    echo '      $file_documenti = $field[$i];<br>';
                                     echo '      $ext = substr($file_documenti, -4);<br>';
                                     echo '      $arrtype = explode("/", $file_documenti);<br>';
                                     echo '      $arrtype_more = explode(".", $arrtype[count($arrtype)-1]);<br>';
@@ -88,18 +88,18 @@
                                     echo 'endif;';
                                 }
                                 if(isset( $valuetype ) && $valuetype === 'checkbox_post'){
-                                    echo 'if(isset($field_'.$txtinfo_field.') && is_array($field_'.$txtinfo_field.')):<br>';
-                                    echo '  for( $i = 0; $i < count( $field_'.$txtinfo_field.' ); $i++ ):<br>';
-                                    echo '      $ID = $field_'.$txtinfo_field.'[$i];<br>';
+                                    echo 'if(isset($field) && is_array($field)):<br>';
+                                    echo '  for( $i = 0; $i < count( $field ); $i++ ):<br>';
+                                    echo '      $ID = $field[$i];<br>';
                                     echo '  endfor;<br>';
                                     echo 'endif;';
                                     echo '<br><hr>OPPURE<hr><br>';
-                                    echo '$field_'.$txtinfo_field.' = get_post_meta( $post->ID, \''.$txtinfo_field.'\', true );<br>';
-                                    echo 'if(isset($field_'.$txtinfo_field.') && is_array($field_'.$txtinfo_field.')):<br>';
+                                    echo '$field = get_post_meta( $post->ID, \''.$txtinfo_field.'\', true );<br>';
+                                    echo 'if(isset($field) && is_array($field)):<br>';
                                     echo '  $args = array(<br>';
                                     //echo '      &apos;post_type&apos; => array( &apos;post&apos; ),<br>';
                                     echo '      &apos;orderby&apos; => &apos;ASC&apos;,<br>';
-                                    echo '      &apos;post__in&apos; => $field_'.$txtinfo_field.'<br>';
+                                    echo '      &apos;post__in&apos; => $field<br>';
                                     echo '      );<br>';
                                     echo '  $query = new WP_Query( $args );<br>';
                                     echo '  if ( $query -> have_posts() ) :<br>';
@@ -115,7 +115,7 @@
                                 if(isset( $valuetype ) && $valuetype === 'calendario'){
                                     echo '<br>$dateD = date(" j", strtotime($field_'.$txtinfo_field.'));<br>';
                                     echo '$dateM = date(" M", strtotime($field_'.$txtinfo_field.'));<br>';
-                                    echo '$dateD = date(" Y", strtotime($field_'.$txtinfo_field.'));<br>';
+                                    echo '$dateY = date(" Y", strtotime($field_'.$txtinfo_field.'));<br>';
                                 }
                                 echo '</pre></div>';
                                 printf(

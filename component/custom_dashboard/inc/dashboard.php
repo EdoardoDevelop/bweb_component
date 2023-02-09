@@ -2,11 +2,6 @@
 /**
  * Our custom dashboard page
  */
-
-/** WordPress Administration Bootstrap */
-require_once( ABSPATH . 'wp-load.php' );
-require_once( ABSPATH . 'wp-admin/admin.php' );
-require_once( ABSPATH . 'wp-admin/admin-header.php' );
 ?>
 <div class="wrap">
     <h1 class="wp-heading-inline">Dashboard</h1>
@@ -18,5 +13,3 @@ require_once( ABSPATH . 'wp-admin/admin-header.php' );
         ?>
     </div>
 </div>
-
-<?php include( ABSPATH . 'wp-admin/admin-footer.php' );
