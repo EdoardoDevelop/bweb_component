@@ -12,6 +12,13 @@ class bc_duplicate_post{
         
         add_action( 'admin_action_bc_duplicate_post_as_draft', array( $this, 'bc_duplicate_post_as_draft' ));
         add_action( 'admin_notices', array( $this, 'bcdp_duplication_admin_notice' ));
+
+        add_filter( 'display_post_states', array($this, 'bc_display_post_states'), 10, 2 );
+
+        add_action( 'manage_posts_extra_tablenav', array($this, 'top_form_edit') );
+        add_filter('pre_get_posts', array($this, 'remove_post_list_table'));
+
+        $this->bc_duplicate_post_options = get_option( 'bc_settings_bcdp' ); 
     }
     public function bc_duplicate_post_add_plugin_page(){
         add_submenu_page(
@@ -24,7 +31,6 @@ class bc_duplicate_post{
 		);
     }
     public function duplicate_post_create_admin_page(){
-        $this->bc_duplicate_post_options = get_option( 'bc_settings_bcdp' )['post']; 
         ?>
 
         <div class="wrap">
@@ -48,8 +54,7 @@ class bc_duplicate_post{
     public function bc_duplicate_post_page_init(){
         register_setting(
 			'bc_duplicate_post_option_group', // option_group
-			'bc_settings_bcdp', // option_name
-			array( $this, 'bc_duplicate_post_sanitize' ) // sanitize_callback
+			'bc_settings_bcdp'
 		);
 
 		add_settings_section(
@@ -66,6 +71,13 @@ class bc_duplicate_post{
 			'bc-duplicate-post-admin', // page
 			'bc_duplicate_post_setting_section' // section
 		);
+        add_settings_field(
+            'select_page', // id
+            'Template', // title
+            array($this,'select_callback'), // callback
+            'bc-duplicate-post-admin', // page
+            'bc_duplicate_post_setting_section' // section
+        );
     }
 
     public function settings_bcdp_callback(){
@@ -87,7 +99,7 @@ class bc_duplicate_post{
                         foreach ( $post_types  as $post_type ) {
                             if ( $post_type->name == 'attachment' ) continue;
                             ?>
-                            <label style="margin-right: 20px;"><input type="checkbox" name="bc_settings_bcdp[post][]" value="<?php echo $post_type->name; ?>" <?php if ( isset( $this->bc_duplicate_post_options ) && is_array( $this->bc_duplicate_post_options ) ) { if ( in_array( $post_type->name, $this->bc_duplicate_post_options ) ) { echo 'checked="checked"'; } } ?>>&nbsp;<?php echo $post_type->label; ?></label>
+                            <label style="margin-right: 20px;"><input type="checkbox" name="bc_settings_bcdp[post][]" value="<?php echo $post_type->name; ?>" <?php if ( isset( $this->bc_duplicate_post_options['post'] ) && is_array( $this->bc_duplicate_post_options['post'] ) ) { if ( in_array( $post_type->name, $this->bc_duplicate_post_options['post'] ) ) { echo 'checked="checked"'; } } ?>>&nbsp;<?php echo $post_type->label; ?></label>
                             <?php
                         }
                     ?>
@@ -118,14 +130,6 @@ class bc_duplicate_post{
         </script>
         <?php
     }
-
-    public function bc_duplicate_post_sanitize($input) {
-		$sanitary_values = array();
-        if ( isset( $input['post'] ) ) {
-			$sanitary_values['post'] =  $input['post'];
-        }
-		return $sanitary_values;
-	}
 
 
     public function bc_duplicate_post_link( $actions, $post ) {
@@ -233,18 +237,18 @@ class bc_duplicate_post{
             }
     
             // finally, redirect to the edit post screen for the new draft
-            // wp_safe_redirect(
-            // 	add_query_arg(
-            // 		array(
-            // 			'action' => 'edit',
-            // 			'post' => $new_post_id
-            // 		),
-            // 		admin_url( 'post.php' )
-            // 	)
-            // );
-            // exit;
-            // or we can redirect to all posts with a message
             wp_safe_redirect(
+                add_query_arg(
+                    array(
+                        'action' => 'edit',
+                        'post' => $new_post_id
+                    ),
+                    admin_url( 'post.php' )
+                )
+            );
+            exit;
+            // or we can redirect to all posts with a message
+            /*wp_safe_redirect(
                 add_query_arg(
                     array(
                         'post_type' => ( 'post' !== get_post_type( $post ) ? get_post_type( $post ) : false ),
@@ -253,7 +257,7 @@ class bc_duplicate_post{
                     admin_url( 'edit.php' )
                 )
             );
-            exit;
+            exit;*/
     
         } else {
             wp_die( 'Post creation failed, could not find original post.' );
@@ -278,7 +282,104 @@ class bc_duplicate_post{
         }
     }
 
+    public function select_callback(){
+        $s = '';
+        foreach (get_post_types(array( 'public' => true )) as $value) {
+            $pt = get_post_type_object( $value );
 
+            if($value == 'post'){
+                $s .= '<label>';
+                $s .= $pt->label.': <br>';
+                $s .= $this->generate_post_select('bc_settings_bcdp[template_'.$value.']','template_'.$value, $value, $selected = $this->bc_duplicate_post_options['template_'.$value]);
+                $s .= '</label>';
+                if($this->bc_duplicate_post_options['template_'.$value]>0){
+                    $s .= ' &mdash; <a class="edit_post" href="post.php?post='.$this->bc_duplicate_post_options['template_'.$value].'&action=edit">Modifica selezionato</a>';
+                }
+                $s .= '<br><br>';
+                }
+            if( $value !== 'post' && $value !== 'attachment'){
+                $s .= '<label>';
+                $s .= $pt->label.': <br>';
+                $d = wp_dropdown_pages(
+                    array(
+                        'post_type'=>$value,
+                        'post_status' => array('draft'),
+                        'name' => 'bc_settings_bcdp[template_'.$value.']',
+                        'id' => 'template_'.$value,
+                        'echo'=>false,
+                        'show_option_none'  => '&mdash; Seleziona &mdash;',
+                        'option_none_value' => '0',
+                        'selected'          => $this->bc_duplicate_post_options['template_'.$value],
+                    )
+                );
+                if(empty($d)){
+                    $s .= '<select name="bc_settings_bcdp[template_'.$value.']" id="template_'.$value.'"><option value="0">&mdash; Seleziona &mdash;</option></select>';
+                }else{
+                    $s .= $d;
+                }
+                $s .= '</label>';
+                if($this->bc_duplicate_post_options['template_'.$value]>0){
+                    $s .= ' &mdash; <a class="edit_post" href="post.php?post='.$this->bc_duplicate_post_options['template_'.$value].'&action=edit">Modifica selezionato</a>';
+                }
+                $s .= '<br><br>';
+                }
+        }
+        echo $s;
+        
+        
+	}
+    public function generate_post_select($select_name, $select_id, $post_type, $selected = 0) {
+        $post_type_object = get_post_type_object($post_type);
+        $label = $post_type_object->label;
+		$sel = '';
+        $posts = get_posts(array('post_type'=> $post_type,'post_status' => array('draft'), 'suppress_filters' => false, 'posts_per_page'=>-1));
+        $sel .= '<select name="'. $select_name .'" id="'.$select_id.'">';
+        $sel .= '<option value="0">&mdash; Seleziona &mdash;</option>';
+        foreach ($posts as $post) {
+            $sel .= '<option value="'. $post->ID. '"'. ($selected == $post->ID ? ' selected="selected"' : ''). '>'. $post->post_title. '</option>';
+        }
+        $sel .= '</select>';
+		return $sel;
+    }
+
+    public function top_form_edit( $views ) {
+        if (!isset($this->bc_duplicate_post_options['template_'.get_current_screen()->post_type]) || (isset($this->bc_duplicate_post_options['template_'.get_current_screen()->post_type]) && $this->bc_duplicate_post_options['template_'.get_current_screen()->post_type] == 0)){
+            return;
+        }
+        $url = wp_nonce_url(
+            add_query_arg(
+                array(
+                    'action' => 'bc_duplicate_post_as_draft',
+                    'post' => $this->bc_duplicate_post_options['template_'.get_current_screen()->post_type],
+                ),
+                'admin.php'
+            ),
+            basename(__FILE__),
+            'duplicate_nonce'
+        );
+
+        echo '<a class="button" href="'.$url.'">Aggiungi nuovo da template</a>';
+    }
+
+    public function bc_display_post_states( $states, $post ){
+        if ( intval( $this->bc_duplicate_post_options['template_'.$post->post_type] ) === $post->ID ) {
+            $states['bc_duplicate_page'] = __( 'Pagina template' );
+        }
+    
+        return $states;
+    }
+    
+    public function remove_post_list_table($query) {
+        global $pagenow;
+
+        if( 'edit.php' != $pagenow || !$query->is_admin ) return $query;
+
+        $query->set( 'post__not_in', array( 
+            $this->bc_duplicate_post_options['template_'.$query->get('post_type')] 
+        ) );
+
+        return $query;
+    }
 }
 if ( is_admin() ):
 	new bc_duplicate_post();
