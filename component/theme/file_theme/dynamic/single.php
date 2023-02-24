@@ -14,8 +14,13 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 
-			get_template_part( 'template-parts/content', get_post_type() );
-
+			if(is_single()) :
+                get_template_part( 'template-parts/content', 'single' );
+            elseif(is_page()) :
+                get_template_part( 'template-parts/content', 'page' );
+            else:
+                get_template_part( 'template-parts/content', get_post_type() );
+            endif;
 			
 		endwhile; // End of the loop.
 		?>

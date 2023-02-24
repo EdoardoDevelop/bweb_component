@@ -505,6 +505,34 @@ class BcThemeSettings {
 		<?php
 
 		endforeach;
+			$args = array(
+				'public'   => true,
+				'_builtin' => false
+				
+			  ); 
+		foreach ( get_taxonomies($args,'objects') as $taxonomy ):
+			?>
+		<div>
+			<strong><?php echo esc_html( $taxonomy->label ); ?></strong>
+			<ul>
+				<li>
+					<?php
+						printf(
+							'<label><input type="checkbox" name="bctheme_settings_option[include_file_template][cpt][]" value="%s" %s>%s</label>',
+							'taxonomy-'.esc_attr( $taxonomy->name ).'.php',
+							$this->check_template('taxonomy-'.esc_attr( $taxonomy->name ).'.php')  ? 'checked' : '',
+							'taxonomy-'.esc_attr( $taxonomy->name ).'.php'
+						);
+					?>
+				</li>
+				
+			</ul>
+		</div>
+
+		<?php
+		endforeach;
+
+
 
 	}
 
@@ -609,10 +637,17 @@ class BcThemeSettings {
 	public function gen_html_callback(){
 		?>
 		<button value="true" name="gen_html" class="button button-primary">Genera html da queste impostazioni</button>
+		<br>
+		<br>
+		<strong>Lista dimensioni immagini:</strong><br>
 		<?php
 		
-		print_r( get_option('_print_scripts_styles') );
-
+		$s = wp_get_registered_image_subsizes();
+		echo '<ul>';
+		foreach ($s as $key => $image_size) {
+			echo "<li>{$key} ({$image_size['width']} x {$image_size['height']})</li>";
+		}
+		echo '</ul>';
 	}
 	
 	public function check_template($file){

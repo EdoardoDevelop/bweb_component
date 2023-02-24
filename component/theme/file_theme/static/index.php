@@ -29,7 +29,15 @@ get_header();
             * If you want to override this in a child theme, then include a file
             * called content-___.php (where ___ is the Post Type name) and that will be used instead.
             */
-            get_template_part( 'template-parts/content', get_post_type() );
+            if(is_single()) :
+                get_template_part( 'template-parts/content', 'single' );
+            elseif(is_archive()):
+                get_template_part( 'template-parts/content', 'archive' );
+            elseif(is_page()) :
+                get_template_part( 'template-parts/content', 'page' );
+            else:
+                get_template_part( 'template-parts/content', get_post_type() );
+            endif;
 
         endwhile;
         the_posts_navigation(['type'=>'list']);

@@ -60,10 +60,10 @@
                                 $txtinfo_field = sanitize_title($v['namegroup']) . '_' . sanitize_title($v2['namefield']);
                                 echo '$field = get_post_meta( $post->ID, \''.$txtinfo_field.'\', true );<br>';
                                 if(isset( $valuetype ) && $valuetype === 'multipleimg'){
-                                    echo 'if(isset($field_'.$txtinfo_field.') && is_array($field_'.$txtinfo_field.')):<br>';
-                                    echo '  foreach ($field_'.$txtinfo_field.' as $key => $value) : <br>';
+                                    echo 'if(isset($field) && is_array($field_'.$txtinfo_field.')):<br>';
+                                    echo '  foreach ($field as $key => $value) : <br>';
                                     echo '      $urlimage = wp_get_attachment_image_src($value, $size)[0];<br>';
-                                    echo '      echo \'&#60;img class="image-preview" src="\'.$urlimage.\'"&#62;\'<br>';
+                                    echo '      echo \'&#60;img class="image-preview" src="\'.$urlimage.\'"&#62;\';<br>';
                                     echo '  endforeach;<br>';
                                     echo 'endif;';
                                 }
