@@ -733,6 +733,11 @@ body {
     .interface-interface-skeleton {
       top: 0;
     }
+    
+  .woocommerce-layout__header{
+    width: calc(100% - 200px) !important;
+    top: 0 !important;
+  }
 }
 
 #adminmenu .adminmenu-container .wp-menu-name .adminmenu-avatar,
@@ -800,4 +805,3 @@ body {
     border-radius: 2px;
 }
 #collapse-button{display: none;}
-
