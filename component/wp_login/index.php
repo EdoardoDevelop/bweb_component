@@ -4,6 +4,7 @@
  * Name: WP Login
  * Description: Modifica il design della pagina login di Wordpress.
  * Icon: dashicons-lock
+ * Version: 1.0
  * 
  */
 

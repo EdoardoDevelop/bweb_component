@@ -4,6 +4,8 @@
  * Name: Light theme Admin
  * Description: 
  * Icon: dashicons-admin-customizer
+ * Version: 1.0
+ * 
  */
 require plugin_dir_path( __FILE__ ) ."Color.php";
 use Mexitek\PHPColors\Color;

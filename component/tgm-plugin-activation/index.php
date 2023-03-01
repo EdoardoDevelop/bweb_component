@@ -5,6 +5,8 @@
  * Description: 
  * Autoload: true
  * Icon: dashicons-admin-plugins
+ * Version: 1.0
+ * 
  */
 
  require_once dirname( __FILE__ ) . '/class-tgm-plugin-activation.php';

@@ -4,6 +4,7 @@
  * Name: Upload/memory limit
  * Description: 
  * Icon: dashicons-upload
+ * Version: 1.0
  * 
  */
 

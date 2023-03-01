@@ -4,6 +4,7 @@
  * Name: Disabilita commenti
  * Description: 
  * Icon: dashicons-welcome-comments
+ * Version: 1.0
  * 
  */
 

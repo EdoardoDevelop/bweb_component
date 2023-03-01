@@ -4,6 +4,7 @@
  * Name: Post Order
  * Description: Intuitively, Order Items( Posts, Pages, ,Custom Post Types, Custom Taxonomies, Sites ) using a Drag and Drop Sortable JavaScript.
  * Icon: dashicons-sort
+ * Version: 1.0
  * 
  */
 if (!defined("ABSPATH")) {
