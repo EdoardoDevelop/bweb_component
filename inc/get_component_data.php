@@ -15,7 +15,8 @@ class BCdatacomponent {
             'Name'        => 'Name',
             'Description' => 'Description',
             'Icon' => 'Icon',
-			'Autoload' => 'Autoload'
+			'Autoload' => 'Autoload',
+			'Version' => 'Version'
         );
         foreach ( $all_headers as $field => $regex ) {
             if (preg_match( '/^[ \t\/*#@]*' . preg_quote( $regex, '/' ) . ':(.*)$/mi', $file_data, $match ) 

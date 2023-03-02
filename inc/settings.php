@@ -2,6 +2,7 @@
 
 class BwebComponentSettings {
 	private $bweb_component_settings_options;
+	private $arraymodulegit;
 
 	public function __construct() {	}
 
@@ -14,6 +15,10 @@ class BwebComponentSettings {
         } else {
             add_filter( 'block_categories', array($this, 'register_bwebcomponent_category' ));
         }
+		if($_GET['checkupdate']==1){
+			$this->checkupdate();
+		}
+		$this->arraymodulegit = get_option( 'arraymodulegit' ); 
     }
 
 	public function bweb_component_settings_add_plugin_page() {
@@ -45,12 +50,65 @@ class BwebComponentSettings {
 					do_settings_sections( 'bweb-component-settings-admin' );
 					submit_button();
 					?>
+					<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>
 				</div>
 				
 			</form>
+			<?php 
+			if(isset($_GET['updatemodule'])){
+				$component = $_GET['updatemodule'];
+				$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
+				$this->scrivi('Aggiornamento '.$component.'<br>');
+				$cd = explode(",",$this->arraymodulegit[$component]);
+				
+				$this->deleteAll($dir);
+				$this->scrivi('Svuoto cartella '.$component.'<br>');
+				foreach($cd as $path){
+					if(pathinfo($path, PATHINFO_EXTENSION) == ''){
+						//cartella
+						if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
+							mkdir($dir);
+						}
+						if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
+							mkdir($dir.'/'.$path);
+						}
+						$this->scrivi('Cartella creata ' . $path.'<br>');
+					}else{
+						//file
+						$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/'.$component.'/'.$path;
+						
+						if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
+							//echo "File downloaded successfully";
+							$this->scrivi('Download file '.$path.'<br>');
+						}else{
+							$this->scrivi('Download fallito file '.$path.'<br>');
+						}
+						
+					}
+
+				}
+				echo '<br><br>Aggiornamento eseguito.';
+			}
+			?>
+
 		</div>
 	<?php }
 
+	public function scrivi($testo){
+		print_r($testo);
+		ob_flush();
+		flush();
+		usleep(50000);
+	}
+	public function deleteAll($dir) {
+		foreach(glob($dir . '/*') as $file) {
+			if(is_dir($file))
+				$this->deleteAll($file);
+			else
+				unlink($file);
+		}
+		rmdir($dir);
+	}
 	public function bweb_component_settings_page_init() {
 		global $submenu;
 		register_setting(
@@ -64,6 +122,8 @@ class BwebComponentSettings {
 			function(){echo 'Abilita i seguenti moduli';}, // callback
 			'bweb-component-settings-admin' // page
 		);
+
+		
 		
 
         foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
@@ -73,7 +133,15 @@ class BwebComponentSettings {
                 if($data['Icon']!=''){
                     $icon = '<span class="dashicons '.$data['Icon'].'"></span>';
                 }
-
+				
+				$badge = '';
+				if($_GET['checkupdate']==1){
+					if(isset($this->arraymodulegit)){
+						if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
+							$badge = '<a href="admin.php?page=bweb-component&updatemodule='.pathinfo($foldername, PATHINFO_BASENAME).'" class="badge"><span class="dashicons dashicons-update"></span></a>';
+						}
+					}
+				}
 				$h = '<label class="component_title">'.$icon.'<span>'.$data['Name'].'</span></label>';
 				
 				if ( $this->find_my_menu_item($data['ID'], true) ) {
@@ -82,7 +150,7 @@ class BwebComponentSettings {
 				if(!filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
 					add_settings_field(
 						'c_'.$data['ID'], // id
-						$h, // title
+						$badge.$h, // title
 						array($this,'chk_callback'), // callback
 						'bweb-component-settings-admin', // page
 						'bweb_component_check_section', // section
@@ -91,7 +159,7 @@ class BwebComponentSettings {
 				else:
 					add_settings_field(
 						'component_autoload_'.$data['ID'], // id
-						$h, // title
+						$badge.$h, // title
 						function(){echo '<input type="checkbox" disabled checked>';}, // callback
 						'bweb-component-settings-admin', // page
 						'bweb_component_check_section' // section
@@ -134,11 +202,7 @@ class BwebComponentSettings {
 			( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : ''
 		);
 	}
-	public function enable_php_value_setting() {
-		printf(
-			'<input type="checkbox" name="enable_php_value" value="true" >',
-		);
-	}
+	
 
 
     public function load_enqueue($hook){
@@ -157,6 +221,60 @@ class BwebComponentSettings {
     
         return $categories;
     }
+
+	public function checkupdate(){
+		$datecheckmoduleupdate = get_option('datecheckmoduleupdate');
+		$arraymodulegit = get_option('arraymodulegit');
+		$check = true;
+		/*if(!isset($datecheckmoduleupdate)){
+			$check = true;
+		}else{
+
+		}*/
+		if($check == true){
+
+			$ch = curl_init();
+			// IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
+			// in most cases, you should set it to true
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+			curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/EdoardoDevelop/bweb_component/git/trees/master?recursive=1');
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'Content-Type: application/json',
+				'Authorization: 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'
+			)
+			);
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			$data = json_decode($result,true);
+			$components = array();
+			foreach($data as $s){
+				if(is_array($s)){
+					foreach($s as $name => $x){
+						$p = explode("/",$x['path']);
+						if($p[0] == 'component'){
+							if(!empty($p[1]) && !empty($p[2])){
+								$arr = array(
+									'path'  => $x['path']
+								);
+								
+								if(!empty($components[$p[1]])){
+									$components[$p[1]] .= ',';
+								}
+								$components[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
+							
+							}
+						}
+					}
+				}
+			}
+
+			update_option('datecheckmoduleupdate',date("Y-m-d"));
+			update_option('arraymodulegit',$components);
+		}
+	}
 
 }
 if ( is_admin() ):
