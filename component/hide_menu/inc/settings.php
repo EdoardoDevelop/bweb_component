@@ -84,22 +84,23 @@ class bcroles {
 				<?php
 				if(is_array($menu)){
 				foreach($menu as $m => $m_value) : 
-					
 					if($m_value[4] != 'wp-menu-separator'){
-                        printf(
-                            '<div class="row_menu">%s</div>',
-                            $m_value[0]
-                        );
-                        if(isset( $submenu[$m_value[2]] ) ){
-                            foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
-                                if($sm_value[2]!=$m_value[2]):
-                                    printf(
-										'<div class="row_smenu">- %s</div>',
-										$sm_value[0]
-									);
-                                endif;
-                            endforeach;
-                        }
+						if($m_value[1]!='read'){
+							printf(
+								'<div class="row_menu">%s</div>',
+								$m_value[0]
+							);
+							if(isset( $submenu[$m_value[2]] ) ){
+								foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
+									if($sm_value[2]!=$m_value[2]):
+										printf(
+											'<div class="row_smenu">- %s</div>',
+											$sm_value[0]
+										);
+									endif;
+								endforeach;
+							}
+						}
 					}
 				endforeach;
 				}
@@ -123,29 +124,30 @@ class bcroles {
 						[6] => dashicons-dashboard 
 					*/
 					if($m_value[4] != 'wp-menu-separator'){
-						
-						if($m_value[2] != 'index.php'){
-							printf(
-								'<div class="row_menu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
-								$x,
-								$m_value[2],
-								( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
-							);
-						}else{
-							echo '<div class="row_menu"></div>';
+						if($m_value[1]!='read'){
+							if($m_value[2] != 'index.php'){
+								printf(
+									'<div class="row_menu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
+									$x,
+									$m_value[2],
+									( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $m_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
+								);
+							}else{
+								echo '<div class="row_menu"></div>';
+							}
+							if(isset( $submenu[$m_value[2]] ) ){
+								foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
+									if($sm_value[2]!=$m_value[2]):
+										printf(
+											'<div class="row_smenu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
+											$x,
+											$sm_value[2],
+											( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $sm_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
+										);
+									endif;
+								endforeach;
+							}
 						}
-                        if(isset( $submenu[$m_value[2]] ) ){
-                            foreach($submenu[$m_value[2]] as $sm => $sm_value) : 
-                                if($sm_value[2]!=$m_value[2]):
-                                    printf(
-                                        '<div class="row_smenu"><input type="checkbox" name="bcrole_settings_option[menu_admin][%s][]" id="menu_admin" value="%s" %s></div>',
-                                        $x,
-                                        $sm_value[2],
-                                        ( isset( $this->bcrole_settings_option['menu_admin'][$x] ) && in_array( $sm_value[2], $this->bcrole_settings_option['menu_admin'][$x]) ) ? 'checked' : ''
-                                    );
-                                endif;
-                            endforeach;
-                        }
 					}
 				endforeach;
 				}
