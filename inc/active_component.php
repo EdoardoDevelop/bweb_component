@@ -41,15 +41,16 @@ class BwebActiveComponent {
 
         /**AUTOLOAD */
         foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
-            $BCdatacomponent = new BCdatacomponent();
-            $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
+            if(file_exists($foldername . '\index.php')){
+                $BCdatacomponent = new BCdatacomponent();
+                $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
 
-            if(filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
-                if(file_exists($foldername . '/index.php')){
-                    require $foldername . '/index.php';
-                }
-            endif;
-        
+                if(filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
+                    if(file_exists($foldername . '/index.php')){
+                        require $foldername . '/index.php';
+                    }
+                endif;
+            }
         }
 
         /**********CUSTOM SCRIPT INTO THEME */

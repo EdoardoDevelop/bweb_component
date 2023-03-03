@@ -7,6 +7,10 @@ class BwebComponentSettings {
 	public function __construct() {	}
 
     public function load_setting_page(){
+		if($_GET['checkupdate']==1){
+			$this->checkupdate();
+		}
+		$this->arraymodulegit = get_option( 'arraymodulegit' ); 
 		add_action( 'admin_menu', array( $this, 'bweb_component_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bweb_component_settings_page_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue' ) );
@@ -15,10 +19,7 @@ class BwebComponentSettings {
         } else {
             add_filter( 'block_categories', array($this, 'register_bwebcomponent_category' ));
         }
-		if($_GET['checkupdate']==1){
-			$this->checkupdate();
-		}
-		$this->arraymodulegit = get_option( 'arraymodulegit' ); 
+
     }
 
 	public function bweb_component_settings_add_plugin_page() {
@@ -49,12 +50,14 @@ class BwebComponentSettings {
 					settings_fields( 'bweb_component_settings_option_group' );
 					do_settings_sections( 'bweb-component-settings-admin' );
 					submit_button();
+					do_settings_sections( 'bweb-component-newmodule' );
 					?>
 					<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>
 				</div>
 				
 			</form>
 			<?php 
+			
 			if(isset($_GET['updatemodule'])){
 				$component = $_GET['updatemodule'];
 				$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
@@ -64,11 +67,11 @@ class BwebComponentSettings {
 				$this->deleteAll($dir);
 				$this->scrivi('Svuoto cartella '.$component.'<br>');
 				foreach($cd as $path){
+					if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
+						mkdir($dir);
+					}
 					if(pathinfo($path, PATHINFO_EXTENSION) == ''){
 						//cartella
-						if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
-							mkdir($dir);
-						}
 						if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
 							mkdir($dir.'/'.$path);
 						}
@@ -123,10 +126,12 @@ class BwebComponentSettings {
 			'bweb-component-settings-admin' // page
 		);
 
+
 		
 		
 
         foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
+			if(file_exists($foldername . '\index.php')){
 				$BCdatacomponent = new BCdatacomponent();
                 $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
                 $icon = '';
@@ -165,8 +170,29 @@ class BwebComponentSettings {
 						'bweb_component_check_section' // section
 					);
 				endif;
+				
+			}
             
         }
+
+		if($_GET['checkupdate']==1){
+			
+			foreach(array_diff($this->arrayremotemodule(),$this->arraylocalmodule()) as $n){
+				add_settings_section(
+					'bweb_component_new_section', // id
+					'Nuovi moduli', // title
+					function(){echo 'Installa';}, // callback
+					'bweb-component-newmodule' // page
+				);
+				add_settings_field(
+					'c_'.$n, // id
+					'<a href="admin.php?page=bweb-component&updatemodule='.$n.'" class="badge">'.$n.'</a>', // title
+					function(){}, // callback
+					'bweb-component-newmodule', // page
+					'bweb_component_new_section'
+				);
+			}
+		}
 		
 		
 	}
@@ -202,6 +228,7 @@ class BwebComponentSettings {
 			( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : ''
 		);
 	}
+	
 	
 
 
@@ -274,6 +301,21 @@ class BwebComponentSettings {
 			update_option('datecheckmoduleupdate',date("Y-m-d"));
 			update_option('arraymodulegit',$components);
 		}
+	}
+
+	public function arrayremotemodule(){
+		$ar = array();
+		foreach($this->arraymodulegit as $key => $a){
+			array_push($ar,$key);
+		}
+		return $ar;
+	}
+	public function arraylocalmodule(){
+		$ar = array();
+		foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
+			array_push($ar,pathinfo($foldername, PATHINFO_BASENAME));
+		}
+		return $ar;
 	}
 
 }
