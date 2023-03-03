@@ -9,7 +9,7 @@
 
 .wp-block-bc-slide .wp-block-cover{
   height: 100%;
-  
+  display: flex !important;
 }
 .bx-wrapper, .bx-viewport {
   height: 100% !important; 

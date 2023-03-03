@@ -4,7 +4,7 @@
 * Name: Slider Block
 * Description: Slider in Gutenberg
 * Icon: dashicons-slides
- * Version: 1.0
+ * Version: 1.1
 * 
 */
 
