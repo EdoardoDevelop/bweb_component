@@ -33,7 +33,6 @@ class BwebComponentRun {
 		add_filter( 'update_footer', array($this, 'change_footer_version' ), 9999 );
 	}
 	public function load_scripts(){
-		require plugin_dir_path( __FILE__ ) ."inc/change_name_file_log.php";
 		require plugin_dir_path( __FILE__ ) ."inc/big_image_size_threshold.php";
 		require plugin_dir_path( __FILE__ ) ."inc/get_component_data.php";
 		require plugin_dir_path( __FILE__ ) ."inc/settings.php";

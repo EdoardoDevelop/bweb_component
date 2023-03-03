@@ -7,7 +7,7 @@ class BwebComponentSettings {
 	public function __construct() {	}
 
     public function load_setting_page(){
-		if($_GET['checkupdate']==1){
+		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			$this->checkupdate();
 		}
 		$this->arraymodulegit = get_option( 'arraymodulegit' ); 
@@ -140,7 +140,7 @@ class BwebComponentSettings {
                 }
 				
 				$badge = '';
-				if($_GET['checkupdate']==1){
+				if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 					if(isset($this->arraymodulegit)){
 						if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
 							$badge = '<a href="admin.php?page=bweb-component&updatemodule='.pathinfo($foldername, PATHINFO_BASENAME).'" class="badge"><span class="dashicons dashicons-update"></span></a>';
@@ -175,7 +175,7 @@ class BwebComponentSettings {
             
         }
 
-		if($_GET['checkupdate']==1){
+		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			
 			foreach(array_diff($this->arrayremotemodule(),$this->arraylocalmodule()) as $n){
 				add_settings_section(
