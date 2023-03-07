@@ -110,7 +110,9 @@ class BwebComponentSettings {
 			else
 				unlink($file);
 		}
-		rmdir($dir);
+		if (file_exists($dir)) {
+			rmdir($dir);
+		}
 	}
 	public function bweb_component_settings_page_init() {
 		global $submenu;
@@ -279,25 +281,23 @@ class BwebComponentSettings {
 			$components = array();
 			foreach($data as $s){
 				if(is_array($s)){
-					foreach($s as $name => $x){
+					foreach($s as $x){
 						$p = explode("/",$x['path']);
 						if($p[0] == 'component'){
 							if(!empty($p[1]) && !empty($p[2])){
-								$arr = array(
-									'path'  => $x['path']
-								);
-								
+								$components += array($p[1] => '');
 								if(!empty($components[$p[1]])){
 									$components[$p[1]] .= ',';
 								}
-								$components[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
-							
+								if(isset($p[1])){
+									$components[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
+								}
 							}
 						}
 					}
 				}
 			}
-
+			//print_r($components);
 			update_option('datecheckmoduleupdate',date("Y-m-d"));
 			update_option('arraymodulegit',$components);
 		}
