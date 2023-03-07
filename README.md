@@ -15,10 +15,11 @@ Script attivabili/disattivabili:
 - Custom Tema Admin
 - Salvataggio Debug fatal error log file in base alla data
 - Risoluzione massima upload immagini
+- Login WP customizzato con preload
 
 Script non disattivabili:
 - Plugin consigliati
-- Login WP customizzato con preload
+
 
 work in progress:
 - Contact form
