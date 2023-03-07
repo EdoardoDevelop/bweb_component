@@ -3,7 +3,6 @@
  * ID: maintenance
  * Name: Sito in manuntenzione
  * Description: 
- * Autoload: true
  * Icon: dashicons-welcome-view-site
  * Version: 1.0
  * 
