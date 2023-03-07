@@ -2,7 +2,7 @@
 /*
 Plugin Name: Bweb Component
 Plugin URI: https://github.com/EdoardoDevelop/bweb_component/
-Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/script attivabili solo se necessario.
+Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/script attivabili su necessità.
 Author: Edoardo Monti (Bweb)
 Version: 1.0.4
 Author URI: https://www.bwebagency.it/
@@ -33,7 +33,6 @@ class BwebComponentRun {
 		add_filter( 'update_footer', array($this, 'change_footer_version' ), 9999 );
 	}
 	public function load_scripts(){
-		require plugin_dir_path( __FILE__ ) ."inc/big_image_size_threshold.php";
 		require plugin_dir_path( __FILE__ ) ."inc/get_component_data.php";
 		require plugin_dir_path( __FILE__ ) ."inc/settings.php";
 		require plugin_dir_path( __FILE__ ) ."inc/active_component.php";
