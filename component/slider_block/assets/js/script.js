@@ -1,8 +1,11 @@
 
-jQuery(function($){
-    $(document).ready(function(){
-        
-        attributes.adaptiveHeight = true;
-        $('.wp-block-bc-slide').bxSlider(attributes).css('visibility','visible');
+runbcslide();
+function runbcslide(){
+    jQuery(function($){
+        $(document).ready(function(){
+            
+            attributes.adaptiveHeight = true;
+            $('.wp-block-bc-slide').bxSlider(attributes).css('visibility','visible');
+        });
     });
-});
+}
