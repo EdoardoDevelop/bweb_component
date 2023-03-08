@@ -139,7 +139,7 @@ class bc_duplicate_post{
         }
 
         $post_options = get_option( 'bc_settings_bcdp' );
-        if ( isset( $post_options ) && is_array( $post_options['post'] ) ) { 
+        if ( isset( $post_options ) && isset( $post_options['post'] ) && is_array( $post_options['post'] ) ) { 
             if ( in_array( $post->post_type, $post_options['post'] ) ) {
     
                 $url = wp_nonce_url(
@@ -309,7 +309,7 @@ class bc_duplicate_post{
                         'echo'=>false,
                         'show_option_none'  => '&mdash; Seleziona &mdash;',
                         'option_none_value' => '0',
-                        'selected'          => $this->bc_duplicate_post_options['template_'.$value],
+                        'selected'          => (isset($this->bc_duplicate_post_options['template_'.$value])?$this->bc_duplicate_post_options['template_'.$value]:''),
                     )
                 );
                 if(empty($d)){
@@ -318,7 +318,7 @@ class bc_duplicate_post{
                     $s .= $d;
                 }
                 $s .= '</label>';
-                if($this->bc_duplicate_post_options['template_'.$value]>0){
+                if(isset($this->bc_duplicate_post_options['template_'.$value]) && $this->bc_duplicate_post_options['template_'.$value]>0){
                     $s .= ' &mdash; <a class="edit_post" href="post.php?post='.$this->bc_duplicate_post_options['template_'.$value].'&action=edit">Modifica selezionato</a>';
                 }
                 $s .= '<br><br>';
