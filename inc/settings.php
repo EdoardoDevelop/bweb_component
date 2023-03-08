@@ -154,10 +154,14 @@ class BwebComponentSettings {
 				if ( $this->find_my_menu_item($data['ID'], true) ) {
 					$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['Name'].'</span></a>';
 				}
+				$d = '';
+				if ( !empty($data['Description']) ) {
+					$d = '<div class="c_descr">'.$data['Description'].'</div>';
+				}
 				if(!filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
 					add_settings_field(
 						'c_'.$data['ID'], // id
-						$badge.$h, // title
+						$badge.$h.$d, // title
 						array($this,'chk_callback'), // callback
 						'bweb-component-settings-admin', // page
 						'bweb_component_check_section', // section
@@ -223,10 +227,9 @@ class BwebComponentSettings {
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];
 		printf(
-			'<input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" title="%s" %s>',
+			'<input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s>',
             'component_'.$data['ID'],
 			$foldername,
-			$data['Description'],
 			( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : ''
 		);
 	}

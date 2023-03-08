@@ -57,3 +57,15 @@ label.component_title{cursor: text;}
     top: -7px;
     left: -7px;
 }
+.c_descr{
+    position: fixed;
+    display: none;
+    z-index: 999999999;
+    background-color: #fff;
+    box-shadow: 0 0 13px rgb(0 0 0 / 20%);
+    padding: 5px;
+}
+
+.table_module .form-table tbody tr:hover .c_descr{
+    display: block;
+}
