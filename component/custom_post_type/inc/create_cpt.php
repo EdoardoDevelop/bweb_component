@@ -187,7 +187,7 @@ class BcCustomPostTypeCreate {
                                     'taxonomy'        =>  $taxonomy,
                                     'name'            =>  $taxonomy,
                                     'orderby'         =>  'name',
-                                    'selected'        =>  $wp_query->query[$taxonomy],
+                                    'selected'        =>  (isset($wp_query->query[$taxonomy])?$wp_query->query[$taxonomy]:''),
                                     'hierarchical'    =>  false,
                                     'depth'           =>  3,
                                     'show_count'      =>  false,  // This will give a view
