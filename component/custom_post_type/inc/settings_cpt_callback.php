@@ -52,7 +52,7 @@
                 echo '<div class="box_tax">';
                 if(isset($v['tax']) && is_array($v['tax'])) {
                     foreach($v['tax'] as $narray2 => $v2 ){
-                        echo '<div style="margin:20px;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;"><strong>Tipo di Tassonomia</strong><br>';
+                        echo '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;"><strong>Tipo di Tassonomia</strong><br>';
                         printf(
                             '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][%s][tax][%s][type]" value="tag" %s>Tag</label> | ',
                             $narraycustompost,
@@ -69,7 +69,7 @@
                         echo '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div>';
                     }
                 }
-                echo '</div>';
+                echo '</div><br><span class="dashicons dashicons-move icondrop"></span>';
                 ?>
                 <a href="#TB_inline?&width=360&height=400&inlineId=view_code<?php echo $narraycustompost;?>" class="thickbox" style="float:right; text-decoration:none"><span class="dashicons dashicons-code-standards"></span></a>
                 <div id="view_code<?php echo $narraycustompost;?>" class="hidden">

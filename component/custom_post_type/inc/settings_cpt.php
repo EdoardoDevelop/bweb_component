@@ -36,33 +36,7 @@ class BcCustomPostTypeOptions {
 			<h2 class="wp-heading-inline">Custom Post Type</h2>
 			<p></p>
 			<?php settings_errors(); ?>
-            <?php
-                /*echo '{<br>';
-                echo '"icon":[<br>';
-				$icons_json = json_decode(file_get_contents(plugin_dir_path( __FILE__ ) .'icons.json'), false);
-
-				foreach($icons_json->icon as $icon) {
-                    echo '{<br>';
-                    echo '"type":"dashicons",<br>';
-                    echo '"class":"'.$icon->string.'"<br>';
-					echo '},<br>';
-				}
-                $icons_json = json_decode(file_get_contents(plugin_dir_path( __FILE__ ) .'temp.json'), false);
-                foreach($icons_json as $icon) {
-                   
-                    foreach($icon->free as $ty) {
-						echo '{<br>';
-						echo '"type":"fontawesome",<br>';
-						echo '"unicode":"' . $icon->unicode . '",<br>';
-						echo '"styles":"' . $ty . '",<br>';
-							
-						echo '"svg":"data:image/svg+xml;base64,' . base64_encode($icon->svg->$ty->raw) . '"<br>';
-						echo '},<br>';
-                    }
-				}
-                echo ']}';*/
-                ?>
-
+            
 			<form method="post" action="options.php">
 				<?php
 					settings_fields( 'bc_custom_post_type_option_group' );

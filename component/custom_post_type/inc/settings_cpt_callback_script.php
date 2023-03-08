@@ -42,7 +42,7 @@ jQuery(document).ready(function($) {
 
             echo '<br><br><hr>';
             echo '<a class="add_tax_custompost_button button-secondary" style="display:block; text-align:center"><span class="dashicons dashicons-plus-alt" style="vertical-align: text-top;"></span> Aggiungi Tassonomia</a>';
-            echo '<div class="box_tax"></div>';
+            echo '<div class="box_tax"></div><br><span class="dashicons dashicons-move icondrop"></span>';
             echo '</div></div>';
             ?>';
             out = out.replace(/.narray./g, x);
@@ -63,7 +63,7 @@ jQuery(document).ready(function($) {
     function add_tax_custompost_button(e){
         var narray =  $(e).parents('.custompost_group_box_wrap').index();
         var narray2 = $('.input_tax_custompost_name',$(e).parent('div')).length;
-        var out = '<div style="margin:20px;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;"><strong>Tipo di Tassonomia</strong><br>';
+        var out = '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;"><strong>Tipo di Tassonomia</strong><br>';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="tag">Tag</label> | ';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="category">Categoria</label>';
         out += '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][name]"/>';
@@ -80,7 +80,21 @@ jQuery(document).ready(function($) {
         var c = confirm('Confermi la cancellazione?');
         if (c) $(this).parent('div').remove();
     });
-
+    $('.input_fields_wrap').sortable({
+        cursor: "move",
+        handle: ".icondrop",
+        opacity: 0.5,
+        revert: true,
+        tolerance: "pointer",
+        start: function(e, ui){
+            ui.placeholder.height(ui.item.height());
+            ui.placeholder.width(ui.item.width());
+            ui.placeholder.css('visibility', 'visible');
+            ui.placeholder.css('background', '#f8f8f8');
+            ui.placeholder.css('border', '1px dashed #ccc');
+        }
+    });
+    $(".input_fields_box_wrap").disableSelection();
 
     $('#pre_bg').hide();
 });
