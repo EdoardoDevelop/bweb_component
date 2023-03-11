@@ -1,29 +1,18 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 
-    /*$( "#draggable" ).draggable({ revert: "valid" });
-    $( ".custompost_group_box_wrap" ).droppable({
-      accept: "#draggable",
-      classes: {
-        "ui-droppable-active": "ui-state-active",
-        "ui-droppable-hover": "ui-state-hover"
-      },
-      drop: function( event, ui ) {
-        add_tax_custompost_button(this);
-      }
-    });*/
-
-
-    var max_fields      = 10; //maximum input boxes allowed
     $( document ).tooltip();
     $(".add_field_button").click(function(e){ //on add input button click
-    var x = $('.txt_custompost_name').length; //initlal text box count
         e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            //alert(x)
+        var narray = $('.custompost_group_box_wrap').length;
+        
+        if(narray>0){
+            narray = assign_n(".custompost_group_box_wrap", narray);
+        }
+        
             var out = '';
             out += '<?php
-            echo '<div class="custompost_group_box_wrap"><div style="margin:20px;background-color: #fff;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
+            echo '<div class="custompost_group_box_wrap" attr_n=".narray."><div style="margin:20px;background-color: #fff;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
             echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type][.narray.][name]"/>';
             echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
             echo '<strong>Gutenberg:</strong> ';
@@ -45,9 +34,9 @@ jQuery(document).ready(function($) {
             echo '<div class="box_tax"></div><br><span class="dashicons dashicons-move icondrop"></span>';
             echo '</div></div>';
             ?>';
-            out = out.replace(/.narray./g, x);
+            out = out.replace(/.narray./g, narray);
             $(".input_fields_wrap").append(out);
-        }
+        
     });
         
     $(".input_fields_wrap").on("click",".remove_field", function(e){ 
@@ -61,9 +50,13 @@ jQuery(document).ready(function($) {
         add_tax_custompost_button(this);
     });
     function add_tax_custompost_button(e){
-        var narray =  $(e).parents('.custompost_group_box_wrap').index();
-        var narray2 = $('.input_tax_custompost_name',$(e).parent('div')).length;
-        var out = '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;"><strong>Tipo di Tassonomia</strong><br>';
+        var narray =  $(e).parents('.custompost_group_box_wrap').attr('attr_n');
+        
+        var narray2 = $('.cont_tax',$(e).parent('div')).length;
+        if(narray2>0){
+            narray2 = assign_n(".custompost_group_box_wrap[attr_n='"+narray+"'] .cont_tax", narray2);
+        }
+        var out = '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;" class="cont_tax" attr_n=".narray2."><strong>Tipo di Tassonomia</strong><br>';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="tag">Tag</label> | ';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="category">Categoria</label>';
         out += '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][name]"/>';
@@ -117,6 +110,15 @@ function chk_icon(n){
         $('#chk_icon'+n).attr('checked','checked');
     });
 }
-
+function assign_n(el, n){
+    if(jQuery( el+"[attr_n='"+n+"']" ).length){
+        n++;
+        //alert('esiste')
+        return assign_n(el, n);
+    }else{
+        //alert('non esiste-'+n)
+        return n;
+    }
+}
 
 </script>
