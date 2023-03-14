@@ -169,7 +169,7 @@ class BcCptBlock {
                         $html .= '<'.$el_card.'';
                     }
                     
-                    $html .= ' class="col-md'.$n.' card-home-item">';
+                    $html .= ' class="col-md'.$n.' card-home-item"><div class="card-home-item-cont">';
                     if(isset($atts[ 'c_field_1' ]) && $atts[ 'c_field_1' ] != '---'){
                         $html .= $this->get_val_custom_filed($post_id, $atts[ 'c_field_1' ]);
                     }
@@ -200,7 +200,7 @@ class BcCptBlock {
                         $html .= '<a href="'.esc_url( get_permalink( $post_id ) ).'" '.$onclik.' class="btn btn_card">'.$atts[ 'textButton' ].'</a>';
                     }
                     
-                        $html .= '</'.$el_card.'>';
+                        $html .= '</div></'.$el_card.'>';
                     
                 endwhile; 
                 $html .= '</div>';
@@ -237,7 +237,7 @@ class BcCptBlock {
                         $dateD = date(" j", strtotime($post_field));
                         $dateM = date(" M", strtotime($post_field));
                         $dateY = date(" Y", strtotime($post_field));
-                        $html .= '<span>'.$dateD.'-'.$dateM.'-'.$dateY.'</span>';
+                        $html .= '<span>'.$post_field.'</span>';
                     }
                     if($field['type'] == 'editor'){
                         $html .= '<div>'.html_entity_decode(get_post_meta( $post_id, $namefield, true )).'</div>';
