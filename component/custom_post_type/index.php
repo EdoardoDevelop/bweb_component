@@ -4,7 +4,7 @@
  * Name: Pagine Personalizzate
  * Description: Aggiunge pagine personalizzate.
  * Icon: dashicons-admin-post
- * Version: 1.2
+ * Version: 1.3
  * 
  */
 

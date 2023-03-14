@@ -234,9 +234,9 @@ class BcCptBlock {
                     if($field['type'] == 'calendario'){
                         $post_field = get_post_meta( $post_id, $namefield, true );
 
-                        $dateD = date(" j", strtotime($field));
-                        $dateM = date(" M", strtotime($field));
-                        $dateY = date(" Y", strtotime($field));
+                        $dateD = date(" j", strtotime($post_field));
+                        $dateM = date(" M", strtotime($post_field));
+                        $dateY = date(" Y", strtotime($post_field));
                         $html .= '<span>'.$dateD.'-'.$dateM.'-'.$dateY.'</span>';
                     }
                     if($field['type'] == 'editor'){
@@ -265,12 +265,12 @@ class BcCptBlock {
                     }
                     if($field['type'] == 'checkbox_post'){
                         $post_field = get_post_meta( $post_id, $namefield, true );
-                        if(isset($field) && is_array($field)):
+                        if(isset($post_field) && is_array($post_field)):
                             $html .= '<div>';
-                            for( $i = 0; $i < count( $field ); $i++ ):
-                                $ID = $field[$i];
+                            for( $i = 0; $i < count( $post_field ); $i++ ):
+                                $ID = $post_field[$i];
                                 $html .= '<a href="'.esc_url( get_permalink( $ID ) ).'">'.get_the_title($ID).'</a>';
-                                if($i < count( $field )){
+                                if($i < count( $post_field )){
                                     $html .= ' <span class="checkbox_post_separator">-</span> ';
                                 }
                             endfor;
