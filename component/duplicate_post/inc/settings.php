@@ -362,8 +362,10 @@ class bc_duplicate_post{
     }
 
     public function bc_display_post_states( $states, $post ){
-        if ( intval( $this->bc_duplicate_post_options['template_'.$post->post_type] ) === $post->ID ) {
-            $states['bc_duplicate_page'] = __( 'Pagina template' );
+        if(isset($this->bc_duplicate_post_options['template_'.$post->post_type] )){
+            if ( intval( $this->bc_duplicate_post_options['template_'.$post->post_type] ) === $post->ID ) {
+                $states['bc_duplicate_page'] = __( 'Pagina template' );
+            }
         }
     
         return $states;
@@ -374,9 +376,11 @@ class bc_duplicate_post{
 
         if( 'edit.php' != $pagenow || !$query->is_admin ) return $query;
 
-        $query->set( 'post__not_in', array( 
-            $this->bc_duplicate_post_options['template_'.$query->get('post_type')] 
-        ) );
+        if(isset($this->bc_duplicate_post_options['template_'.$query->get('post_type')] )){
+            $query->set( 'post__not_in', array( 
+                $this->bc_duplicate_post_options['template_'.$query->get('post_type')] 
+            ) );
+        }
 
         return $query;
     }
