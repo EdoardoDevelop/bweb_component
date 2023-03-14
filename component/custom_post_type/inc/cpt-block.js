@@ -109,15 +109,21 @@
                 ObjCpt.push({value: key, label: value.name});
                 
             };
+            
 			var ObjCf = [];
             ObjCf.push({value: '---', label: '---'});
-            for (const [key, value] of Object.entries(cf)) {
-                for (const [keyF, valueF] of Object.entries(value.field)) {
-                    if(valueF.type != 'multipleimg'){
-                        ObjCf.push({value: wpFeSanitizeTitle(value.namegroup)+'_'+wpFeSanitizeTitle(valueF.namefield), label: valueF.namefield});
+            if(slug_cpt != '---'){
+                for (const [key, value] of Object.entries(cf)) {
+                    
+                    if(value.typepost.includes(slug_cpt)){
+                        for (const [keyF, valueF] of Object.entries(value.field)) {
+                            if(valueF.type != 'multipleimg'){
+                                ObjCf.push({value: wpFeSanitizeTitle(value.namegroup)+'_'+wpFeSanitizeTitle(valueF.namefield), label: valueF.namefield});
+                            }
+                        }
                     }
-                }
-            };
+                };
+            }
             var ObjCfChk = [];
             ObjCfChk.push({value: '---', label: '---'});
             for (const [key, value] of Object.entries(cf)) {
