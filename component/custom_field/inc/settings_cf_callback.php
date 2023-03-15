@@ -134,14 +134,19 @@
                                     ( isset( $valuetype ) && $valuetype === 'editor' ) ? 'checked' : ''
                                 );
                                 printf(
-                                    '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="checkbox" %s>Checkbox</label> <br><br> ',
+                                    '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="checkbox" %s>Checkbox</label> | ',
                                     $narray, $narray2,
                                     ( isset( $valuetype ) && $valuetype === 'checkbox' ) ? 'checked' : ''
                                 );
                                 printf(
-                                    '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="calendario" %s>Calendario</label> | ',
+                                    '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="calendario" %s>Calendario</label> <br><br> ',
                                     $narray, $narray2,
                                     ( isset( $valuetype ) && $valuetype === 'calendario' ) ? 'checked' : ''
+                                );
+                                printf(
+                                    '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="img" %s>Immagine</label> | ',
+                                    $narray, $narray2,
+                                    ( isset( $valuetype ) && $valuetype === 'img' ) ? 'checked' : ''
                                 );
                                 printf(
                                     '<label><input type="radio" name="bc_settings_cf[custom_field_group][%s][field][%s][type]" value="multipleimg" %s>Immagini multiple</label> | ',

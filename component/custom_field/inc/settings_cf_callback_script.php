@@ -57,8 +57,9 @@
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="text" checked>Testo</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="textarea">Textarea</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="editor">Editor</label> | ';
-                out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="checkbox">Checkbox</label> <br><br> ';
-                out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="calendario">Calendario</label> | ';
+                out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="checkbox">Checkbox</label> | ';
+                out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="calendario">Calendario</label> <br><br> ';
+                out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="img">Immagine</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="multipleimg">Immagini multiple</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="allegato">Allegato</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="checkbox_post">Checkbox post</label>';

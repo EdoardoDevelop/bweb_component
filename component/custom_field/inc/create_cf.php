@@ -163,6 +163,37 @@ class BcCustomFieldCreate {
                     <?php
                     
                 }
+                
+                if($field['type'] == 'img'){
+                    wp_enqueue_script('bc_img-metabox', plugin_dir_url( __FILE__ ).'../assets/field_img.js', array('jquery'));
+                    //wp_enqueue_style('bc_gallery-metabox', plugin_dir_url( __FILE__ ).'../assets/gallery-metabox.css');
+                    ?>
+                    <table class="form-table">
+                        <tr>
+                            <td><?php echo $field['namefield']; ?></td>
+                        </tr>
+                        <tr><td>
+                            
+                        <?php
+                        $urlimg = wp_get_attachment_image_src( $valuefield, 'thumbnail' );
+                        if( $urlimg ){
+                            $urlimg = $urlimg[0];
+                        }else{
+                            $urlimg = '';
+                        }
+                        ?>
+                        <img id="img-preview-<?php echo $namefield; ?>" src="<?php echo $urlimg; ?>">
+                        <br>
+                        <input type="hidden" name="<?php echo $namefield; ?>" id="<?php echo $namefield; ?>" value="<?php echo $valuefield; ?>" class="small-text" />
+                        <a href="#" class="button-primary single_image_add" <?php if($urlimg!='') echo 'style="display:none"'; ?> data-id="<?php echo $namefield; ?>">Seleziona</a>
+                        <a href="#" class="button-primary single_image_del" <?php if($urlimg=='') echo 'style="display:none"'; ?> data-id="<?php echo $namefield; ?>">Rimuovi</a>
+
+                        </td></tr>
+                    </table>
+
+                    <?php
+                    
+                }
                 if($field['type'] == 'multipleimg'){
                     wp_enqueue_script('bc_gallery-metabox', plugin_dir_url( __FILE__ ).'../assets/gallery-metabox.js', array('jquery', 'jquery-ui-sortable'));
                     wp_enqueue_style('bc_gallery-metabox', plugin_dir_url( __FILE__ ).'../assets/gallery-metabox.css');
