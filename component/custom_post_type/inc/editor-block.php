@@ -237,7 +237,7 @@ class BcCptBlock {
                         $dateD = date(" j", strtotime($post_field));
                         $dateM = date(" M", strtotime($post_field));
                         $dateY = date(" Y", strtotime($post_field));
-                        $html .= '<span>'.$post_field.'</span>';
+                        $html .= '<span class="date_card">'.$post_field.'</span>';
                     }
                     if($field['type'] == 'editor'){
                         $html .= '<div>'.html_entity_decode(get_post_meta( $post_id, $namefield, true )).'</div>';
