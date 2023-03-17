@@ -14,7 +14,10 @@ jQuery(function($) {
       button: {
         text: $(this).data('uploader-button-text'),
       },
-      multiple: 'add'
+      multiple: 'add',
+      library: {
+              type: [ 'image' ]
+      }
     });
 
     file_frame.on('select', function() {
