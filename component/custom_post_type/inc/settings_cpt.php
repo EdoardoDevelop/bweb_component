@@ -100,6 +100,7 @@ class BcCustomPostTypeOptions {
 		wp_enqueue_style( 'bc_jquery-ui-css', '//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css' );
 		wp_enqueue_script( 'bc_jquery-ui-js', 'https://code.jquery.com/ui/1.13.2/jquery-ui.js' );
 		wp_enqueue_style('fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css', '', '6.2.0', 'all');
+		wp_enqueue_style( 'settings_cpt-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_post_type/assets/style.css');
     }
 
     public function custombox_callback_script(){

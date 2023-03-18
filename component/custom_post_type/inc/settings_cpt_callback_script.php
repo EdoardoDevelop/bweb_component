@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
         
             var out = '';
             out += '<?php
-            echo '<div class="custompost_group_box_wrap" attr_n=".narray."><div style="margin:20px;background-color: #fff;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
+            echo '<div class="custompost_group_box_wrap animate" attr_n=".narray."><div class="cont_box"><strong>Nome:</strong><br>';
             echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type][.narray.][name]"/>';
             echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
             echo '<strong>Gutenberg:</strong> ';
@@ -41,9 +41,27 @@ jQuery(document).ready(function($) {
         
     $(".input_fields_wrap").on("click",".remove_field", function(e){ 
         e.preventDefault(); 
-        var c = confirm('Confermi la cancellazione?');
-        if (c) $(this).parent('div').remove();
+        /*var c = confirm('Confermi la cancellazione?');
+        if (c) $(this).parent('div').remove();*/
+        var p = $(this);
+        $('.cont_box').removeClass('confirm_remove');
+        $('.box_remove').remove();
+        p.parents('.cont_box').addClass('confirm_remove');
+        p.parents('.custompost_group_box_wrap').addClass('check_rm');
+        setTimeout(function(){
+            p.parents('.custompost_group_box_wrap').append('<div class="box_remove"><h4>Confermi la cancellazione?</h4><br><br><a href="#" class="box_remove_no">No</a><a href="#" class="box_remove_si">Si</a></div>');
+        },200);
     });
+    $(".input_fields_wrap").on("click",".box_remove_no", function(e){ 
+        e.preventDefault(); 
+        $(this).parents('.box_remove').remove();
+        $('.confirm_remove').removeClass('confirm_remove');
+        $('.check_rm').removeClass('check_rm');
+    })
+    $(".input_fields_wrap").on("click",".box_remove_si", function(e){ 
+        e.preventDefault(); 
+        $(this).parents('.check_rm').remove();
+    })
 
     $(".input_fields_wrap").delegate(".add_tax_custompost_button","click",function(e){ 
         e.preventDefault();
@@ -56,11 +74,11 @@ jQuery(document).ready(function($) {
         if(narray2>0){
             narray2 = assign_n(".custompost_group_box_wrap[attr_n='"+narray+"'] .cont_tax", narray2);
         }
-        var out = '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;" class="cont_tax" attr_n=".narray2."><strong>Tipo di Tassonomia</strong><br>';
+        var out = '<div class="cont_tax" attr_n=".narray2."><div class="main_tax"><strong>Tipo di Tassonomia</strong><br>';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="tag">Tag</label> | ';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="category">Categoria</label>';
         out += '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][name]"/>';
-        out += '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div>';
+        out += '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
         out = out.replace(/.narray2./g, narray2);
         out = out.replace(/.narray./g, narray);
 
@@ -70,9 +88,19 @@ jQuery(document).ready(function($) {
 
     $(".input_fields_wrap").delegate(".remove_tax_custompost","click", function(e){ 
         e.preventDefault(); 
-        var c = confirm('Confermi la cancellazione?');
-        if (c) $(this).parent('div').remove();
+        /*var c = confirm('Confermi la cancellazione?');
+        if (c) $(this).parent('div').remove();*/
+        var p = $(this);
+        $('.cont_tax').removeClass('confirm_remove');
+        $('.box_remove').remove();
+        p.parents('.main_tax').addClass('confirm_remove');
+        p.parents('.cont_tax').addClass('check_rm');
+        setTimeout(function(){
+            p.parents('.cont_tax').append('<div class="box_remove"><h4>Confermi la cancellazione?</h4><a href="#" class="box_remove_no">No</a><a href="#" class="box_remove_si">Si</a></div>');
+        },200);
     });
+
+
     $('.input_fields_wrap').sortable({
         cursor: "move",
         handle: ".icondrop",

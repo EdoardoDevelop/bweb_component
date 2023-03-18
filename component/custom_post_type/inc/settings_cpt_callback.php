@@ -12,7 +12,7 @@
             foreach($custompost as $narraycustompost => $v ){
                 //echo $text;
 
-                echo '<div class="custompost_group_box_wrap" attr_n="'.$narraycustompost.'"><div style="margin:20px;background-color: #fff;border: 1px solid #ccc;padding: 20px;"><strong>Nome:</strong><br>';
+                echo '<div class="custompost_group_box_wrap" attr_n="'.$narraycustompost.'"><div class="cont_box"><strong>Nome:</strong><br>';
                 echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type]['.$narraycustompost.'][name]" value="' . $v['name'] . '"/>';
                 echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
                 echo '<strong>Gutenberg:</strong> ';
@@ -52,7 +52,7 @@
                 echo '<div class="box_tax">';
                 if(isset($v['tax']) && is_array($v['tax'])) {
                     foreach($v['tax'] as $narray2 => $v2 ){
-                        echo '<div style="margin:20px 20px 0;background-color: #ffffff;border: 1px solid #ccc;padding: 20px;" class="cont_tax" attr_n="'.$narray2.'"><strong>Tipo di Tassonomia</strong><br>';
+                        echo '<div class="cont_tax" attr_n="'.$narray2.'"><div class="main_tax"><strong>Tipo di Tassonomia</strong><br>';
                         printf(
                             '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][%s][tax][%s][type]" value="tag" %s>Tag</label> | ',
                             $narraycustompost,
@@ -66,7 +66,7 @@
                             ( $v2['type'] == 'category' ) ? 'checked' : ''
                         );
                         echo '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type]['.$narraycustompost.'][tax]['.$narray2.'][name]" value="' . $v2['name'] . '"/>';
-                        echo '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div>';
+                        echo '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
                     }
                 }
                 echo '</div><br><span class="dashicons dashicons-move icondrop"></span>';
