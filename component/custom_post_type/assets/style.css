@@ -41,7 +41,7 @@
     opacity: 0;
     transform: rotateX(-90deg);
     transform-origin: top center;
-    border-top: 3px solid rgb(160, 1, 1);
+    border-top: 3px solid #b32d2e;
     margin: 20px;
     background-color: #fff;
     border-left: 1px solid #ccc;
@@ -75,5 +75,15 @@
 }
 
 .box_remove_si{
-    background-color: rgb(160, 1, 1);
+    background-color: #b32d2e;
+}
+
+.button-secondary.delete{
+    color: #b32d2e;
+    border-color: #b32d2e;
+}
+
+.button-secondary.delete:hover{
+    color: #8e1515;
+    border-color: #8e1515;
 }

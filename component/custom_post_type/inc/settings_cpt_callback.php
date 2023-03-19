@@ -14,7 +14,7 @@
 
                 echo '<div class="custompost_group_box_wrap" attr_n="'.$narraycustompost.'"><div class="cont_box"><strong>Nome:</strong><br>';
                 echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type]['.$narraycustompost.'][name]" value="' . $v['name'] . '"/>';
-                echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
+                echo '<a href="#" class="remove_field button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
                 echo '<strong>Gutenberg:</strong> ';
                 printf(
                     '<label><input type="radio" name="bc_settings_cpt[custom-post-type][%s][show_in_rest]" value="false" %s>NO</label> | ',
@@ -66,7 +66,7 @@
                             ( $v2['type'] == 'category' ) ? 'checked' : ''
                         );
                         echo '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type]['.$narraycustompost.'][tax]['.$narray2.'][name]" value="' . $v2['name'] . '"/>';
-                        echo '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
+                        echo '<br><br><a href="#" class="remove_tax_custompost button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
                     }
                 }
                 echo '</div><br><span class="dashicons dashicons-move icondrop"></span>';

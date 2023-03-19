@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
             out += '<?php
             echo '<div class="custompost_group_box_wrap animate" attr_n=".narray."><div class="cont_box"><strong>Nome:</strong><br>';
             echo '<input class="txt_custompost_name" type="text" name="bc_settings_cpt[custom-post-type][.narray.][name]"/>';
-            echo '<a href="#" class="remove_field button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
+            echo '<a href="#" class="remove_field button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><br><br>';
             echo '<strong>Gutenberg:</strong> ';
             echo '<label><input type="radio" name="bc_settings_cpt[custom-post-type][.narray.][show_in_rest]" value="false" checked>NO</label> | ';
             echo '<label><input type="radio" name="bc_settings_cpt[custom-post-type][.narray.][show_in_rest]" value="true">SI</label>';
@@ -78,7 +78,7 @@ jQuery(document).ready(function($) {
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="tag">Tag</label> | ';
         out += '<label><input type="radio" class="radio_tx_type" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][type]" value="category">Categoria</label>';
         out += '<br><br>Nome Tassonomia<br><input type="text" class="input_tax_custompost_name" name="bc_settings_cpt[custom-post-type][.narray.][tax][.narray2.][name]"/>';
-        out += '<br><br><a href="#" class="remove_tax_custompost button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
+        out += '<br><br><a href="#" class="remove_tax_custompost button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a></div></div>';
         out = out.replace(/.narray2./g, narray2);
         out = out.replace(/.narray./g, narray);
 
