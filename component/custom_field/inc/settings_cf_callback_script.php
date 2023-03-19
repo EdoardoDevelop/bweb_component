@@ -15,8 +15,8 @@
                 //if(y < max_fields){ //max input box allowed
                     //y++; //text box increment
                     var out = '';
-                    out += '<div style="margin:20px 0;background-color: #fff;border: 1px solid #ccc;padding: 20px;" class="input_fields_group_box_wrap" attr_n=".narray."><strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][namegroup]"/>';
-                    out += ' <a href="#" class="remove_group button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a>';
+                    out += '<div class="input_fields_group_box_wrap" attr_n=".narray."><div class="cont_box"><strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][namegroup]"/>';
+                    out += ' <a href="#" class="remove_group button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a>';
                     out += '<div><br><?php   
                     $args_custom_post_types = array(
                         'public' => true,
@@ -36,7 +36,7 @@
 
                     ?>';
 
-                    out += '</div><span class="dashicons dashicons-sort"></span></div>';
+                    out += '</div><span class="dashicons dashicons-sort"></span></div></div>';
                     out = out.replace(/.narray./g, narray);
                     //narray++;
                     $(".input_fields_box_wrap").append(out); //add input box
@@ -53,7 +53,7 @@
                     narray2 = assign_n(".input_fields_group_box_wrap[attr_n='"+narray+"'] .cont_custom_field", narray2);
                 }
                 var out = '';
-                out += '<div class="cont_custom_field" attr_n=".narray2." style="margin: 10px;border: 1px solid #ccc;padding: 10px;background-color: #fff;">';
+                out += '<div class="cont_custom_field" attr_n=".narray2."><div class="cont_box">';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="text" checked>Testo</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="textarea">Textarea</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="editor">Editor</label> | ';
@@ -74,7 +74,7 @@
                 endforeach;
                 echo '</div>';
                 ?>';
-                out += '<br><br><a href="#" class="remove_group button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right;" class="dashicons dashicons-move icondrop"></span></div>';
+                out += '<br><br><a href="#" class="remove_field button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right;" class="dashicons dashicons-move icondrop"></span></div></div>';
                 out = out.replace(/.narray2./g, narray2);
                 out = out.replace(/.narray./g, narray);
                 //narray2++;
@@ -84,19 +84,43 @@
 
             $(".input_fields_box_wrap").on("click",".remove_group", function(e){ //user click on remove text
                 e.preventDefault(); 
-                var c = confirm('Confermi la cancellazione?');
-                if (c) $(this).parent('div').remove(); y--;
-            });
-            
-            $(".input_fields_box_wrap").on("click",".info_button", function(e){ //user click on remove text
-                e.preventDefault(); 
-                $('.info_box',$(this).parent('div')).show();
+                /*var c = confirm('Confermi la cancellazione?');
+                if (c) $(this).parent('div').remove(); y--;*/
+                var p = $(this);
+                $('.cont_box').removeClass('confirm_remove');
+                $('.box_remove').remove();
+                p.parent('.cont_box').addClass('confirm_remove');
+                p.parents('.input_fields_group_box_wrap').addClass('check_rm');
+                setTimeout(function(){
+                    p.parents('.input_fields_group_box_wrap').append('<div class="box_remove"><h4>Confermi la cancellazione?</h4><br><br><a href="#" class="box_remove_no">No</a><a href="#" class="box_remove_si">Si</a></div>');
+                },200);
             });
 
-            $(".input_fields_box_wrap").on("click",".info_button_close", function(e){ //user click on remove text
+            $(".input_fields_box_wrap").on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); 
-                $(this).parent('div').hide();
+                /*var c = confirm('Confermi la cancellazione?');
+                if (c) $(this).parent('div').remove(); y--;*/
+                var p = $(this);
+                $('.cont_box').removeClass('confirm_remove');
+                $('.box_remove').remove();
+                p.parent('.cont_box').addClass('confirm_remove');
+                p.parents('.cont_custom_field').addClass('check_rm');
+                setTimeout(function(){
+                    p.parents('.cont_custom_field').append('<div class="box_remove"><h4>Confermi la cancellazione?</h4><br><br><a href="#" class="box_remove_no">No</a><a href="#" class="box_remove_si">Si</a></div>');
+                },200);
             });
+            
+            $(".input_fields_box_wrap").on("click",".box_remove_no", function(e){ 
+                e.preventDefault(); 
+                $(this).parents('.box_remove').remove();
+                $('.confirm_remove').removeClass('confirm_remove');
+                $('.check_rm').removeClass('check_rm');
+            })
+            $(".input_fields_box_wrap").on("click",".box_remove_si", function(e){ 
+                e.preventDefault(); 
+                $(this).parents('.check_rm').remove();
+            })
+            
             $(".input_fields_box_wrap").on("change",".box_field input[type=radio]", function(e){
                 if($(this).val()=='checkbox_post'){
                     $('.cont_get_post_type',$(this).parent('label').parent('div')).show();

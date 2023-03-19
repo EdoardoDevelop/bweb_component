@@ -12,9 +12,10 @@
                     foreach($custom_field_group as $narray => $v ){
                         //print_r($text);
                     ?>
-                    <div style="margin:20px 0;background-color: #fff;border: 1px solid #ccc;padding: 20px;" class="input_fields_group_box_wrap" attr_n="<?php echo $narray; ?>">
+                    <div class="input_fields_group_box_wrap" attr_n="<?php echo $narray; ?>">
+                    <div class="cont_box">
                         <strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text"  value="<?php echo $v['namegroup']; ?>" name="bc_settings_cf[custom_field_group][<?php echo $narray; ?>][namegroup]"/>
-                        <a href="#" class="remove_group button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span>Rimuovi</a>
+                        <a href="#" class="remove_group button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span>Rimuovi</a>
                         <div><br><?php   
                         $args_custom_post_types = array(
                             'public' => true,
@@ -54,7 +55,7 @@
                         if(isset($custom_field_group[$narray]['field']) && is_array($custom_field_group[$narray]['field'])) {
                             foreach($custom_field_group[$narray]['field'] as $narray2 => $v2 ){
                                 $valuetype = $v2['type'];
-                                echo '<div class="cont_custom_field" attr_n="'.$narray2.'" style="position:relative; margin: 10px;border: 1px solid #ccc;padding: 10px;background-color: #fff;">';
+                                echo '<div class="cont_custom_field" attr_n="'.$narray2.'"><div class="cont_box">';
                                 echo '<a href="#TB_inline?&inlineId=Coden'.$narray2.'" class="thickbox" style="float:right; text-decoration:none"><span class="dashicons dashicons-code-standards"></span></a>';
                                 echo '<div id="Coden'.$narray2.'" class="hidden"><pre>';
                                 $txtinfo_field = sanitize_title($v['namegroup']) . '_' . sanitize_title($v2['namefield']);
@@ -177,13 +178,14 @@
         
                                 endforeach;
                                 echo '</div>';
-                                echo '<br><br><a href="#" class="remove_group button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right;" class="dashicons dashicons-move icondrop"></span></div>';
+                                echo '<br><br><a href="#" class="remove_field button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right;" class="dashicons dashicons-move icondrop"></span></div></div>';
                             }
                         }
                         echo '</div><span class="dashicons dashicons-sort icondrop"></span></div>';
                         
                         ?>
                         <!--<div style="margin:5px 0;">Nome campo<br><input class="txt_custom_field_name regular-text" type="text"  value="<?php  ?>" name="bc_settings_cf[custom_field_group][<?php //echo $narray; ?>]['field']['name']"/></div>-->
+                    </div>
                     </div>
                     <?php
                         
