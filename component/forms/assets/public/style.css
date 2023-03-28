@@ -1,0 +1,102 @@
+/*.bc_contactForm.loading .bcform_wrap:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.489);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}*/
+.bc_contactForm .bcform_wrap{
+    display: inline-block; position: relative;
+}
+
+.bc_contactForm.loading .bcform_wrap:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+    z-index: 1;
+    animation: animatedgradient 2s ease alternate infinite;
+    background-size: 300% 300%;
+}
+  
+  
+@keyframes animatedgradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.bc_contactForm .form-group .label{
+    color: #000;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+.bc_contactForm .form-group textarea,
+.bc_contactForm .form-group input{
+    background: #fff;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid rgb(234, 233, 233);
+    -webkit-box-shadow: 0px 8px 19px -13px rgb(0 0 0 / 9%) !important;
+    -moz-box-shadow: 0px 8px 19px -13px rgba(0, 0, 0, 0.09) !important;
+    box-shadow: 0px 8px 19px -13px rgb(0 0 0 / 9%) !important;
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+    line-height: 1.5;
+    
+}
+
+.bc_contactForm .form-group textarea{
+    max-width: 100%;
+    min-width: 300px;
+    min-height: 180px;
+}
+
+.bc_contactForm button:not(:disabled), .bc_contactForm [type="button"]:not(:disabled), .bc_contactForm [type="reset"]:not(:disabled), .bc_contactForm [type="submit"]:not(:disabled) {
+    cursor: pointer;
+}
+.bc_contactForm .form-group .btn {
+    padding: 12px 30px;
+    cursor: pointer;
+    border-width: 1px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    -webkit-box-shadow: 0px 10px 20px -6px rgb(0 0 0 / 12%);
+    -moz-box-shadow: 0px 10px 20px -6px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 10px 20px -6px rgb(0 0 0 / 12%);
+    position: relative;
+    margin-bottom: 20px;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    background: #71a95a !important;
+    border-color: #71a95a !important;
+    color: #fff;
+}
+.box_captcha{
+    border: 1px solid rgb(234, 233, 233);
+    background-color: #fff;
+    padding: 5px;
+    text-align: center;
+}
+.captcha-image{
+    display: inline-block;
+    margin: 5px 5px 5px 0;
+}
