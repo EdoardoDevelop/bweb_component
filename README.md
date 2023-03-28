@@ -16,10 +16,7 @@ Script attivabili/disattivabili:
 - Salvataggio Debug fatal error log file in base alla data
 - Risoluzione massima upload immagini
 - Login WP customizzato con preload
+- Form
 
 Script non disattivabili:
 - Plugin consigliati
-
-
-work in progress:
-- Contact form
