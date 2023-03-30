@@ -80,6 +80,9 @@ class BcFormsOptions {
         if ( isset( $input['forms'] ) ) {
 			$input['forms'] =  $input['forms'];
         }
+        if ( isset( $input['log'] ) ) {
+			$input['log'] =  $input['log'];
+        }
         
 		return $input;
 	}

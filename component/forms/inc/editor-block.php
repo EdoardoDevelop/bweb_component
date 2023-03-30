@@ -7,8 +7,14 @@ class BcFormsBlock {
         add_action('wp_ajax_process_contact_form', array($this, 'process_contact_form'));
         add_action('wp_ajax_nopriv_process_contact_form', array($this, 'process_contact_form'));
         add_action( 'wp_enqueue_scripts', array($this, 'action_style_bc_forms' ));
-        if(isset($this->bc_forms_options['forms']))
+        if(isset($this->bc_forms_options['forms'])){
             add_action( 'init', array($this, 'bc_forms_gutenberg_block' ));
+        }
+        if(isset($this->bc_forms_options['log'])){
+            if($this->bc_forms_options['log'] == 'on'){
+                add_action( 'wp_mail_failed', array($this,'onMailError'), 10, 1 );
+            }
+        }
     }
 
     public function bc_forms_gutenberg_block() {
@@ -256,6 +262,14 @@ class BcFormsBlock {
                                 else:
                                     $valid = true;
                                 endif;
+                                if($field['type'] == 'email' ):
+                                    if( is_email( $_POST[$field['name']] ) ){
+                                        $valid = true;
+                                    }else{
+                                        $valid = false;
+                                    }
+                                
+                                endif;
 
                             endif;
                         endforeach;
@@ -324,6 +338,14 @@ class BcFormsBlock {
         echo $response;
         session_destroy();
         wp_die();
+    }
+
+    public function onMailError($wp_error){
+        
+        echo "<pre>";
+        print_r($wp_error);
+        echo "</pre>";
+
     }
 }
 $bc_forms = new BcFormsBlock();

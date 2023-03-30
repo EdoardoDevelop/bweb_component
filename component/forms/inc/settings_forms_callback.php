@@ -300,3 +300,11 @@
     ?>
 
 </div>
+<div>
+    <?php
+printf(
+    '<label><input type="checkbox" class="input_log_send" name="bc_settings_forms[log]" %s> Log if error</label>',
+    ( isset($this->bc_forms_options['log']) && $this->bc_forms_options['log'] == 'on' ) ? 'checked' : ''
+);
+    ?>
+</div>
