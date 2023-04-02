@@ -250,9 +250,13 @@ jQuery(document).ready(function($) {
         }else if($(this).val()=='textarea'){
             text = '<div class="form-group">\n<div class="label">$label</div>\n<textarea type="text" name="$name"></textarea>\n</div>';
         }else if($(this).val()=='checkbox'){
-            text = '<div class="form-group">\n<div class="label">$label</div>\n<input type="checkbox" name="$name">\n</div>';
+            text = '<div class="form-group">\n<label><input type="checkbox" name="$name">$label</label>\n</div>';
         }else if($(this).val()=='num'){
             text = '<div class="form-group">\n<div class="label">$label</div>\n<input type="number" name="$name">\n</div>';
+        }else if($(this).val()=='radio'){
+            text = '<div class="form-group">\n<div class="label">$label</div>\n<label><input type="radio" name="$name" value="...">testo</label>\n<label><input type="radio" name="$name" value="...">testo</label>\n</div>';
+        }else if($(this).val()=='select'){
+            text = '<div class="form-group">\n<div class="label">$label</div>\n<select name="$name">\n<option value="...">testo</option>\n<option value="...">testo</option>\n</select>\n</div>';
         }else if($(this).val()=='testo'){
             text = '<div class="form-group">\n<p>Lorem ipsum è un testo segnaposto</p>\n</div>';
             $('.input_field_forms_name',$(this).parents('.cont_forms_field')).val('');

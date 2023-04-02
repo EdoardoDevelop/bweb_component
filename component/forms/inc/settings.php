@@ -35,7 +35,7 @@ class BcFormsOptions {
     public function bc_forms_create_admin_page() {
         ?>
 		<div class="wrap">
-			<h2>Forms</h2>
+			<h2 class="wp-heading-inline">Forms</h2>
 			<p></p>
 			<?php settings_errors(); ?>
 
@@ -60,7 +60,7 @@ class BcFormsOptions {
 
 		add_settings_section(
 			'bc_forms_setting_section', // id
-			'Settings', // title
+			'', // title
 			'', // callback
 			'bc-forms-admin' // page
 		);
