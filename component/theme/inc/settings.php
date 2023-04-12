@@ -12,8 +12,8 @@ class BcThemeSettings {
 	public function init_admin(){
 		add_action( 'admin_menu', array( $this, 'bctheme_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bctheme_settings_page_init' ) );
-		add_action('admin_enqueue_scripts', array( $this, 'codemirror_enqueue_scripts' ));
-		add_action('admin_footer-bweb-component_page_theme', array( $this, 'codemirror_snippet' ));
+		add_action('admin_enqueue_scripts', array( $this, '_enqueue_scripts' ));
+		add_action('admin_footer-bweb-component_page_theme', array( $this, 'admin_js_theme' ));
 	}
 
 	public function bctheme_settings_add_plugin_page() {
@@ -43,6 +43,7 @@ class BcThemeSettings {
 					<div class="bc-theme-bar" style="display: block;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-top: 1px solid #ccc">
 						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_generic" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none; box-shadow: none; ">Generic</a>
 						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_swup" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Swup</a>
+						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_pagetransition" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Page Transition</a>
 						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_scrollreveal" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Scroll Reveal</a>
 						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_dev" style="float: right; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Dev</a>
 					</div>
@@ -54,6 +55,11 @@ class BcThemeSettings {
 					<div class="bar_cont theme_swup" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
 						<?php
 						do_settings_sections( 'bctheme-settings-swup' );
+						?>
+					</div>
+					<div class="bar_cont theme_pagetransition" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
+						<?php
+						do_settings_sections( 'bctheme-settings-pagetransition' );
 						?>
 					</div>
 					<div class="bar_cont theme_scrollreveal" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
@@ -92,6 +98,12 @@ class BcThemeSettings {
 			'', // title
 			array( $this, 'bctheme_settings_section_info' ), // callback
 			'bctheme-settings-swup' // page
+		);
+		add_settings_section(
+			'bctheme_settings_pagetransition_section', // id
+			'', // title
+			array( $this, 'bctheme_settings_section_info' ), // callback
+			'bctheme-settings-pagetransition' // page
 		);
 		add_settings_section(
 			'bctheme_settings_scrollreveal_section', // id
@@ -170,6 +182,50 @@ class BcThemeSettings {
 			array( $this, 'script_swup_callback' ), // callback
 			'bctheme-settings-swup', // page
 			'bctheme_settings_swup_section' // section
+		);
+
+		add_settings_field(
+			'include_pagetransition', // id
+			'Abilita Page Transition', // title
+			array( $this, 'include_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		add_settings_field(
+			'page_in_transition', // id
+			'Page In Animation', // title
+			array( $this, 'page_in_transition_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		add_settings_field(
+			'page_out_transition', // id
+			'Page Out Animation', // title
+			array( $this, 'page_out_transition_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		add_settings_field(
+			'page_in_duration', // id
+			'Page In Animation Duration', // title
+			array( $this, 'page_in_duration_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		
+		add_settings_field(
+			'page_out_duration', // id
+			'Page Out Animation Duration', // title
+			array( $this, 'page_out_duration_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		add_settings_field(
+			'show_loading', // id
+			'Show Loading', // title
+			array( $this, 'show_loading_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
 		);
 		
 		add_settings_field(
@@ -345,6 +401,29 @@ class BcThemeSettings {
 		}
 
 
+		if ( isset( $input['include_pagetransition'] ) ) {
+			$sanitary_values['include_pagetransition'] = $input['include_pagetransition'];
+		}
+
+		if ( isset( $input['page_in_transition'] ) ) {
+			$sanitary_values['page_in_transition'] = $input['page_in_transition'];
+		}
+		if ( isset( $input['page_out_transition'] ) ) {
+			$sanitary_values['page_out_transition'] = $input['page_out_transition'];
+		}
+		if ( isset( $input['page_in_duration'] ) ) {
+			$sanitary_values['page_in_duration'] = $input['page_in_duration'];
+		}
+		if ( isset( $input['page_out_duration'] ) ) {
+			$sanitary_values['page_out_duration'] = $input['page_out_duration'];
+		}
+		if ( isset( $input['show_loading'] ) ) {
+			$sanitary_values['show_loading'] = $input['show_loading'];
+		}
+		if ( isset( $input['loading_color'] ) ) {
+			$sanitary_values['loading_color'] = $input['loading_color'];
+		}
+		
 		if ( isset( $input['include_scrollreveal'] ) ) {
 			$sanitary_values['include_scrollreveal'] = $input['include_scrollreveal'];
 		}
@@ -580,6 +659,69 @@ class BcThemeSettings {
 		);
 	}
 
+	public function include_pagetransition_callback() {
+		printf(
+			'<input type="checkbox" name="bctheme_settings_option[include_pagetransition]" id="include_pagetransition" value="include_pagetransition" %s>',
+			( isset( $this->bctheme_settings_options['include_pagetransition'] ) && $this->bctheme_settings_options['include_pagetransition'] === 'include_pagetransition' ) ? 'checked' : ''
+		);
+	}
+
+	
+	public function page_in_transition_pagetransition_callback() {
+		?>
+		<select name="bctheme_settings_option[page_in_transition]" id="page_in_transition">
+			<option value=""><?php _e( 'None', 'page-transition' );?></option>
+			<?php 
+			foreach ( $this->get_page_in_transitions() as $key => $value ): 
+				printf(
+					'<option value="%s" %s>%s</option>',
+					$key,
+					( isset( $this->bctheme_settings_options['page_in_transition'] ) && $this->bctheme_settings_options['page_in_transition'] === $key ) ? 'selected="selected"' : '',
+					$value
+				);
+			endforeach;
+			?>
+		</select>
+		<?php
+	}
+	
+	public function page_out_transition_pagetransition_callback() {
+		?>
+		<select name="bctheme_settings_option[page_out_transition]" id="page_out_transition">
+			<option value=""><?php _e( 'None', 'page-transition' );?></option>
+			<?php 
+			foreach ( $this->get_page_out_transitions() as $key => $value ): 
+				printf(
+					'<option value="%s" %s>%s</option>',
+					$key,
+					( isset( $this->bctheme_settings_options['page_out_transition'] ) && $this->bctheme_settings_options['page_out_transition'] === $key ) ? 'selected="selected"' : '',
+					$value
+				);
+			endforeach;
+			?>
+		</select>
+		<?php
+	}
+
+	public function page_in_duration_pagetransition_callback(){
+		printf(
+			'<input type="number" name="bctheme_settings_option[page_in_duration]" id="page_in_duration" style="width:70px;" min="200" max="10000" value="%s">',
+			( isset( $this->bctheme_settings_options['page_in_duration'] ) ) ? $this->bctheme_settings_options['page_in_duration'] : '1500'
+		);
+	}
+	public function page_out_duration_pagetransition_callback(){
+		printf(
+			'<input type="number" name="bctheme_settings_option[page_out_duration]" id="page_out_duration" style="width:70px;" min="200" max="10000" value="%s">',
+			( isset( $this->bctheme_settings_options['page_out_duration'] ) ) ? $this->bctheme_settings_options['page_out_duration'] : '800'
+		);
+	}
+	public function show_loading_pagetransition_callback(){
+		printf(
+			'<input type="checkbox" name="bctheme_settings_option[show_loading]" id="show_loading" value="true" %s>',
+			( isset( $this->bctheme_settings_options['show_loading'] ) && $this->bctheme_settings_options['show_loading'] === 'true' ) ? 'checked' : ''
+		);
+				
+	}
 	
 	public function include_scrollreveal_callback() {
 		printf(
@@ -705,7 +847,7 @@ class BcThemeSettings {
 		return unlink($file);
 	}
 
-	public function codemirror_enqueue_scripts($hook){
+	public function _enqueue_scripts($hook){
 		
 
 		if($hook == 'bweb-component_page_theme'){
@@ -719,7 +861,7 @@ class BcThemeSettings {
 		}
 	}
 
-	public function codemirror_snippet($hook){
+	public function admin_js_theme($hook){
 		?>
 		<script>
 			jQuery(document).ready(function($) {
@@ -745,7 +887,7 @@ class BcThemeSettings {
 						mode: 'css',
 					}
 				);
-
+				
 				$(".bc-theme-bar-item").click(function(e){ 
 					e.preventDefault(); 
 					var i;
@@ -759,11 +901,12 @@ class BcThemeSettings {
 					$(this).css('background-color','#fff');
 					
 					if(div == '.theme_swup'){
-						if ( $( ".CodeMirror" ).length ) {}else{
+						if ( $( ".theme_swup .CodeMirror" ).length ) {}else{
 							wp.codeEditor.initialize( $('#script_swup'), editorSettingsJS );
 							wp.codeEditor.initialize( $('#css_swup'), editorSettingsCSS );
 						}
 					}
+					
 
 				});
 
@@ -816,7 +959,53 @@ class BcThemeSettings {
 		<?php
 	}
 
-	
+	public function get_page_in_transitions() {
+		return array(
+				'fade-in' => 'Fade In',
+				'fade-in-up' => 'Fade In Up',
+				'fade-in-down' => 'Fade In Down',
+				'fade-in-left' => 'Fade In Left',
+				'fade-in-right' => 'Fade In Right',
+				'fade-in-up-sm' => 'Fade In Up Small',
+				'fade-in-down-sm' => 'Fade In Down Small',
+				'fade-in-left-sm' => 'Fade In Left Small',
+				'fade-in-right-sm' => 'Fade In Right Small',
+				'rotate-in' => 'Rotate In',
+				'flip-in-x' => 'Flip In X',
+				'flip-in-y' => 'Flip In Y',
+				'zoom-in' => 'Zoom In',
+				'zoom-in-sm' => 'Zoom In Small',
+				'overlay-slide-in-top' => 'Overlay Slide in Top',
+				'overlay-slide-in-bottom' => 'Overlay Slide in Bottom',
+				'overlay-slide-in-left' => 'Overlay Slide in Left',
+				'overlay-slide-in-right' => 'Overlay Slide in Right',
+				
+			);
+	}
+	public function get_page_out_transitions() {
+		return array(
+				'fade-out' => 'Fade Out',
+				'fade-out-up' => 'Fade Out Up',
+				'fade-out-down' => 'Fade Out Down',
+				'fade-out-left' => 'Fade Out Left',
+				'fade-out-right' => 'Fade Out Right',
+				'fade-out-up-sm' => 'Fade Out Up Small',
+				'fade-out-down-sm' => 'Fade Out Down Small',
+				'fade-out-left-sm' => 'Fade Out Left Small',
+				'fade-out-right-sm' => 'Fade Out Right Small',
+				'rotate-out' => 'Rotate Out',
+				'flip-out-x' => 'Flip Out X',
+				'flip-out-y' => 'Flip Out Y',
+				'zoom-out' => 'Zoom Out',
+				'zoom-out-sm' => 'Zoom Out Small',
+				'overlay-slide-out-top' => 'Overlay Slide out Top',
+				'overlay-slide-out-bottom' => 'Overlay Slide out Bottom',
+				'overlay-slide-out-left' => 'Overlay Slide out Left',
+				'overlay-slide-out-right' => 'Overlay Slide out Right',
+			);
+	}
+
+
 	/*public function _print_scripts_styles() {
 
 		$result = [];
