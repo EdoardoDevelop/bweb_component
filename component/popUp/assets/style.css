@@ -1,0 +1,82 @@
+.pupupsettings_tabs > input[type="radio"] {
+    position: absolute;
+    left: -200vw;
+}
+.pupupsettings_tabs > label {
+    position: relative;
+    display: inline-block;
+    padding: 15px 15px 25px;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    cursor: pointer;
+    font-weight: 600;
+}
+.pupupsettings_tabs > label::after {
+    content: "";
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    width: 22px;
+    height: 4px;
+    background: #8d8d8d;
+}
+.pupupsettings_tabs > label:hover, .pupupsettings_tabs > input:focus + label {
+    color: #06c;
+}
+.pupupsettings_tabs > label:hover::after, .pupupsettings_tabs > input:focus + label::after, .pupupsettings_tabs > input:checked + label::after {
+    background: #06c;
+}
+.pupupsettings_tabs > input:checked + label {
+    border-color: #ccc;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+}
+.pupupsettings_tab {
+    border-top: 1px solid #ccc;
+}
+.pupupsettings_tab .pupupsettings_content {
+    padding: 30px 0;
+}
+.pupupsettings_tabs .pupupsettings_content {
+    display: none;
+  }
+  .pupupsettings_tabs > input:first-child:checked ~ .pupupsettings_tab > .pupupsettings_content:first-child, .pupupsettings_tabs > input:nth-child(3):checked ~ .pupupsettings_tab > .pupupsettings_content:nth-child(2), .pupupsettings_tabs > input:nth-child(5):checked ~ .pupupsettings_tab > .pupupsettings_content:nth-child(3) {
+    display: block;
+  }
+.clear{
+    display: block;
+    width: 100%;
+    float: none;
+    clear: both;
+}
+
+#cont_trigger,
+#cont_targeting{
+    width: 100%;
+}
+#cont_trigger td,
+#cont_targeting td{
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+.remove_row{
+    float: right;
+}
+
+.button-secondary.delete{
+    color: #b32d2e;
+    border-color: #b32d2e;
+}
+
+.button-secondary.delete:hover{
+    color: #8e1515;
+    border-color: #8e1515;
+}
+.popup-types{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+#popup_template{
+    width: 100%;
+}
