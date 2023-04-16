@@ -262,13 +262,18 @@ class BcThemeSettings {
 		
 	}
 
+	public function sanitize_theme_title($string){
+		return str_replace('-', '_',sanitize_title($string));
+	}
+
 	public function bctheme_settings_sanitize($input) {
 		$sanitary_values = array();
         $folder_theme = "";
 		if ( isset( $input['nome'] ) ) {
             if ( !empty( $input['nome'] ) ){
 				$sanitary_values['nome'] = sanitize_text_field( $input['nome'] );
-				$folder_theme = WP_CONTENT_DIR  . '/themes/' . $sanitary_values['nome'];
+				$slug_name = $this->sanitize_theme_title( $sanitary_values['nome'] );
+				$folder_theme = WP_CONTENT_DIR  . '/themes/' . $slug_name;
 
 				if (!is_dir($folder_theme)){
 					$return_copy = $this->copyfolder(PLUGIN_THEME_DIR  . 'file_theme/static', $folder_theme);
@@ -280,10 +285,10 @@ class BcThemeSettings {
 						file_put_contents($folder_theme . '/style.css', $strStyle);
 
 						$strFunctions=file_get_contents($folder_theme . '/functions.php');
-						$strFunctions=str_replace('!######!', $sanitary_values['nome'],$strFunctions);
+						$strFunctions=str_replace('!######!', $slug_name,$strFunctions);
 						file_put_contents($folder_theme . '/functions.php', $strFunctions);
 
-						$name_th = $sanitary_values['nome'];
+						$name_th = $slug_name;
 
 						update_option( 'template', $name_th );
 						update_option( 'stylesheet', $name_th );
