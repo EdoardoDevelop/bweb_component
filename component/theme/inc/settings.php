@@ -192,6 +192,13 @@ class BcThemeSettings {
 			'bctheme_settings_pagetransition_section' // section
 		);
 		add_settings_field(
+			'page_transition', // id
+			'Page Animation', // title
+			array( $this, 'page_transition_pagetransition_callback' ), // callback
+			'bctheme-settings-pagetransition', // page
+			'bctheme_settings_pagetransition_section' // section
+		);
+		add_settings_field(
 			'page_in_transition', // id
 			'Page In Animation', // title
 			array( $this, 'page_in_transition_pagetransition_callback' ), // callback
@@ -667,8 +674,21 @@ class BcThemeSettings {
 	}
 
 	
+	public function page_transition_pagetransition_callback() {
+		 
+			foreach ( $this->get_page_transitions() as $key => $value ): 
+				printf(
+					'<div style="display:inline-block; text-align:center; margin:5px;" class="gif_page_transition" data-transition="%s"><img src="%s" width="150px"><br>%s</div>',
+					$key,
+					plugin_dir_url( PLUGIN_FILE_URL ) .'component/theme/assets/gif_transition/'.$key.'.gif',
+					$value
+				);
+			endforeach;
+		
+	}
 	public function page_in_transition_pagetransition_callback() {
 		?>
+		
 		<select name="bctheme_settings_option[page_in_transition]" id="page_in_transition">
 			<option value=""><?php _e( 'None', 'page-transition' );?></option>
 			<?php 
@@ -954,54 +974,96 @@ class BcThemeSettings {
 					});
 					
 				});
+				$(".gif_page_transition").on("click", function(e){
+					var k = $(this).data('transition');
+					if(k == 'fade'){
+						$("#page_in_transition").val('fade-in').change();
+						$("#page_out_transition").val('fade-out').change();
+					}
+					if(k == 'fade_up'){
+						$("#page_in_transition").val('fade-in-up-sm').change();
+						$("#page_out_transition").val('fade-out-up-sm').change();
+					}
+					if(k == 'fade_down'){
+						$("#page_in_transition").val('fade-in-down-sm').change();
+						$("#page_out_transition").val('fade-out-down-sm').change();
+					}
+					if(k == 'slide_top'){
+						$("#page_in_transition").val('overlay-slide-in-top').change();
+						$("#page_out_transition").val('overlay-slide-out-top').change();
+					}
+					if(k == 'slide_bottom'){
+						$("#page_in_transition").val('overlay-slide-in-bottom').change();
+						$("#page_out_transition").val('overlay-slide-out-bottom').change();
+					}
+					if(k == 'zoom'){
+						$("#page_in_transition").val('zoom-in-sm').change();
+						$("#page_out_transition").val('zoom-out-sm').change();
+					}
+				});
 			})
 		</script>
 		<?php
 	}
 
+	public function get_page_transitions() {
+		return array(
+			'fade' => 'Fade',
+			'fade_up' => 'Fade Up',
+			'fade_down' => 'Fade Down',
+			'slide_top' => 'Slide Top',
+			'slide_bottom' => 'Slide Bottom',
+			'zoom' => 'Zoom',
+				
+				
+		);
+	}
+
 	public function get_page_in_transitions() {
 		return array(
 				'fade-in' => 'Fade In',
-				'fade-in-up' => 'Fade In Up',
+				/*'fade-in-up' => 'Fade In Up',
 				'fade-in-down' => 'Fade In Down',
 				'fade-in-left' => 'Fade In Left',
-				'fade-in-right' => 'Fade In Right',
-				'fade-in-up-sm' => 'Fade In Up Small',
-				'fade-in-down-sm' => 'Fade In Down Small',
-				'fade-in-left-sm' => 'Fade In Left Small',
-				'fade-in-right-sm' => 'Fade In Right Small',
+				'fade-in-right' => 'Fade In Right',*/
+				'fade-in-up-sm' => 'Fade In Up',
+				'fade-in-down-sm' => 'Fade In Down',
+				'fade-in-left-sm' => 'Fade In Left',
+				'fade-in-right-sm' => 'Fade In Right',
 				'rotate-in' => 'Rotate In',
 				'flip-in-x' => 'Flip In X',
 				'flip-in-y' => 'Flip In Y',
-				'zoom-in' => 'Zoom In',
-				'zoom-in-sm' => 'Zoom In Small',
+				//'zoom-in' => 'Zoom In',
+				'zoom-in-sm' => 'Zoom In',
 				'overlay-slide-in-top' => 'Overlay Slide in Top',
 				'overlay-slide-in-bottom' => 'Overlay Slide in Bottom',
 				'overlay-slide-in-left' => 'Overlay Slide in Left',
 				'overlay-slide-in-right' => 'Overlay Slide in Right',
+				'overlay-slide-in-top-bottom' => 'Overlay Slide in Top Bottom',
 				
 			);
 	}
 	public function get_page_out_transitions() {
 		return array(
 				'fade-out' => 'Fade Out',
-				'fade-out-up' => 'Fade Out Up',
+				/*'fade-out-up' => 'Fade Out Up',
 				'fade-out-down' => 'Fade Out Down',
 				'fade-out-left' => 'Fade Out Left',
-				'fade-out-right' => 'Fade Out Right',
-				'fade-out-up-sm' => 'Fade Out Up Small',
-				'fade-out-down-sm' => 'Fade Out Down Small',
-				'fade-out-left-sm' => 'Fade Out Left Small',
-				'fade-out-right-sm' => 'Fade Out Right Small',
+				'fade-out-right' => 'Fade Out Right',*/
+				'fade-out-up-sm' => 'Fade Out Up',
+				'fade-out-down-sm' => 'Fade Out Down',
+				'fade-out-left-sm' => 'Fade Out Left',
+				'fade-out-right-sm' => 'Fade Out Right',
 				'rotate-out' => 'Rotate Out',
 				'flip-out-x' => 'Flip Out X',
 				'flip-out-y' => 'Flip Out Y',
-				'zoom-out' => 'Zoom Out',
-				'zoom-out-sm' => 'Zoom Out Small',
+				//'zoom-out' => 'Zoom Out',
+				'zoom-out-sm' => 'Zoom Out',
 				'overlay-slide-out-top' => 'Overlay Slide out Top',
 				'overlay-slide-out-bottom' => 'Overlay Slide out Bottom',
 				'overlay-slide-out-left' => 'Overlay Slide out Left',
 				'overlay-slide-out-right' => 'Overlay Slide out Right',
+				'overlay-slide-out-top-bottom' => 'Overlay Slide out Top Bottom',
 			);
 	}
 

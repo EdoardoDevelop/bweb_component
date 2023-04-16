@@ -145,7 +145,7 @@ if ( ! function_exists( 'bcTheme_enqueue' ) ) {
             }
         }
         if( isset( $bctheme_settings_option['include_pagetransition'] ) && $bctheme_settings_option['include_pagetransition'] === 'include_pagetransition' ){
-            wp_enqueue_script( 'pagetransition-dist-scripts', plugin_dir_url( PLUGIN_FILE_URL ) . 'component/theme/assets/js/animsition.min.js', array( 'jquery' ),'', false );
+            wp_enqueue_script( 'pagetransition-dist-scripts', plugin_dir_url( PLUGIN_FILE_URL ) . 'component/theme/assets/js/animsition.js', array( 'jquery' ),'', false );
 
         }
         wp_enqueue_script( 'bcTheme-front-script', get_template_directory_uri() . '/assets/js/script.js', array( 'jquery' ),'', true );
@@ -155,7 +155,7 @@ if ( ! function_exists( 'bcTheme_enqueue' ) ) {
         wp_enqueue_style( 'bcTheme-bootstrap-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/css/bootstrap.min.css');
         wp_enqueue_style( 'bcTheme-magnificpopup-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/css/magnific-popup.css');
         if( isset( $bctheme_settings_option['include_pagetransition'] ) && $bctheme_settings_option['include_pagetransition'] === 'include_pagetransition' ){
-            wp_enqueue_style( 'pagetransition-style', plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/css/animsition.min.css');
+            wp_enqueue_style( 'pagetransition-style', plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/css/animsition.css');
                 
         }
 		wp_enqueue_style( 'bcTheme-style', plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/css/style.css');
@@ -221,6 +221,10 @@ if( isset( $bctheme_settings_option['include_pagetransition'] ) && $bctheme_sett
             $bctheme_settings_option['page_in_transition'] == 'overlay-slide-in-left'
             ||
             $bctheme_settings_option['page_in_transition'] == 'overlay-slide-in-right'
+            ||
+            $bctheme_settings_option['page_in_transition'] == 'overlay-slide-in-top-bottom'
+            ||
+            $bctheme_settings_option['page_in_transition'] == 'overlay-slide-in-top-bottom fade-in'
             ){
                 $overlay = 'true';
             }
@@ -232,6 +236,10 @@ if( isset( $bctheme_settings_option['include_pagetransition'] ) && $bctheme_sett
             $bctheme_settings_option['page_out_transition'] == 'overlay-slide-out-left'
             ||
             $bctheme_settings_option['page_out_transition'] == 'overlay-slide-out-right'
+            ||
+            $bctheme_settings_option['page_out_transition'] == 'overlay-slide-out-top-bottom'
+            ||
+            $bctheme_settings_option['page_out_transition'] == 'overlay-slide-out-top-bottom fade-out'
             ){
                 $overlay = 'true';
             }
@@ -249,7 +257,7 @@ if( isset( $bctheme_settings_option['include_pagetransition'] ) && $bctheme_sett
                         inDuration : <?php echo $bctheme_settings_option['page_in_duration']; ?>,
                         outDuration : <?php echo $bctheme_settings_option['page_out_duration']; ?>,
                         loading : <?php echo $loading; ?>,
-                        loadingInner: '<img src="<?php echo plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/loading.svg' ?>" />', // e.g '<img src="loading.svg" />'
+                        //loadingInner: '<img src="<?php echo plugin_dir_url( PLUGIN_FILE_URL ).'component/theme/assets/loading.svg' ?>" />', // e.g '<img src="loading.svg" />'
                         touchSupport: false,
                         overlay : <?php echo $overlay; ?>,
                         overlayClass : 'animsition-overlay-slide',

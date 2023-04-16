@@ -97,6 +97,7 @@
             array("name"=>"Complianz | GDPR/CCPA Cookie Consent","slug"=>"complianz-gdpr","icon"=>"https://ps.w.org/complianz-gdpr/assets/icon-128x128.png"),
             array("name"=>"Wp pagenavi","slug"=>"wp-pagenavi","icon"=>"https://ps.w.org/wp-pagenavi/assets/icon.svg"),
             array("name"=>"Google Analytics Dashboard","slug"=>"google-analytics-dashboard-for-wp","icon"=>"https://ps.w.org/google-analytics-dashboard-for-wp/assets/icon-128x128.png"),
+            array("name"=>"Site Kit by Google","slug"=>"google-site-kit","icon"=>"https://ps.w.org/google-site-kit/assets/icon-128x128.png"),
             array("name"=>"WP Mail SMTP","slug"=>"wp-mail-smtp","icon"=>"https://ps.w.org/wp-mail-smtp/assets/icon-128x128.png"),
             array("name"=>"Schema","slug"=>"schema","icon"=>"https://ps.w.org/schema/assets/icon-128x128.png"),
             array("name"=>"W3 Total Cache","slug"=>"w3-total-cache","icon"=>"https://ps.w.org/w3-total-cache/assets/icon-128x128.png"),
@@ -104,6 +105,8 @@
             array("name"=>"Wordfence","slug"=>"wordfence","icon"=>"https://ps.w.org/wordfence/assets/icon.svg"),
             array("name"=>"Mailchimp","slug"=>"mailchimp-for-wp","icon"=>"https://ps.w.org/mailchimp-for-wp/assets/icon-128x128.png"),
             array("name"=>"Tawkto.to Live Chat","slug"=>"tawkto-live-chat","icon"=>"https://ps.w.org/tawkto-live-chat/assets/icon-128x128.png"),
+            array("name"=>"Email Address Encoder","slug"=>"email-address-encoder","icon"=>"https://ps.w.org/email-address-encoder/assets/icon-128x128.jpg"),
+            array("name"=>"Webp Converter for Media","slug"=>"webp-converter-for-media","icon"=>"https://ps.w.org/webp-converter-for-media/assets/icon-128x128.png"),
             array("name"=>"Booking Calendar","slug"=>"booking","icon"=>"https://ps.w.org/booking/assets/icon-128x128.png"),
             array("name"=>"Woocommerce","slug"=>"woocommerce","icon"=>"https://ps.w.org/woocommerce/assets/icon-128x128.png"),
         );
