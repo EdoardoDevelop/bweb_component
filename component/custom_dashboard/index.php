@@ -4,7 +4,7 @@
  * Name: Custom Dashboard
  * Description: Dashboard personalizzato.
  * Icon: dashicons-dashboard
- * Version: 1.0
+ * Version: 1.1
  * 
  */
 

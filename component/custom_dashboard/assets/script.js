@@ -107,7 +107,7 @@ jQuery(function($){
                     var id = $('#id'+type+' option:selected' ).val();
                     
                         var title = $('#id'+type+' option:selected' ).text();
-                        return $('<div class="item_widget"><a href="http://localsite.ddns.net/test/wp-admin/post.php?post='+id+'&action=edit" ><span class="box_icons"></span>'+title+'</a></div></div>');
+                        return $('<div class="item_widget"><a href="post.php?post='+id+'&action=edit" ><span class="box_icons"></span>'+title+'</a></div></div>');
                     
                 },
                 stop: function( event, ui ) {
