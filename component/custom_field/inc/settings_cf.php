@@ -87,11 +87,27 @@ class BcCustomFieldOptions {
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script( 'jquery-ui-sortable' );
 		add_thickbox();
-		
+		wp_enqueue_script( 'settings_cf-vanillaSelectBox_js', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_field/assets/vanillaSelectBox.js' );
+
+		wp_enqueue_style( 'settings_cf-vanillaSelectBox_css', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_field/assets/vanillaSelectBox.css');
 		wp_enqueue_style( 'settings_cf-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/custom_field/assets/style.css');
     }
     public function custombox_callback_script(){
         require 'settings_cf_callback_script.php';
+    }
+
+	public function generate_all_posts() {
+        $post_type_object = get_post_types( array( 'public' => true, ), 'objects' );
+		$sel = [];
+		foreach ( $post_type_object as $post_type_obj ):
+			$labels = get_post_type_labels( $post_type_obj );
+			array_push($sel,$post_type_obj->label);
+			$posts = get_posts(array('post_type'=> $post_type_obj->name, 'post_status'=> 'publish', 'suppress_filters' => false, 'posts_per_page'=>-1));
+			foreach ($posts as $post) {
+				array_push($sel,$post->ID);
+			}
+		endforeach;
+		return $sel;
     }
 
 }

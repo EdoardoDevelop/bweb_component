@@ -1,5 +1,6 @@
 <script type="text/javascript">
         jQuery(document).ready(function($) {
+            
             sortable_input_fields_box_wrap($);
             sortable_box_field($);
             //var max_fields      = 10; //maximum input boxes allowed

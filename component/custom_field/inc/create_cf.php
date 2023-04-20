@@ -12,20 +12,37 @@ class BcCustomFieldCreate {
         }
     }
     public function metabox_easyparent_add_meta_box() {
-
+        global $post;
         $custombox_group = get_option( 'bc_settings_cf' )['custom_field_group'];
         if(isset($custombox_group) && is_array($custombox_group)) {
             foreach($custombox_group as $narray => $v ){
             //print_r($custombox_group[$narray]['typepost']);
-                add_meta_box(
-                    sanitize_title($v['namegroup']),
-                    $v['namegroup'],
-                    array($this,'print_html'),
-                    $v['typepost'],
-                    $v['position'],
-                    'default',
-                    $v
-                );
+                if(isset($v['typepost'])){
+                    add_meta_box(
+                        sanitize_title($v['namegroup']),
+                        $v['namegroup'],
+                        array($this,'print_html'),
+                        $v['typepost'],
+                        $v['position'],
+                        'default',
+                        $v
+                    );
+                }
+                if(isset($v['select_posts']) && is_array($v['select_posts'])){
+                    foreach ( $v['select_posts'] as $idpost ){
+                        if($post->ID ==$idpost){
+                            add_meta_box(
+                                sanitize_title($v['namegroup']),
+                                $v['namegroup'],
+                                array($this,'print_html'),
+                                get_post_type( $idpost ),
+                                $v['position'],
+                                'default',
+                                $v
+                            );
+                        }
+                    }
+                }
             }
         }
 
@@ -283,7 +300,8 @@ class BcCustomFieldCreate {
 
         if(isset($custombox_group) && is_array($custombox_group)) {
             foreach($custombox_group as $narray => $v ){
-                if(isset($_POST['post_type']) && in_array($_POST['post_type'], $v['typepost'])){
+
+                if((isset($_POST['post_type']) && isset($v['typepost']) && in_array($_POST['post_type'], $v['typepost']) || isset($v['select_posts']) && in_array($post_id,$v['select_posts']))){
                 
                     if ( ! isset( $_POST[sanitize_title($v['namegroup']).'_nonce'] ) || ! wp_verify_nonce( $_POST[sanitize_title($v['namegroup']).'_nonce'], '_'.sanitize_title($v['namegroup']).'_nonce' ) ) return;
                     if ( ! current_user_can( 'edit_post', $post_id ) ) return;
@@ -302,6 +320,7 @@ class BcCustomFieldCreate {
                         }
                     }
                 }
+                
             }
         }
     }
