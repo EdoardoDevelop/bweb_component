@@ -4,7 +4,7 @@
  * Name: Campi Personalizzati
  * Description: Aggiunge campi personalizzati.
  * Icon: dashicons-button
- * Version: 1.2
+ * Version: 1.3
  * 
  */
 require plugin_dir_path( __FILE__ ) ."inc/settings_cf.php";

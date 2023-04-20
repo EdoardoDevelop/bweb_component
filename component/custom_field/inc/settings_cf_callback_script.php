@@ -28,6 +28,26 @@
                         $labels = get_post_type_labels( $post_type_obj );
                         echo '<label><input type="checkbox" name="bc_settings_cf[custom_field_group][.narray.][typepost][]" value="'.esc_attr( $post_type_obj->name ).'" > '.esc_html( $labels->name ).' </label>';
                     endforeach;
+                    echo '<br><br>';
+                    //print_r($this->generate_all_posts());
+                    echo '<strong>Singole pagine:</strong> <select id="select_posts.narray." name="bc_settings_cf[custom_field_group][.narray.][select_posts][]" multiple size="3">';
+                    $select_posts_option = '';
+                    foreach ( $this->generate_all_posts() as $idpost ):
+                        if ( filter_var($idpost, FILTER_VALIDATE_INT) === false ) {
+                            if($select_posts_option != ''){
+                                $select_posts_option .= '';
+                            }else{
+                                $select_posts_option .= '</optgroup>';
+                            };
+                            $select_posts_option .= '<optgroup label="'. $idpost. '">';
+                        }else{
+                            $select_posts_option .= '<option value="'. $idpost. '" >'. get_the_title($idpost). '</option>';
+                        }
+                    endforeach;
+                    $select_posts_option .= '</optgroup>';
+                    echo $select_posts_option;
+                    echo '</select>';
+                    //echo '<script>let mySelect.narray. = new vanillaSelectBox("#select_posts.narray.");</script>';
                     echo '<br><br><strong>Posizione:</strong> ';
                     echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="normal" checked >normal</label> | ';
                     echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="side" >side</label> | ';
@@ -41,6 +61,7 @@
                     out = out.replace(/.narray./g, narray);
                     //narray++;
                     $(".input_fields_box_wrap").append(out); //add input box
+                    new vanillaSelectBox("#select_posts"+narray);
                     sortable_input_fields_box_wrap($);
                 //}
             });

@@ -47,9 +47,8 @@
                         $select_posts_option .= '</optgroup>';
                         echo $select_posts_option;
                         echo '</select>';
-                        echo '<script>let mySelect'.$narray.' = new vanillaSelectBox("#select_posts'.$narray.'"); ';
+                        echo '<script>let mySelect'.$narray.' = new vanillaSelectBox("#select_posts'.$narray.'");</script>';
                         
-                        echo '</script>';
                         echo '<br><br><strong>Posizione:</strong>';
                         $valuepos = $v['position'];
                         printf(
