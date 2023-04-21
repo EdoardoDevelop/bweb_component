@@ -4,7 +4,7 @@
 * Name: Tema
 * Description:
 * Icon: dashicons-admin-appearance
- * Version: 1.1
+ * Version: 1.2
 * 
 */
 
