@@ -619,7 +619,7 @@ class BcThemeSettings {
 				<?php
 				$taxonomies = get_terms( array(
 					'taxonomy' => $taxonomy->name,
-					'hide_empty' => true
+					'hide_empty' => false
 				) );
 				foreach( $taxonomies as $category ) {
 					?>
