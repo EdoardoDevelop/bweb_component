@@ -107,16 +107,14 @@ class bs4Navwalker extends Walker_Nav_Menu
         $atts['rel']    = ! empty( $item->xfn )        ? $item->xfn        : '';
         $atts['href']   = ! empty( $item->url )        ? $item->url        : '';
         // New
-        if ($depth === 0) {
             $atts['class'] = 'nav-link';
-        }
-        if ($depth === 0 && $item_has_children) {
+        if ($item_has_children) {
             $atts['class']       .= ' dropdown-toggle';
             $atts['data-toggle']  = 'dropdown';
         }
         if ($depth > 0) {
             $manual_class = array_values($classes)[0] .' '. 'dropdown-item';
-            $atts ['class']= $manual_class;
+            $atts['class'].= $manual_class;
         }
         if (in_array('current-menu-item', $item->classes)) {
             $atts['class'] .= ' active';

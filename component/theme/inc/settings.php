@@ -616,6 +616,27 @@ class BcThemeSettings {
 						);
 					?>
 				</li>
+				<?php
+				$taxonomies = get_terms( array(
+					'taxonomy' => $taxonomy->name,
+					'hide_empty' => true
+				) );
+				foreach( $taxonomies as $category ) {
+					?>
+					<li>&nbsp&nbsp&nbsp&nbsp&nbsp
+						<?php
+							printf(
+								'<label><input type="checkbox" name="bctheme_settings_option[include_file_template][cpt][]" value="%s" %s>%s</label>',
+								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php',
+								$this->check_template('taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php')  ? 'checked' : '',
+								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php'
+							);
+						?>
+					</li>
+					<?php
+				}
+				?>
+				
 				
 			</ul>
 		</div>
