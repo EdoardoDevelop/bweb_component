@@ -36,6 +36,13 @@ if ( ! function_exists( 'bcTheme_setup' ) ) {
         add_image_size( 'image_big', 1400, 928, true ); 	//(cropped)
         add_image_size( 'image_HD', 1920, 1080, true ); 	//(cropped)
 
+        add_filter( 'image_size_names_choose', '_custom_sizes_for_gut' );
+ 
+        function _custom_sizes_for_gut( $sizes ) {
+            return array_merge( $sizes, array(
+                'image_thumb' => __( 'Gallery Thumb' )
+            ) );
+        }
 
         /*  Register sidebars
         /* ------------------------------------ */

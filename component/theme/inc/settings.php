@@ -627,9 +627,9 @@ class BcThemeSettings {
 						<?php
 							printf(
 								'<label><input type="checkbox" name="bctheme_settings_option[include_file_template][cpt][]" value="%s" %s>%s</label>',
-								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php',
-								$this->check_template('taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php')  ? 'checked' : '',
-								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->name ).'.php'
+								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->slug ).'.php',
+								$this->check_template('taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->slug ).'.php')  ? 'checked' : '',
+								'taxonomy-'.$taxonomy->name.'-'.esc_attr( $category->slug ).'.php'
 							);
 						?>
 					</li>
