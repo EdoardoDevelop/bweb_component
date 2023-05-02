@@ -4,6 +4,7 @@ Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/
 Script attivabili/disattivabili:
 - Custom Post Type (con card gutenberg block)
 - Custom fileds
+- Custom option fileds
 - Sito in manutenzione
 - Ordinamento post/page
 - Nascondi menu admin
@@ -17,6 +18,7 @@ Script attivabili/disattivabili:
 - Risoluzione massima upload immagini
 - Login WP customizzato con preload
 - Form
+- Polylang Slug
 
 Script non disattivabili:
 - Plugin consigliati

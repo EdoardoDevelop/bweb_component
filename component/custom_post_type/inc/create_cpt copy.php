@@ -8,7 +8,9 @@ class BcCustomPostTypeCreate {
         if(isset(get_option( 'bc_settings_cpt' )['custom-post-type'])){
             $this->custompost = get_option( 'bc_settings_cpt' )['custom-post-type'];
             add_action( 'init', array($this,'dynamic_custom_post_type') );
-            
+            add_filter('post_type_link', array($this,'_permalink_structure'), 10, 3);
+            //add_action( 'parse_request', array($this, '_parse_taxonomy_root_request' ));
+            //add_action('template_redirect', array($this,'_post_type_redirect'));
 
             
             add_action('restrict_manage_posts',array($this,'dropdown_filter_by_tax'));
@@ -62,7 +64,7 @@ class BcCustomPostTypeCreate {
                     'filter_items_list'     => __( 'Filter items list', 'easyParent' ),*/
                 );
                 $rewrite = array(
-                    'slug'                  => $slug,
+                    'slug'                  => $slug.'/%tax%',
                     'with_front'            => true,
                     'pages'                 => true,
                     'feeds'                 => true,
@@ -131,7 +133,7 @@ class BcCustomPostTypeCreate {
                             'hierarchical' => $hierarchical,
                             'query_var' => true,
                             'rewrite' => array(
-                                'slug'          => sanitize_title($v2['name']),
+                                'slug'          => $slug.'/'.sanitize_title($v2['name']),
                                 'hierarchical'  => $hierarchical,
                                 'with_front'    => true
                             ),
@@ -150,12 +152,19 @@ class BcCustomPostTypeCreate {
                         );*/
 
 
-                        
+                        $this->rules_custom_taxonomy($slug,$slug.'-'.sanitize_title($v2['name']));
+                        add_action( "created_".$slug.'-'.sanitize_title($v2['name']), array($this, '_rewrite_rule'), 10, 2 );
+                        add_action( "edited_".$slug.'-'.sanitize_title($v2['name']), array($this, '_rewrite_rule'), 10, 2 );
 
                     }
                 }
                 
                 
+                add_rewrite_rule(
+                    '^'.$slug.'/(.*)/?$',
+                    'index.php?post_type='.$slug.'&name=$matches[1]',
+                    'top'
+                );
             }
         }
     
