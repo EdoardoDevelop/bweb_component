@@ -51,7 +51,7 @@ class BwebComponentRun {
 	}
 	public function change_footer_version() {
 		global $wp_version;
-		return 'Version WP '.$wp_version.' - B.C. '.get_option('bc_version');
+		return 'Version WP '.$wp_version.' - B.C. '.get_plugin_data( __FILE__ )['Version'];
 	}
 }
 New BwebComponentRun();
