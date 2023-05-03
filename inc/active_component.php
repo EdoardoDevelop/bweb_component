@@ -40,10 +40,10 @@ class BwebActiveComponent {
         }
 
         /**AUTOLOAD */
-        foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
-            if(file_exists($foldername . '\index.php')){
+        foreach (glob(plugin_dir_path( __DIR__ ) ."component/*", GLOB_ONLYDIR) as $foldername){
+            if(file_exists($foldername . '/index.php')){
                 $BCdatacomponent = new BCdatacomponent();
-                $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
+                $data = $BCdatacomponent->get_component_data( $foldername . '/index.php');
 
                 if(filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
                     if(file_exists($foldername . '/index.php')){

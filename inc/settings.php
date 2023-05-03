@@ -132,10 +132,10 @@ class BwebComponentSettings {
 		
 		
 
-        foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
-			if(file_exists($foldername . '\index.php')){
+        foreach (glob(plugin_dir_path( __DIR__ ) ."component/*", GLOB_ONLYDIR) as $foldername){
+			if(file_exists($foldername . '/index.php')){
 				$BCdatacomponent = new BCdatacomponent();
-                $data = $BCdatacomponent->get_component_data( $foldername . '\index.php');
+                $data = $BCdatacomponent->get_component_data( $foldername . '/index.php');
                 $icon = '';
                 if($data['Icon']!=''){
                     $icon = '<span class="dashicons '.$data['Icon'].'"></span>';
@@ -315,7 +315,7 @@ class BwebComponentSettings {
 	}
 	public function arraylocalmodule(){
 		$ar = array();
-		foreach (glob(plugin_dir_path( __DIR__ ) ."component\*", GLOB_ONLYDIR) as $foldername){
+		foreach (glob(plugin_dir_path( __DIR__ ) ."component/*", GLOB_ONLYDIR) as $foldername){
 			array_push($ar,pathinfo($foldername, PATHINFO_BASENAME));
 		}
 		return $ar;
