@@ -9,7 +9,7 @@ class BcCustomPostTypeCreate {
             $this->custompost = get_option( 'bc_settings_cpt' )['custom-post-type'];
             add_action( 'init', array($this,'dynamic_custom_post_type') );
             
-
+            add_action( 'load-options-permalink.php', array($this,'bc_load_permalinks') );
             
             add_action('restrict_manage_posts',array($this,'dropdown_filter_by_tax'));
             add_filter('parse_query',array($this,'filter_taxonomy_term_in_query'));
@@ -61,8 +61,10 @@ class BcCustomPostTypeCreate {
                     'items_list_navigation' => __( 'Items list navigation', 'easyParent' ),
                     'filter_items_list'     => __( 'Filter items list', 'easyParent' ),*/
                 );
+                $baseslug = get_option( $slug.'_cpt_base' );
+                if( ! $baseslug ) $baseslug = $slug;
                 $rewrite = array(
-                    'slug'                  => $slug,
+                    'slug'                  => $baseslug,
                     'with_front'            => true,
                     'pages'                 => true,
                     'feeds'                 => true,
@@ -126,12 +128,16 @@ class BcCustomPostTypeCreate {
                             $hierarchical = false;
                             $show_admin_column = false;
                         }
+
+                        $basetaxslug = get_option( sanitize_title($v2['name']).'_tax_base' );
+                        if( ! $basetaxslug ) $basetaxslug = sanitize_title($v2['name']);
+        
                         $argsTax = array(
                             'labels' => $labelsTax,
                             'hierarchical' => $hierarchical,
                             'query_var' => true,
                             'rewrite' => array(
-                                'slug'          => sanitize_title($v2['name']),
+                                'slug'          => $basetaxslug,
                                 'hierarchical'  => $hierarchical,
                                 'with_front'    => true
                             ),
@@ -328,6 +334,45 @@ echo $wp->matched_query;
             }
         }
     
+    }
+
+
+    public function bc_load_permalinks(){
+        $custompost = $this->custompost;
+        if(isset($custompost) && is_array($custompost)) {
+        
+            foreach($custompost as $narraycustompost => $v ){
+                $slug =  sanitize_title($v['name']);
+
+                if( isset( $_POST[$slug.'_cpt_base'] ) ){
+                    update_option( $slug.'_cpt_base',  $_POST[$slug.'_cpt_base'] );
+                }
+            
+                // Add a settings field to the permalink page
+                add_settings_field( $slug.'_cpt_base', __( 'Base per CPT '.$v['name'] ), array($this,'cpt_base_field_callback'), 'permalink', 'optional',array( 'slug' => $slug ) );
+
+                if(isset($v['tax']) && is_array($v['tax'])) {
+                    foreach($v['tax'] as $narraycustompost2 => $v2 ){
+                        $taxslug = sanitize_title($v2['name']);
+                        if( isset( $_POST[$taxslug.'_tax_base'] ) ){
+                            update_option( $taxslug.'_tax_base',  $_POST[$taxslug.'_tax_base'] );
+                        }
+                        
+                        add_settings_field( $taxslug.'_tax_base', __( 'Base per TAX '.$v2['name'] ), array($this,'tax_base_field_callback'), 'permalink', 'optional',array( 'slug' => $taxslug ) );
+
+                    }
+                }
+            }
+        }
+	}
+
+    public function cpt_base_field_callback($args){
+        $value = get_option( $args['slug'].'_cpt_base' );
+	    echo '<input type="text" value="' . esc_attr( $value ) . '" name="'.$args['slug'].'_cpt_base" id="'.$args['slug'].'_cpt_base" class="regular-text" />';
+    }
+    public function tax_base_field_callback($args){
+        $value = get_option( $args['slug'].'_tax_base' );
+	    echo '<input type="text" value="' . esc_attr( $value ) . '" name="'.$args['slug'].'_tax_base" id="'.$args['slug'].'_tax_base" class="regular-text" />';
     }
 
 }
