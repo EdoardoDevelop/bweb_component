@@ -18,7 +18,7 @@
                     var out = '';
                     out += '<div class="input_fields_group_box_wrap" attr_n=".narray."><div class="cont_box"><strong>Nome Gruppo</strong> <input class="txt_custom_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][namegroup]"/>';
                     out += ' <a href="#" class="remove_group button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a>';
-                    out += '<div><br><?php   
+                    out += "<div><br><?php   
                     $args_custom_post_types = array(
                         'public' => true,
                     );
@@ -26,11 +26,11 @@
                     foreach ( $custom_post_types as $post_type_obj ):
                         
                         $labels = get_post_type_labels( $post_type_obj );
-                        echo '<label><input type="checkbox" name="bc_settings_cf[custom_field_group][.narray.][typepost][]" value="'.esc_attr( $post_type_obj->name ).'" > '.esc_html( $labels->name ).' </label>';
+                        echo '<label><input type=\"checkbox\" name=\"bc_settings_cf[custom_field_group][.narray.][typepost][]\" value=\"'.esc_attr( $post_type_obj->name ).'\" > '.esc_html( $labels->name ).' </label>';
                     endforeach;
                     echo '<br><br>';
                     //print_r($this->generate_all_posts());
-                    echo '<strong>Singole pagine:</strong> <select id="select_posts.narray." name="bc_settings_cf[custom_field_group][.narray.][select_posts][]" multiple size="3">';
+                    echo '<strong>Singole pagine:</strong> <select id=\"select_posts.narray.\" name=\"bc_settings_cf[custom_field_group][.narray.][select_posts][]\" multiple size=\"3\">';
                     $select_posts_option = '';
                     foreach ( $this->generate_all_posts() as $idpost ):
                         if ( filter_var($idpost, FILTER_VALIDATE_INT) === false ) {
@@ -39,9 +39,9 @@
                             }else{
                                 $select_posts_option .= '</optgroup>';
                             };
-                            $select_posts_option .= '<optgroup label="'. $idpost. '">';
+                            $select_posts_option .= '<optgroup label=\"'. $idpost. '\">';
                         }else{
-                            $select_posts_option .= '<option value="'. $idpost. '" >'. get_the_title($idpost). '</option>';
+                            $select_posts_option .= '<option value=\"'. $idpost. '\" >'. get_the_title($idpost). '</option>';
                         }
                     endforeach;
                     $select_posts_option .= '</optgroup>';
@@ -49,15 +49,15 @@
                     echo '</select>';
                     //echo '<script>let mySelect.narray. = new vanillaSelectBox("#select_posts.narray.");</script>';
                     echo '<br><br><strong>Posizione:</strong> ';
-                    echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="normal" checked >normal</label> | ';
-                    echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="side" >side</label> | ';
-                    echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="advanced" >advanced</label> | ';
-                    echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][position]" value="after_title" >after_title(non visibile in gutenberg)</label>';
-                    echo '<br><br><a class="add_field_metabox_button button-secondary"><span class="dashicons dashicons-plus-alt" style="vertical-align: text-top;"></span> Aggiungi campo</a><br><br><div class="box_field" style="display: flex;flex-wrap: wrap;">';
+                    echo '<label><input type=\"radio\" name=\"bc_settings_cf[custom_field_group][.narray.][position]\" value=\"normal\" checked >normal</label> | ';
+                    echo '<label><input type=\"radio\" name=\"bc_settings_cf[custom_field_group][.narray.][position]\" value=\"side\" >side</label> | ';
+                    echo '<label><input type=\"radio\" name=\"bc_settings_cf[custom_field_group][.narray.][position]\" value=\"advanced\" >advanced</label> | ';
+                    echo '<label><input type=\"radio\" name=\"bc_settings_cf[custom_field_group][.narray.][position]\" value=\"after_title\" >after_title(non visibile in gutenberg)</label>';
+                    echo '<br><br><a class=\"add_field_metabox_button button-secondary\"><span class=\"dashicons dashicons-plus-alt\" style=\"vertical-align: text-top;\"></span> Aggiungi campo</a><br><br><div class=\"box_field\" style=\"display: flex;flex-wrap: wrap;\">';
 
-                    ?>';
+                    ?>";
 
-                    out += '</div><span class="dashicons dashicons-sort"></span></div></div>';
+                    out += '</div><span class=\"dashicons dashicons-sort\"></span></div></div>';
                     out = out.replace(/.narray./g, narray);
                     //narray++;
                     $(".input_fields_box_wrap").append(out); //add input box
@@ -86,16 +86,16 @@
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="allegato">Allegato</label> | ';
                 out += '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][type]" value="checkbox_post">Checkbox post</label>';
                 out += '<br><br>Nome campo<br><input class="txt_custom_field_field_name regular-text" type="text" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][namefield]"/>';
-                out += '<?php
-                echo '<div class="cont_get_post_type hidden"><br><br>Checkbox post type:<br>';
+                out += "<?php
+                echo '<div class=\"cont_get_post_type hidden\"><br><br>Checkbox post type:<br>';
                 foreach ( $custom_post_types as $post_type_obj ):
                     $labels = get_post_type_labels( $post_type_obj );
-                    echo '<label><input type="radio" name="bc_settings_cf[custom_field_group][.narray.][field][.narray2.][checkbox_post]" value="'.esc_attr( $post_type_obj->name ).'" ';
+                    echo '<label><input type=\"radio\" name=\"bc_settings_cf[custom_field_group][.narray.][field][.narray2.][checkbox_post]\" value=\"'.esc_attr( $post_type_obj->name ).'\" ';
                     echo '> '.esc_html( $labels->name ).' </label>';
 
                 endforeach;
                 echo '</div>';
-                ?>';
+                ?>";
                 out += '<br><br><a href="#" class="remove_field button-secondary delete"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right;" class="dashicons dashicons-move icondrop"></span></div></div>';
                 out = out.replace(/.narray2./g, narray2);
                 out = out.replace(/.narray./g, narray);

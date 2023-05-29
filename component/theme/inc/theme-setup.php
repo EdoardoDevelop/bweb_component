@@ -40,7 +40,10 @@ if ( ! function_exists( 'bcTheme_setup' ) ) {
  
         function _custom_sizes_for_gut( $sizes ) {
             return array_merge( $sizes, array(
-                'image_thumb' => __( 'Gallery Thumb' )
+                'image_thumb' => __( 'Thumb' ),
+                'image_single' => __( 'Single' ),
+                'image_big' => __( 'Big' ),
+                'image_HD' => __( 'HD' )
             ) );
         }
 

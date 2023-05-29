@@ -113,12 +113,14 @@
 			var ObjCf = [];
             ObjCf.push({value: '---', label: '---'});
             if(slug_cpt != '---'){
+                
                 for (const [key, value] of Object.entries(cf)) {
-                    
-                    if(value.typepost.includes(slug_cpt)){
-                        for (const [keyF, valueF] of Object.entries(value.field)) {
-                            if(valueF.type != 'multipleimg'){
-                                ObjCf.push({value: wpFeSanitizeTitle(value.namegroup)+'_'+wpFeSanitizeTitle(valueF.namefield), label: valueF.namefield});
+                    if(value.typepost != undefined){
+                        if(value.typepost.includes(slug_cpt)){
+                            for (const [keyF, valueF] of Object.entries(value.field)) {
+                                if(valueF.type != 'multipleimg'){
+                                    ObjCf.push({value: wpFeSanitizeTitle(value.namegroup)+'_'+wpFeSanitizeTitle(valueF.namefield), label: valueF.namefield});
+                                }
                             }
                         }
                     }
