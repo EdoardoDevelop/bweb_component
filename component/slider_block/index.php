@@ -31,7 +31,6 @@ class BSBSlider{
 
 	function onInit() {
         wp_register_script( 'bc-slide', BSB_DIR.'dist/editor.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ) );
-        wp_localize_script( 'bc-slide', 'imagesize', wp_get_registered_image_subsizes() );
 		register_block_type('bc/slide', array(
 			'api_version'     => 2,
 			'editor_script' => array('bc-slide')
