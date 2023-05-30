@@ -184,10 +184,6 @@
         default: 0
       },
       
-      'Contalignment': {
-        type: 'string'
-      },
-      
       'images': {
         type: 'array',
         source: 'query',
@@ -248,7 +244,6 @@
       var Overlaycolor = props.attributes.Overlaycolor;
       var isTextShow = props.attributes.isTextShow;
       var Textalignment = props.attributes.Textalignment;
-      var Contalignment = props.attributes.Contalignment;
       var arrowShow = props.attributes.arrowShow;
       var pointerShow = props.attributes.pointerShow;
 
@@ -280,7 +275,6 @@
         });
       };
 
-      
       var blockPropsCarousel = useBlockProps({
         className: 'bc_slide carousel slide',
         'data-id':'bc_slide',
@@ -399,6 +393,7 @@
 
                     })
                     :null
+
                   )
                 )
               };
