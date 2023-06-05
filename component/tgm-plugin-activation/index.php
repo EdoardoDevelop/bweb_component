@@ -96,6 +96,7 @@
             array("name"=>"Taxonomy images","slug"=>"taxonomy-images","icon"=>"https://ps.w.org/taxonomy-images/assets/icon-128x128.png"),
             array("name"=>"Complianz | GDPR/CCPA Cookie Consent","slug"=>"complianz-gdpr","icon"=>"https://ps.w.org/complianz-gdpr/assets/icon-128x128.png"),
             array("name"=>"Wp pagenavi","slug"=>"wp-pagenavi","icon"=>"https://ps.w.org/wp-pagenavi/assets/icon.svg"),
+            array("name"=>"Quicklink","slug"=>"quicklink","icon"=>"https://ps.w.org/quicklink/assets/icon-128x128.png"),
             array("name"=>"Google Analytics Dashboard","slug"=>"google-analytics-dashboard-for-wp","icon"=>"https://ps.w.org/google-analytics-dashboard-for-wp/assets/icon-128x128.png"),
             array("name"=>"Site Kit by Google","slug"=>"google-site-kit","icon"=>"https://ps.w.org/google-site-kit/assets/icon-128x128.png"),
             array("name"=>"WP Mail SMTP","slug"=>"wp-mail-smtp","icon"=>"https://ps.w.org/wp-mail-smtp/assets/icon-128x128.png"),

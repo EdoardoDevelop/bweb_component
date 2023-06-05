@@ -30,7 +30,7 @@ class BSBSlider{
 
 
 	function onInit() {
-        wp_register_script( 'bc-slide', BSB_DIR.'dist/editor.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ) );
+        wp_register_script( 'bc-slide', BSB_DIR.'dist/editor.min.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ) );
 		register_block_type('bc/slide', array(
 			'api_version'     => 2,
 			'editor_script' => array('bc-slide')
@@ -39,6 +39,13 @@ class BSBSlider{
 	}
     public function bc_slide_gutenberg_block_front(){
         if(! is_admin()){
+            
+            wp_enqueue_style(
+                'bcs-bootstrap-carousel-css',
+                BSB_ASSETS_DIR . 'carousel.css',
+                array( 'wp-edit-blocks' ),
+                time()
+            );
             wp_enqueue_style(
                 'bcs-front-css',
                 BSB_ASSETS_DIR . 'front.css',
@@ -46,31 +53,34 @@ class BSBSlider{
                 time()
             );
             
-            /*
-            wp_enqueue_style(
-                'bcs-bootstrap-carousel-css',
-                BSB_ASSETS_DIR . 'carousel.css',
-                array( 'wp-edit-blocks' ),
-                time()
-            );
             wp_enqueue_script(
                 'bcs-bootstrap-carousel-js',
                 BSB_ASSETS_DIR . 'carousel.js',
                 array( 'jquery' ),
                 time()
-            );*/
+            );
             
         }
     }
 	public function bc_slide_gutenberg_block_assets(){
-       
         wp_enqueue_style(
-            'bcs-block-slide-css',
-            BSB_ASSETS_DIR . 'style.css',
+            'bcs-bootstrap-carousel-css',
+            BSB_ASSETS_DIR . 'carousel.css',
             array( 'wp-edit-blocks' ),
             time()
         );
-        
+        wp_enqueue_style(
+            'bcs-block-slide-css',
+            BSB_ASSETS_DIR . 'front.css',
+            array( 'wp-edit-blocks' ),
+            time()
+        );
+        wp_enqueue_script(
+            'bcs-bootstrap-carousel-js',
+            BSB_ASSETS_DIR . 'carousel.js',
+            array( 'jquery' ),
+            time()
+        );
     }
     public function check_registered_image_size(){
         if ( !has_image_size( 'image_HD' ) ) {

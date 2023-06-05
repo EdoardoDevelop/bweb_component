@@ -1,3 +1,20 @@
+.bcslide-tab-panel .components-tab-panel__tabs-item{
+  flex: 1 1 0px;
+}
+
+.dashicons, .dashicons-before:before{
+  vertical-align: text-top;
+}
+.components-focal-point-picker{
+  border: 1px solid #fff;
+}
+.drag_modal_background{
+  background-color: transparent !important;
+  box-shadow:none !important;
+}
+.drag_modal_opacity{
+  opacity: 0;
+}
 .carousel-inner,
 .carousel-item{
     height: 100%;
@@ -51,3 +68,9 @@
 .carousel-control-next, .carousel-control-prev{
     z-index: 3 !important;
   }
+
+.carousel-indicators.circle li{
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+}
