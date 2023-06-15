@@ -91,7 +91,7 @@
                                                 ( $v2['type'] == 'testo' )? 'readonly' : ''
                                             );
                                             printf(
-                                                '<div style="display:inline-block">Name<br><input type="text" class="input_field_forms_name" name="bc_settings_forms[forms][%s][field][%s][label]" value="%s" %s/></div>',
+                                                '<div style="display:inline-block">Label<br><input type="text" class="input_field_forms_name" name="bc_settings_forms[forms][%s][field][%s][label]" value="%s" %s/></div>',
                                                 $narray,
                                                 $narray2,
                                                 $v2['label'],

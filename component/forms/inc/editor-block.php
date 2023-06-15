@@ -86,7 +86,7 @@ class BcFormsBlock {
                   </svg></a>
                   <br>';
                 
-                $html .= '<input type="text" id="txt_captcha_'.$idform.'" name="captcha_challenge" pattern="[A-Z]{6}">';
+                $html .= '<input type="text" id="txt_captcha_'.$idform.'" name="captcha_challenge">';
                 $html .= '</div></div>';
                 $html .= '<div class="form-group">';
                 $html .= '<input type="submit" id="submit'.$idform.'" class="btn" value="Invia"> <span id="bc_contactForm_status'.$idform.'"></span>';
