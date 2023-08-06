@@ -24,6 +24,7 @@ Moduli attivabili/disattivabili:
 - ScrollReveal (Animate elements)
 - Swup (Page Transition)
 - Animsition (Page Transition)
+- Minify css/js
 
 Moduli non disattivabili:
 - Plugin consigliati
