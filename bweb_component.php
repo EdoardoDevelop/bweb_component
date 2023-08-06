@@ -2,10 +2,12 @@
 /*
 Plugin Name: Bweb Component
 Plugin URI: https://github.com/EdoardoDevelop/bweb_component/
-Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/script attivabili su necessità.
+Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli attivabili su necessità.
 Author: Edoardo Monti (Bweb)
-Version: 1.1.0
+Version: 1.1.1
 Author URI: https://www.bwebagency.it/
+requires: 6.0.0
+tested: 6.2.2
 */
 if (!defined("ABSPATH")) {
 exit; // Exit if accessed directly
@@ -55,12 +57,4 @@ class BwebComponentRun {
 	}
 }
 New BwebComponentRun();
-
-
-
-
-
-
-
-  
 

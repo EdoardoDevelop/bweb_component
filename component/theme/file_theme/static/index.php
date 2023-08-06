@@ -40,7 +40,7 @@ get_header();
             endif;
 
         endwhile;
-        the_posts_navigation(['type'=>'list']);
+        if (function_exists('wp_pagenavi')){wp_pagenavi();};
 
     else :
 

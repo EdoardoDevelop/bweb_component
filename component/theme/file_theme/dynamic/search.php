@@ -37,7 +37,7 @@ get_header();
 
 			endwhile;
 
-			the_posts_navigation();
+			if (function_exists('wp_pagenavi')){wp_pagenavi();};
 
 		else :
 

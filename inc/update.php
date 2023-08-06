@@ -89,7 +89,7 @@ class bc_Updater {
 				$this->get_repository_info(); // Get the repo info
 
 				$out_of_date = version_compare( $this->github_response['tag_name'], $checked[ $this->basename ], 'gt' ); // Check if we're out of date
-
+				
 				if( $out_of_date ) {
 
 					$new_files = $this->github_response['zipball_url']; // Get the ZIP
@@ -118,13 +118,12 @@ class bc_Updater {
 			if( $args->slug == current( explode( '/' , $this->basename ) ) ) { // And it's our slug
 
 				$this->get_repository_info(); // Get our repo info
-
 				// Set it to an array
 				$plugin = array(
 					'name'				=> $this->plugin["Name"],
 					'slug'				=> $this->basename,
-					'requires'					=> '6.0.0',
-					'tested'						=> '6.1.1',
+					'requires'			=> $this->plugin["requires"],
+					'tested'			=> $this->plugin["tested"],
 					/*'rating'						=> '100.0',
 					'num_ratings'				=> '10823',
 					'downloaded'				=> '14249',

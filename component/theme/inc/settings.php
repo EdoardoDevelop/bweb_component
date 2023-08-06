@@ -12,7 +12,6 @@ class BcThemeSettings {
 	public function init_admin(){
 		add_action( 'admin_menu', array( $this, 'bctheme_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bctheme_settings_page_init' ) );
-		add_action('admin_enqueue_scripts', array( $this, '_enqueue_scripts' ));
 		add_action('admin_footer-bweb-component_page_theme', array( $this, 'admin_js_theme' ));
 	}
 
@@ -42,29 +41,11 @@ class BcThemeSettings {
 				?>
 					<div class="bc-theme-bar" style="display: block;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-top: 1px solid #ccc">
 						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_generic" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none; box-shadow: none; ">Generic</a>
-						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_swup" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Swup</a>
-						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_pagetransition" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Page Transition</a>
-						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_scrollreveal" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Scroll Reveal</a>
-						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_dev" style="float: right; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Dev</a>
+						<a href="#" class="bc-theme-bar-item" attr_theme_bar=".theme_dev" style="float: left; color: #444;padding: 10px 30px;font-size: 15px;text-decoration: none;background-color: #eee;box-shadow: none;">Dev</a>
 					</div>
 					<div class="bar_cont theme_generic" style="padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
 						<?php
 						do_settings_sections( 'bctheme-settings-generic' );
-						?>
-					</div>
-					<div class="bar_cont theme_swup" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
-						<?php
-						do_settings_sections( 'bctheme-settings-swup' );
-						?>
-					</div>
-					<div class="bar_cont theme_pagetransition" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
-						<?php
-						do_settings_sections( 'bctheme-settings-pagetransition' );
-						?>
-					</div>
-					<div class="bar_cont theme_scrollreveal" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
-						<?php
-						do_settings_sections( 'bctheme-settings-scrollreveal' );
 						?>
 					</div>
 					<div class="bar_cont theme_dev" style="display:none;padding:10px;background-color: #fff; border-left: 1px solid #ccc; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc">
@@ -92,24 +73,6 @@ class BcThemeSettings {
 			'', // title
 			array( $this, 'bctheme_settings_section_info' ), // callback
 			'bctheme-settings-generic' // page
-		);
-		add_settings_section(
-			'bctheme_settings_swup_section', // id
-			'', // title
-			array( $this, 'bctheme_settings_section_info' ), // callback
-			'bctheme-settings-swup' // page
-		);
-		add_settings_section(
-			'bctheme_settings_pagetransition_section', // id
-			'', // title
-			array( $this, 'bctheme_settings_section_info' ), // callback
-			'bctheme-settings-pagetransition' // page
-		);
-		add_settings_section(
-			'bctheme_settings_scrollreveal_section', // id
-			'', // title
-			array( $this, 'bctheme_settings_section_info' ), // callback
-			'bctheme-settings-scrollreveal' // page
 		);
 		
 		add_settings_section(
@@ -158,98 +121,6 @@ class BcThemeSettings {
 			array( $this, 'include_file_template_callback' ), // callback
 			'bctheme-settings-generic', // page
 			'bctheme_settings_generic_section' // section
-		);
-
-		add_settings_field(
-			'include_swup', // id
-			'Abilita Swup', // title
-			array( $this, 'include_swup_callback' ), // callback
-			'bctheme-settings-swup', // page
-			'bctheme_settings_swup_section' // section
-		);
-		
-		add_settings_field(
-			'css_swup', // id
-			'CSS Swup', // title
-			array( $this, 'css_swup_callback' ), // callback
-			'bctheme-settings-swup', // page
-			'bctheme_settings_swup_section' // section
-		);
-
-		add_settings_field(
-			'script_swup', // id
-			'JS Swup', // title
-			array( $this, 'script_swup_callback' ), // callback
-			'bctheme-settings-swup', // page
-			'bctheme_settings_swup_section' // section
-		);
-
-		add_settings_field(
-			'include_pagetransition', // id
-			'Abilita Page Transition', // title
-			array( $this, 'include_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		add_settings_field(
-			'page_transition', // id
-			'Page Animation', // title
-			array( $this, 'page_transition_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		add_settings_field(
-			'page_in_transition', // id
-			'Page In Animation', // title
-			array( $this, 'page_in_transition_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		add_settings_field(
-			'page_out_transition', // id
-			'Page Out Animation', // title
-			array( $this, 'page_out_transition_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		add_settings_field(
-			'page_in_duration', // id
-			'Page In Animation Duration', // title
-			array( $this, 'page_in_duration_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		
-		add_settings_field(
-			'page_out_duration', // id
-			'Page Out Animation Duration', // title
-			array( $this, 'page_out_duration_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		add_settings_field(
-			'show_loading', // id
-			'Show Loading', // title
-			array( $this, 'show_loading_pagetransition_callback' ), // callback
-			'bctheme-settings-pagetransition', // page
-			'bctheme_settings_pagetransition_section' // section
-		);
-		
-		add_settings_field(
-			'include_scrollreveal', // id
-			'Abilita Scroll Reveal', // title
-			array( $this, 'include_scrollreveal_callback' ), // callback
-			'bctheme-settings-scrollreveal', // page
-			'bctheme_settings_scrollreveal_section' // section
-		);
-
-		
-		add_settings_field(
-			'item_scrollreveal', // id
-			'<a class="add_reveal_button button-secondary"><span class="dashicons dashicons-plus-alt" style="vertical-align: text-top;"></span> Aggiungi</a>', // title
-			array( $this, 'item_scrollreveal_callback' ), // callback
-			'bctheme-settings-scrollreveal', // page
-			'bctheme_settings_scrollreveal_section' // section
 		);
 
 		add_settings_field(
@@ -402,46 +273,6 @@ class BcThemeSettings {
 			}
 		}
 
-		if ( isset( $input['include_swup'] ) ) {
-			$sanitary_values['include_swup'] = $input['include_swup'];
-		}
-		if ( isset( $input['css_swup'] ) ) {
-			$sanitary_values['css_swup'] = $input['css_swup'];
-		}
-		if ( isset( $input['script_swup'] ) ) {
-			$sanitary_values['script_swup'] = $input['script_swup'];
-		}
-
-
-		if ( isset( $input['include_pagetransition'] ) ) {
-			$sanitary_values['include_pagetransition'] = $input['include_pagetransition'];
-		}
-
-		if ( isset( $input['page_in_transition'] ) ) {
-			$sanitary_values['page_in_transition'] = $input['page_in_transition'];
-		}
-		if ( isset( $input['page_out_transition'] ) ) {
-			$sanitary_values['page_out_transition'] = $input['page_out_transition'];
-		}
-		if ( isset( $input['page_in_duration'] ) ) {
-			$sanitary_values['page_in_duration'] = $input['page_in_duration'];
-		}
-		if ( isset( $input['page_out_duration'] ) ) {
-			$sanitary_values['page_out_duration'] = $input['page_out_duration'];
-		}
-		if ( isset( $input['show_loading'] ) ) {
-			$sanitary_values['show_loading'] = $input['show_loading'];
-		}
-		if ( isset( $input['loading_color'] ) ) {
-			$sanitary_values['loading_color'] = $input['loading_color'];
-		}
-		
-		if ( isset( $input['include_scrollreveal'] ) ) {
-			$sanitary_values['include_scrollreveal'] = $input['include_scrollreveal'];
-		}
-		if ( isset( $input['item_scrollreveal'] ) ) {
-			$sanitary_values['item_scrollreveal'] = $input['item_scrollreveal'];
-		}
 
 		if ( isset( $_REQUEST['gen_html'] ) && $_REQUEST['gen_html'] == 'true' ) {
 			if($folder_theme!=''){
@@ -649,179 +480,6 @@ class BcThemeSettings {
 	}
 
 	
-	public function include_swup_callback() {
-		printf(
-			'<input type="checkbox" name="bctheme_settings_option[include_swup]" id="include_swup" value="include_swup" %s>',
-			( isset( $this->bctheme_settings_options['include_swup'] ) && $this->bctheme_settings_options['include_swup'] === 'include_swup' ) ? 'checked' : ''
-		);
-	}
-	public function css_swup_callback() {
-		$default = '.site-main{
-			transition: 0.6s;
-			opacity: 1;
-			position: relative;
-			top: 0;
-			left: 0;
-		}
-		
-		/* In */
-		html.is-animating .site-main{
-			opacity: 0;
-			top: -20px;
-		}
-		
-		/* Out */
-		html.is-leaving .site-main{
-			opacity: 0;
-			top: 70px;
-		}';
-		
-		printf(
-			'<textarea name="bctheme_settings_option[css_swup]" id="css_swup">%s</textarea>',
-			( isset( $this->bctheme_settings_options['css_swup'] )) ? esc_attr( $this->bctheme_settings_options['css_swup']) : $default
-			
-		);
-	}
-	public function script_swup_callback() {
-		$default = file_get_contents(plugin_dir_path( PLUGIN_FILE_URL ) . 'component/theme/assets/js/script-swup.js');
-		
-		printf(
-			'<textarea name="bctheme_settings_option[script_swup]" id="script_swup">%s</textarea>',
-			( isset( $this->bctheme_settings_options['script_swup'] )) ? esc_attr( $this->bctheme_settings_options['script_swup']) : $default
-			
-		);
-	}
-
-	public function include_pagetransition_callback() {
-		printf(
-			'<input type="checkbox" name="bctheme_settings_option[include_pagetransition]" id="include_pagetransition" value="include_pagetransition" %s>',
-			( isset( $this->bctheme_settings_options['include_pagetransition'] ) && $this->bctheme_settings_options['include_pagetransition'] === 'include_pagetransition' ) ? 'checked' : ''
-		);
-	}
-
-	
-	public function page_transition_pagetransition_callback() {
-		 
-			foreach ( $this->get_page_transitions() as $key => $value ): 
-				printf(
-					'<div style="display:inline-block; text-align:center; margin:5px;" class="gif_page_transition" data-transition="%s"><img src="%s" width="150px"><br>%s</div>',
-					$key,
-					plugin_dir_url( PLUGIN_FILE_URL ) .'component/theme/assets/gif_transition/'.$key.'.gif',
-					$value
-				);
-			endforeach;
-		
-	}
-	public function page_in_transition_pagetransition_callback() {
-		?>
-		
-		<select name="bctheme_settings_option[page_in_transition]" id="page_in_transition">
-			<option value=""><?php _e( 'None', 'page-transition' );?></option>
-			<?php 
-			foreach ( $this->get_page_in_transitions() as $key => $value ): 
-				printf(
-					'<option value="%s" %s>%s</option>',
-					$key,
-					( isset( $this->bctheme_settings_options['page_in_transition'] ) && $this->bctheme_settings_options['page_in_transition'] === $key ) ? 'selected="selected"' : '',
-					$value
-				);
-			endforeach;
-			?>
-		</select>
-		<?php
-	}
-	
-	public function page_out_transition_pagetransition_callback() {
-		?>
-		<select name="bctheme_settings_option[page_out_transition]" id="page_out_transition">
-			<option value=""><?php _e( 'None', 'page-transition' );?></option>
-			<?php 
-			foreach ( $this->get_page_out_transitions() as $key => $value ): 
-				printf(
-					'<option value="%s" %s>%s</option>',
-					$key,
-					( isset( $this->bctheme_settings_options['page_out_transition'] ) && $this->bctheme_settings_options['page_out_transition'] === $key ) ? 'selected="selected"' : '',
-					$value
-				);
-			endforeach;
-			?>
-		</select>
-		<?php
-	}
-
-	public function page_in_duration_pagetransition_callback(){
-		printf(
-			'<input type="number" name="bctheme_settings_option[page_in_duration]" id="page_in_duration" style="width:70px;" min="200" max="10000" value="%s">',
-			( isset( $this->bctheme_settings_options['page_in_duration'] ) ) ? $this->bctheme_settings_options['page_in_duration'] : '1500'
-		);
-	}
-	public function page_out_duration_pagetransition_callback(){
-		printf(
-			'<input type="number" name="bctheme_settings_option[page_out_duration]" id="page_out_duration" style="width:70px;" min="200" max="10000" value="%s">',
-			( isset( $this->bctheme_settings_options['page_out_duration'] ) ) ? $this->bctheme_settings_options['page_out_duration'] : '800'
-		);
-	}
-	public function show_loading_pagetransition_callback(){
-		printf(
-			'<input type="checkbox" name="bctheme_settings_option[show_loading]" id="show_loading" value="true" %s>',
-			( isset( $this->bctheme_settings_options['show_loading'] ) && $this->bctheme_settings_options['show_loading'] === 'true' ) ? 'checked' : ''
-		);
-				
-	}
-	
-	public function include_scrollreveal_callback() {
-		printf(
-			'<input type="checkbox" name="bctheme_settings_option[include_scrollreveal]" id="include_scrollreveal" value="include_scrollreveal" %s>',
-			( isset( $this->bctheme_settings_options['include_scrollreveal'] ) && $this->bctheme_settings_options['include_scrollreveal'] === 'include_scrollreveal' ) ? 'checked' : ''
-		);
-	}
-
-	public function item_scrollreveal_callback(){
-		?>
-
-			<div id="cont_reveal">
-				<?php
-				if(isset($this->bctheme_settings_options['item_scrollreveal'])){
-					$item_scrollreveal = $this->bctheme_settings_options['item_scrollreveal'];
-					if(isset($item_scrollreveal) && is_array($item_scrollreveal)) {
-						foreach($item_scrollreveal as $x => $value ){
-							echo '<div class="reveal-item" attr_n="'.$x.'" style="border:1px solid #ccc; padding:20px; display:inline-block; margin:10px;">';
-							echo 'class:<br><input style="font-weight: bold;" type="text" class="regular-text item_scrollreveal_class" name="bctheme_settings_option[item_scrollreveal]['.$x.'][class]" value="'.$value['class'].'"/><br><br>';
-							echo 'distance:<br><input type="text" class="regular-text item_scrollreveal_distance" name="bctheme_settings_option[item_scrollreveal]['.$x.'][distance]" value="'.$value['distance'].'"/><br><br>';
-							echo 'origin:<br>';
-							printf(
-								'<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['.$x.'][origin]" value="top" %s>top</label> | ',
-								( isset( $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] ) && $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] === 'top' ) ? 'checked' : ''
-							);
-							printf(
-								'<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['.$x.'][origin]" value="right" %s>right</label> | ',
-								( isset( $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] ) && $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] === 'right' ) ? 'checked' : ''
-							);
-							printf(
-								'<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['.$x.'][origin]" value="bottom" %s>bottom</label> | ',
-								( isset( $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] ) && $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] === 'bottom' ) ? 'checked' : ''
-							);
-							printf(
-								'<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['.$x.'][origin]" value="left" %s>left</label><br><br>',
-								( isset( $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] ) && $this->bctheme_settings_options['item_scrollreveal'][$x]['origin'] === 'left' ) ? 'checked' : ''
-							);
-							echo 'duration:<br><input type="text" class="regular-text item_scrollreveal_duration" name="bctheme_settings_option[item_scrollreveal]['.$x.'][duration]" value="'.$value['duration'].'"/><br><br>';
-							echo 'easing:<br><input type="text" class="regular-text item_scrollreveal_easing" name="bctheme_settings_option[item_scrollreveal]['.$x.'][easing]" value="'.$value['easing'].'"/><br><br>';
-							echo 'interval:<br><input type="text" class="regular-text item_scrollreveal_interval" name="bctheme_settings_option[item_scrollreveal]['.$x.'][interval]" value="'.$value['interval'].'"/><br><br><br>';
-							echo '<a href="#" class="remove_item button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right; cursor:pointer;" class="dashicons dashicons-controls-play iconpreview"></span>';
-							echo '</div>';
-						}
-					}
-
-				}
-				
-				?>
-			
-			</div>
-
-		<?php
-	}
-
 	public function gen_html_callback(){
 		?>
 		<button value="true" name="gen_html" class="button button-primary">Genera html da queste impostazioni</button>
@@ -893,47 +551,11 @@ class BcThemeSettings {
 		return unlink($file);
 	}
 
-	public function _enqueue_scripts($hook){
-		
-
-		if($hook == 'bweb-component_page_theme'){
-			wp_enqueue_script( 'bcTheme-scrollreveal-scripts', plugin_dir_url( PLUGIN_FILE_URL ) .'component/theme/assets/js/scrollreveal.min.js', array( 'jquery' ),'', true );
-			wp_enqueue_code_editor(array('type' => 'text/html'));
-			
-		
-			wp_enqueue_script('wp-theme-plugin-editor');
-			wp_enqueue_style('wp-codemirror');
-			
-		}
-	}
-
 	public function admin_js_theme($hook){
 		?>
 		<script>
 			jQuery(document).ready(function($) {
-				var editorSettingsJS = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};
-				editorSettingsJS.codemirror = _.extend(
-					{},
-					editorSettingsJS.codemirror,
-					{
-						indentUnit: 2,
-						tabSize: 2,
-						mode: 'javascript',
-					}
-				);
-				
-
-				var editorSettingsCSS = wp.codeEditor.defaultSettings ? _.clone( wp.codeEditor.defaultSettings ) : {};
-				editorSettingsCSS.codemirror = _.extend(
-					{},
-					editorSettingsCSS.codemirror,
-					{
-						indentUnit: 2,
-						tabSize: 2,
-						mode: 'css',
-					}
-				);
-				
+								
 				$(".bc-theme-bar-item").click(function(e){ 
 					e.preventDefault(); 
 					var i;
@@ -946,154 +568,14 @@ class BcThemeSettings {
 					$('.bc-theme-bar-item').css('background-color','#eee');
 					$(this).css('background-color','#fff');
 					
-					if(div == '.theme_swup'){
-						if ( $( ".theme_swup .CodeMirror" ).length ) {}else{
-							wp.codeEditor.initialize( $('#script_swup'), editorSettingsJS );
-							wp.codeEditor.initialize( $('#css_swup'), editorSettingsCSS );
-						}
-					}
-					
-
-				});
-
-
-				$(".add_reveal_button").click(function(e){
-					e.preventDefault();
-					var x = $('.reveal-item').length;
-					if(x>0){
-						x = parseInt($('#cont_reveal .reveal-item:last-child').attr('attr_n')) + 1;
-					}
-					
-					var out = '';
-					out += '<div class="reveal-item" attr_n="'+x+'" style="border:1px solid #ccc; padding:20px; display:inline-block; margin:10px;">';
-					out += 'class:<br><input style="font-weight: bold;" type="text" class="regular-text item_scrollreveal_class" name="bctheme_settings_option[item_scrollreveal]['+x+'][class]" value=".reveal'+x+'"/><br><br>';
-					out += 'distance:<br><input type="text" class="regular-text item_scrollreveal_distance" name="bctheme_settings_option[item_scrollreveal]['+x+'][distance]" value="80px"/><br><br>';
-					out += 'origin:<br><label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['+x+'][origin]" value="top" />top</label> | ';
-					out += '<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['+x+'][origin]" value="right" />right</label> | ';
-					out += '<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['+x+'][origin]" value="bottom" checked/>bottom</label> | ';
-					out += '<label><input type="radio" class="item_scrollreveal_origin" name="bctheme_settings_option[item_scrollreveal]['+x+'][origin]" value="left" />left</label><br><br>';
-					out += 'duration:<br><input type="text" class="regular-text item_scrollreveal_duration" name="bctheme_settings_option[item_scrollreveal]['+x+'][duration]" value="1000"/><br><br>';
-					out += 'easing:<br><input type="text" class="regular-text item_scrollreveal_easing" name="bctheme_settings_option[item_scrollreveal]['+x+'][easing]" value="cubic-bezier(.215, .61, .355, 1)"/><br><br>';
-					out += 'interval:<br><input type="text" class="regular-text item_scrollreveal_interval" name="bctheme_settings_option[item_scrollreveal]['+x+'][interval]" value="500"/><br><br><br>';
-					out += '<a href="#" class="remove_item button-secondary"><span class="dashicons dashicons-trash" style="vertical-align: text-top;"></span> Rimuovi</a><span style="float:right; cursor:pointer;" class="dashicons dashicons-controls-play iconpreview"></span>';
-					out += '</div>';
-					$("#cont_reveal").append(out);
-				});
-
-				$("#cont_reveal").on("click",".remove_item", function(e){
-					e.preventDefault(); 
-					var c = confirm('Confermi la cancellazione?');
-					if (c) $(this).parent('.reveal-item').remove();
-
-				});
-
-				$("#cont_reveal").on("click",".iconpreview", function(e){
-                    ScrollReveal().destroy();
-					var t = $(this).parent('.reveal-item');
-					ScrollReveal().reveal(t,{ 
-						distance: $('.item_scrollreveal_distance',t).val(),
-						origin: $('.item_scrollreveal_origin:checked',t).val(),
-						duration: $('.item_scrollreveal_duration',t).val(),
-						easing: $('.item_scrollreveal_easing',t).val(),
-						interval: $('.item_scrollreveal_interval',t).val(),
-						reset: true
-					});
 					
 				});
-				$(".gif_page_transition").on("click", function(e){
-					var k = $(this).data('transition');
-					if(k == 'fade'){
-						$("#page_in_transition").val('fade-in').change();
-						$("#page_out_transition").val('fade-out').change();
-					}
-					if(k == 'fade_up'){
-						$("#page_in_transition").val('fade-in-up-sm').change();
-						$("#page_out_transition").val('fade-out-up-sm').change();
-					}
-					if(k == 'fade_down'){
-						$("#page_in_transition").val('fade-in-down-sm').change();
-						$("#page_out_transition").val('fade-out-down-sm').change();
-					}
-					if(k == 'slide_top'){
-						$("#page_in_transition").val('overlay-slide-in-top').change();
-						$("#page_out_transition").val('overlay-slide-out-top').change();
-					}
-					if(k == 'slide_bottom'){
-						$("#page_in_transition").val('overlay-slide-in-bottom').change();
-						$("#page_out_transition").val('overlay-slide-out-bottom').change();
-					}
-					if(k == 'zoom'){
-						$("#page_in_transition").val('zoom-in-sm').change();
-						$("#page_out_transition").val('zoom-out-sm').change();
-					}
-				});
+
+				
 			})
 		</script>
 		<?php
 	}
-
-	public function get_page_transitions() {
-		return array(
-			'fade' => 'Fade',
-			'fade_up' => 'Fade Up',
-			'fade_down' => 'Fade Down',
-			'slide_top' => 'Slide Top',
-			'slide_bottom' => 'Slide Bottom',
-			'zoom' => 'Zoom',
-				
-				
-		);
-	}
-
-	public function get_page_in_transitions() {
-		return array(
-				'fade-in' => 'Fade In',
-				/*'fade-in-up' => 'Fade In Up',
-				'fade-in-down' => 'Fade In Down',
-				'fade-in-left' => 'Fade In Left',
-				'fade-in-right' => 'Fade In Right',*/
-				'fade-in-up-sm' => 'Fade In Up',
-				'fade-in-down-sm' => 'Fade In Down',
-				'fade-in-left-sm' => 'Fade In Left',
-				'fade-in-right-sm' => 'Fade In Right',
-				'rotate-in' => 'Rotate In',
-				'flip-in-x' => 'Flip In X',
-				'flip-in-y' => 'Flip In Y',
-				//'zoom-in' => 'Zoom In',
-				'zoom-in-sm' => 'Zoom In',
-				'overlay-slide-in-top' => 'Overlay Slide in Top',
-				'overlay-slide-in-bottom' => 'Overlay Slide in Bottom',
-				'overlay-slide-in-left' => 'Overlay Slide in Left',
-				'overlay-slide-in-right' => 'Overlay Slide in Right',
-				'overlay-slide-in-top-bottom' => 'Overlay Slide in Top Bottom',
-				
-			);
-	}
-	public function get_page_out_transitions() {
-		return array(
-				'fade-out' => 'Fade Out',
-				/*'fade-out-up' => 'Fade Out Up',
-				'fade-out-down' => 'Fade Out Down',
-				'fade-out-left' => 'Fade Out Left',
-				'fade-out-right' => 'Fade Out Right',*/
-				'fade-out-up-sm' => 'Fade Out Up',
-				'fade-out-down-sm' => 'Fade Out Down',
-				'fade-out-left-sm' => 'Fade Out Left',
-				'fade-out-right-sm' => 'Fade Out Right',
-				'rotate-out' => 'Rotate Out',
-				'flip-out-x' => 'Flip Out X',
-				'flip-out-y' => 'Flip Out Y',
-				//'zoom-out' => 'Zoom Out',
-				'zoom-out-sm' => 'Zoom Out',
-				'overlay-slide-out-top' => 'Overlay Slide out Top',
-				'overlay-slide-out-bottom' => 'Overlay Slide out Bottom',
-				'overlay-slide-out-left' => 'Overlay Slide out Left',
-				'overlay-slide-out-right' => 'Overlay Slide out Right',
-				'overlay-slide-out-top-bottom' => 'Overlay Slide out Top Bottom',
-			);
-	}
-
-
 	/*public function _print_scripts_styles() {
 
 		$result = [];

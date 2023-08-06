@@ -36,6 +36,8 @@
     text-decoration: none;
 }
 label.component_title{cursor: text;}
+
+.component_title .icon,
 .component_title .dashicons,.component_title  .dashicons-before:before{
     width: 26px;
     height: 26px;

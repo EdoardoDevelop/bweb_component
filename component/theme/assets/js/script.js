@@ -46,15 +46,4 @@ function initalilizeMagnificPopup(){
     });
 }
 
-function addClassActiveMenu(){
-    jQuery('#navbarTop .menu-item').each(function(){
-      var a = jQuery(this).find(".nav-link");
-      var href = a.attr('href');
-      jQuery(this).removeClass('active');
-      jQuery(a).removeClass('active');
-      if(href == window.location){
-          jQuery(this).addClass('active');
-          jQuery(a).addClass('active');
-      }
-    });
-  }
+

@@ -138,7 +138,12 @@ class BwebComponentSettings {
                 $data = $BCdatacomponent->get_component_data( $foldername . '/index.php');
                 $icon = '';
                 if($data['Icon']!=''){
-                    $icon = '<span class="dashicons '.$data['Icon'].'"></span>';
+					if (str_starts_with( $data['Icon'], 'dashicons-' ) ) {
+                    	$icon = '<span class="dashicons '.$data['Icon'].'"></span>';
+					}
+					if ( str_starts_with( $data['Icon'], 'data:image' ) ) {
+						$icon = '<img src="'.$data['Icon'].'" class="icon">';
+					}
                 }
 				
 				$badge = '';
