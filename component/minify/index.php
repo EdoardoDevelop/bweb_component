@@ -17,6 +17,7 @@ class bc_minify {
     }
     public function load_minify_scripts(){
         global $wp_scripts;
+        //print_r($wp_scripts);
         if(!function_exists('get_admin_page_parent')){
             foreach( $wp_scripts->queue as $script ) :
                 if(empty($wp_scripts->registered[$script]->src)){

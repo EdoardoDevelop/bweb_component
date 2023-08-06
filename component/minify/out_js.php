@@ -12,7 +12,7 @@ if(!empty($_GET['file'])){
             'flaggedComments' => false
         ));
 
-        echo $js;
+        echo $minifiedCode;
     }
 }
 

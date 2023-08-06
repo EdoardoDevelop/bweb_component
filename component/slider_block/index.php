@@ -30,7 +30,7 @@ class BSBSlider{
 
 
 	function onInit() {
-        wp_register_script( 'bc-slide', BSB_DIR.'dist/editor.min.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ) );
+        wp_register_script( 'bc-slide', BSB_DIR.'dist/editor.min.js', array( 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ),'',true );
 		register_block_type('bc/slide', array(
 			'api_version'     => 2,
 			'editor_script' => array('bc-slide')
