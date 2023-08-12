@@ -57,7 +57,8 @@ class BSBSlider{
                 'bcs-bootstrap-carousel-js',
                 BSB_ASSETS_DIR . 'carousel.js',
                 array( 'jquery' ),
-                time()
+                time(),
+                true
             );
             
         }
@@ -79,7 +80,8 @@ class BSBSlider{
             'bcs-bootstrap-carousel-js',
             BSB_ASSETS_DIR . 'carousel.js',
             array( 'jquery' ),
-            time()
+            time(),
+            true
         );
     }
     public function check_registered_image_size(){

@@ -7,7 +7,7 @@ class BcCustomFieldOptions {
 		add_action( 'admin_menu', array( $this, 'bc_custom_field_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bc_custom_field_page_init' ) );
         global $pagenow;
-        if($pagenow=='admin.php' && $_GET['page']=='bc_custom_field'){
+        if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']=='bc_custom_field'){
             add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue') );
             add_action('admin_footer', array($this, 'custombox_callback_script'));
         }

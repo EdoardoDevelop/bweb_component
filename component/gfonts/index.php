@@ -13,7 +13,7 @@ class gfonts {
         add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
         add_action( 'admin_init', array( $this, 'page_init' ) );
         global $pagenow;
-        if($pagenow=='admin.php' && $_GET['page']=='gfonts'){
+        if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']=='gfonts'){
             add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue') );
         }
         add_action( 'wp_enqueue_scripts', array( $this, 'load_font') );

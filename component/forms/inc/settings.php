@@ -15,7 +15,7 @@ class BcFormsOptions {
 
 
         global $pagenow;
-        if($pagenow=='admin.php' && $_GET['page']=='forms'){
+        if($pagenow=='admin.php' && isset($_GET['page']) && $_GET['page']=='forms'){
             add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue') );
             add_action('admin_footer', array($this, 'forms_callback_script'));
         }

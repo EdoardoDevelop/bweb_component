@@ -28,7 +28,7 @@ class bc_minify {
                     wp_enqueue_script( 
                         $wp_scripts->registered[$script]->handle.'-minify', 
                         plugin_dir_url( PLUGIN_FILE_URL ) . 'component/minify/out_js.php?file='.base64_encode($wp_scripts->registered[$script]->src), $wp_scripts->registered[$script]->deps,
-                        '', true
+                        '', in_array($wp_scripts->registered[$script]->handle, $wp_scripts->do_head_items())
                     );
                 }
             
