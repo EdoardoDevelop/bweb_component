@@ -89,7 +89,7 @@
 	}
 
 	public function plugin_callback() {
-        $list = array(
+        /*$list1 = array(
             array("name"=>"Yoast Seo","slug"=>"wordpress-seo","icon"=>"https://ps.w.org/wordpress-seo/assets/icon-128x128.png"),
             array("name"=>"Map Block Leaflet","slug"=>"map-block-leaflet","icon"=>"https://ps.w.org/map-block-leaflet/assets/icon-128x128.png"),
             array("name"=>"Contact Form 7","slug"=>"contact-form-7","icon"=>"https://ps.w.org/contact-form-7/assets/icon-128x128.png"),
@@ -110,7 +110,9 @@
             array("name"=>"Webp Converter for Media","slug"=>"webp-converter-for-media","icon"=>"https://ps.w.org/webp-converter-for-media/assets/icon-128x128.png"),
             array("name"=>"Booking Calendar","slug"=>"booking","icon"=>"https://ps.w.org/booking/assets/icon-128x128.png"),
             array("name"=>"Woocommerce","slug"=>"woocommerce","icon"=>"https://ps.w.org/woocommerce/assets/icon-128x128.png"),
-        );
+        );*/
+
+        $list = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://raw.githubusercontent.com/EdoardoDevelop/code-snippets/main/plugin-wp" ) ), true );
         $plugin_active = array();
         foreach(get_option('active_plugins') as $p){
             array_push($plugin_active, dirname($p));

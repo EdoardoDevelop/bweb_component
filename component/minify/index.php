@@ -17,7 +17,7 @@ class bc_minify {
     }
     public function load_minify_scripts(){
         global $wp_scripts;
-        //print_r($wp_scripts);
+        $head_items = $wp_scripts->do_head_items();
         if(!function_exists('get_admin_page_parent')){
             foreach( $wp_scripts->queue as $script ) :
                 if(empty($wp_scripts->registered[$script]->src)){
@@ -27,9 +27,10 @@ class bc_minify {
                     wp_dequeue_script( $wp_scripts->registered[$script]->handle );
                     wp_enqueue_script( 
                         $wp_scripts->registered[$script]->handle.'-minify', 
-                        plugin_dir_url( PLUGIN_FILE_URL ) . 'component/minify/out_js.php?file='.base64_encode($wp_scripts->registered[$script]->src), $wp_scripts->registered[$script]->deps,
-                        '', in_array($wp_scripts->registered[$script]->handle, $wp_scripts->do_head_items())
+                        plugin_dir_url( PLUGIN_FILE_URL ) . 'component/minify/out_js.php?handle='.$wp_scripts->registered[$script]->handle.'&file='.base64_encode($wp_scripts->registered[$script]->src), $wp_scripts->registered[$script]->deps,
+                        '', !in_array($wp_scripts->registered[$script]->handle, $head_items)
                     );
+                    
                 }
             
             endforeach;
@@ -49,7 +50,7 @@ class bc_minify {
                     wp_dequeue_style( $wp_styles->registered[$style]->handle );
                     wp_enqueue_style( 
                         $wp_styles->registered[$style]->handle.'-minify', 
-                        plugin_dir_url( PLUGIN_FILE_URL ) . 'component/minify/out_css.php?file='.base64_encode($wp_styles->registered[$style]->src), $wp_styles->registered[$style]->deps
+                        plugin_dir_url( PLUGIN_FILE_URL ) . 'component/minify/out_css.php?handle='.$wp_styles->registered[$style]->handle.'&file='.base64_encode($wp_styles->registered[$style]->src), $wp_styles->registered[$style]->deps
                     );
                 }
             endforeach;

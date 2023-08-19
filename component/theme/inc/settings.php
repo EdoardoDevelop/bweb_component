@@ -13,6 +13,7 @@ class BcThemeSettings {
 		add_action( 'admin_menu', array( $this, 'bctheme_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bctheme_settings_page_init' ) );
 		add_action('admin_footer-bweb-component_page_theme', array( $this, 'admin_js_theme' ));
+		add_action( 'admin_enqueue_scripts', array( $this, '_limit_depth' ));
 	}
 
 	public function bctheme_settings_add_plugin_page() {
@@ -576,27 +577,12 @@ class BcThemeSettings {
 		</script>
 		<?php
 	}
-	/*public function _print_scripts_styles() {
+	
 
-		$result = [];
-		$result['scripts'] = [];
-		$result['styles'] = [];
-	
-		// Print all loaded Scripts
-		global $wp_scripts;
-		foreach( $wp_scripts->queue as $script ) :
-		   $result['scripts'][] =  $wp_scripts->registered[$script]->src . ";";
-		endforeach;
-	
-		// Print all loaded Styles (CSS)
-		global $wp_styles;
-		foreach( $wp_styles->queue as $style ) :
-		   $result['styles'][] =  $wp_styles->registered[$style]->src . ";";
-		endforeach;
-		update_option('_print_scripts_styles', $result);
-		//delete_option('_print_scripts_styles');
-		//return $result;
-	}*/
+	function _limit_depth( $hook ) {
+		if ( $hook != 'nav-menus.php' ) return;
+		wp_add_inline_script( 'nav-menu', 'wpNavMenu.options.globalMaxDepth = 2;', 'after' );
+	}
 
 }
 $bctheme_settings = new BcThemeSettings();

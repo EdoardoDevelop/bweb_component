@@ -111,38 +111,18 @@ class bc_swupSettings {
 
 	
 	public function css_swup_callback() {
-		$default = '.site-main{
-			transition: 0.6s;
-			opacity: 1;
-			position: relative;
-			top: 0;
-			left: 0;
-		}
-		
-		/* In */
-		html.is-animating .site-main{
-			opacity: 0;
-			top: -20px;
-		}
-		
-		/* Out */
-		html.is-leaving .site-main{
-			opacity: 0;
-			top: 70px;
-		}';
-		
+				
 		printf(
 			'<textarea name="swup_settings_option[css_swup]" id="css_swup">%s</textarea>',
-			( isset( $this->swup_settings_options['css_swup'] )) ? esc_attr( $this->swup_settings_options['css_swup']) : $default
+			( isset( $this->swup_settings_options['css_swup'] )) ? esc_attr( $this->swup_settings_options['css_swup']) : ''
 			
 		);
 	}
 	public function script_swup_callback() {
-		$default = file_get_contents(plugin_dir_path( PLUGIN_FILE_URL ) . 'component/swup/assets/script-swup.js');
 		
 		printf(
 			'<textarea name="swup_settings_option[script_swup]" id="script_swup">%s</textarea>',
-			( isset( $this->swup_settings_options['script_swup'] )) ? esc_attr( $this->swup_settings_options['script_swup']) : $default
+			( isset( $this->swup_settings_options['script_swup'] )) ? esc_attr( $this->swup_settings_options['script_swup']) : ''
 			
 		);
 	}

@@ -57,8 +57,7 @@ class BSBSlider{
                 'bcs-bootstrap-carousel-js',
                 BSB_ASSETS_DIR . 'carousel.js',
                 array( 'jquery' ),
-                time(),
-                true
+                time()
             );
             
         }

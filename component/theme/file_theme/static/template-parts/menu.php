@@ -12,9 +12,9 @@
             'container_id'    => 'navbarTop',
             'container_class' => 'collapse navbar-collapse',
             'menu_id'         => false,
-            'depth' => 2,
-            'fallback_cb' => 'bs4navwalker::fallback',
-            'walker' => new bs4navwalker(),
+            'depth' => 4,
+            'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
+            'walker'          => new WP_Bootstrap_Navwalker(),
             'menu_class'      => 'navbar-nav m-auto'
     ]);?>
 

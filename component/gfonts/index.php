@@ -137,7 +137,7 @@ class gfonts {
         }
         if($family != ""){
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/webfonts/v1/webfonts?capability=WOFF2&key=AIzaSyDU6NpGQZCsvykdP37jacEdRKmHpGSumEo'.$family);
+            curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/webfonts/v1/webfonts?capability=WOFF2&key='.get_option( 'bc_key_gfont' ).$family);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Content-Type: application/json"
             ));
@@ -178,7 +178,8 @@ class gfonts {
     }
     public function load_enqueue(){
         wp_enqueue_script( 'settings_bc_gfont_js', plugin_dir_url( PLUGIN_FILE_URL ).'component/gfonts/assets/script.js', ['jquery', 'jquery-ui-autocomplete'], null, true );
-		wp_enqueue_style( 'settings_bc_gfont-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/gfonts/assets/style.css');
+		wp_localize_script('settings_bc_gfont_js', 'variable', array('key_gfont'=>get_option( 'bc_key_gfont' )));
+        wp_enqueue_style( 'settings_bc_gfont-css', plugin_dir_url( PLUGIN_FILE_URL ).'component/gfonts/assets/style.css');
     }
     
     public function load_font(){
