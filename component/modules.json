@@ -1,0 +1,109 @@
+{
+    "modules": [
+        {
+            "name" : "Animsition",
+            "folder" : "animsition"
+        },
+        {
+            "name" : "Image size threshold",
+            "folder" : "big_image_size_threshold"
+        },
+        {
+            "name" : "Custom Dashboard",
+            "folder" : "custom_dashboard"
+        },
+        {
+            "name" : "Campi Personalizzati",
+            "folder" : "custom_field"
+        },
+        {
+            "name" : "Campi Opzioni Personalizzati",
+            "folder" : "custom_option"
+        },
+        {
+            "name" : "Pagine Personalizzate",
+            "folder" : "custom_post_type"
+        },
+        {
+            "name" : "Disabilita commenti",
+            "folder" : "disable_comment"
+        },
+        {
+            "name" : "Duplica post/page",
+            "folder" : "duplicate_post"
+        },
+        {
+            "name" : "Forms",
+            "folder" : "forms"
+        },
+        {
+            "name" : "Google Fonts in local",
+            "folder" : "gfonts"
+        },
+        {
+            "name" : "Nascondi menu admin",
+            "folder" : "hide_menu"
+        },
+        {
+            "name" : "Light theme Admin",
+            "folder" : "light_theme_admin"
+        },
+        {
+            "name" : "Date on name file log",
+            "folder" : "log_data"
+        },
+        {
+            "name" : "Sito in manuntenzione",
+            "folder" : "maintenance"
+        },
+        {
+            "name" : "Minify css/js",
+            "folder" : "minify"
+        },
+        {
+            "name" : "Polylang Slug",
+            "folder" : "polylang_slug"
+        },
+        {
+            "name" : "PopUp",
+            "folder" : "popUp"
+        },
+        {
+            "name" : "Post Order",
+            "folder" : "post_order"
+        },
+        {
+            "name" : "Scroll Reveal",
+            "folder" : "scroll_reveal"
+        },
+        {
+            "name" : "Slider Block",
+            "folder" : "slider_block"
+        },
+        {
+            "name" : "WP SVG",
+            "folder" : "svg"
+        },
+        {
+            "name" : "Swup",
+            "folder" : "swup"
+        },
+        {
+            "name" : "Plugin consigliati",
+            "folder" : "tgm-plugin-activation"
+        },
+        {
+            "name" : "Tema",
+            "folder" : "theme"
+        },
+        {
+            "name" : "Upload/memory limit",
+            "folder" : "upload_memory_limit"
+        },
+        {
+            "name" : "WP Login",
+            "folder" : "wp_login"
+        }
+        
+    ]
+}
