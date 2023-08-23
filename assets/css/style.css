@@ -7,7 +7,7 @@
 }
 .table_module .form-table tbody tr{
     flex: 0 0 15%;
-    display: flex;
+    display: block;
     margin: 10px;
     align-items: center;
     padding: 10px;
@@ -20,12 +20,15 @@
 
 
 .table_module .form-table tbody tr th{
-    padding: 15px;
+    padding: 5px;
     width: 100%;
     font-weight: normal;
+    display: block;
 }
 .table_module .form-table tbody tr td{
     margin: 0;
+    display: block;
+    padding: 5px;
 }
 .component_title{
     display: flex;

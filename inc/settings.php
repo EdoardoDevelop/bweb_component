@@ -115,7 +115,7 @@ class BwebComponentSettings {
 					<?php
 					settings_fields( 'bweb_component_settings_option_group' );
 					do_settings_sections( 'bweb-component-settings-admin' );
-					submit_button();
+					submit_button('Abilita selezionati');
 					?>
 				</div>
 				<?php endif; ?>
