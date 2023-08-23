@@ -45,65 +45,199 @@ class BwebComponentSettings {
 			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
+				<?php if(isset($_GET['download_update'])): ?>
+				<div id="download_update">
+					<?php
+					
+						$component = $_GET['download_update'];
+						$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
+						$this->scrivi('Aggiornamento '.$component.'<br>');
+						$remotecomponents = array();
+						$argsGit = array();
+						$argsGit['headers']['Authorization'] = "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"; // Set the headers
+						$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/bweb_component/git/trees/master?recursive=1", $argsGit ) ), true );
+						
+						foreach($responseGit as $s){
+							if(is_array($s)){
+								foreach($s as $x){
+									$p = explode("/",$x['path']);
+									if($p[0] == 'component'){
+										if(!empty($p[1]) && !empty($p[2])){
+											$remotecomponents += array($p[1] => '');
+											if(!empty($remotecomponents[$p[1]])){
+												$remotecomponents[$p[1]] .= ',';
+											}
+											if(isset($p[1])){
+												$remotecomponents[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
+											}
+										}
+									}
+								}
+							}
+						}
+
+
+						$cd = explode(",",$remotecomponents[$component]);
+						
+						$this->deleteAll($dir);
+						$this->scrivi('Svuoto cartella '.$component.'<br>');
+						foreach($cd as $path){
+							if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
+								mkdir($dir);
+							}
+							if(pathinfo($path, PATHINFO_EXTENSION) == ''){
+								//cartella
+								if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
+									mkdir($dir.'/'.$path);
+								}
+								$this->scrivi('Cartella creata ' . $path.'<br>');
+							}else{
+								//file
+								$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/'.$component.'/'.$path;
+								
+								if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
+									//echo "File downloaded successfully";
+									$this->scrivi('Download file '.$path.'<br>');
+								}else{
+									$this->scrivi('Download fallito file '.$path.'<br>');
+								}
+								
+							}
+		
+						}
+						echo '<br><br>Aggiornamento eseguito. <a href="admin.php?page=bweb-component">Torna indietro</a>';
+					
+					?>
+				</div>
+				<?php else: ?>
 				<div class="table_module">
+					
 					<?php
 					settings_fields( 'bweb_component_settings_option_group' );
 					do_settings_sections( 'bweb-component-settings-admin' );
 					submit_button();
-					do_settings_sections( 'bweb-component-newmodule' );
 					?>
-					<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>
 				</div>
-				
-			</form>
-			<?php 
+				<?php endif; ?>
+			</form>			
 			
-			if(isset($_GET['updatemodule'])){
-				$component = $_GET['updatemodule'];
-				$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
-				$this->scrivi('Aggiornamento '.$component.'<br>');
-				$cd = explode(",",$this->arraymodulegit[$component]);
-				
-				$this->deleteAll($dir);
-				$this->scrivi('Svuoto cartella '.$component.'<br>');
-				foreach($cd as $path){
-					if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
-						mkdir($dir);
-					}
-					if(pathinfo($path, PATHINFO_EXTENSION) == ''){
-						//cartella
-						if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
-							mkdir($dir.'/'.$path);
-						}
-						$this->scrivi('Cartella creata ' . $path.'<br>');
-					}else{
-						//file
-						$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/'.$component.'/'.$path;
-						
-						if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
-							//echo "File downloaded successfully";
-							$this->scrivi('Download file '.$path.'<br>');
-						}else{
-							$this->scrivi('Download fallito file '.$path.'<br>');
-						}
-						
-					}
-
-				}
-				echo '<br><br>Aggiornamento eseguito.';
-			}
-			?>
-
 		</div>
 	<?php }
 
-	public function scrivi($testo){
+	
+	public function bweb_component_settings_page_init() {
+		global $submenu;
+		register_setting(
+			'bweb_component_settings_option_group', // option_group
+			'bweb_component_active'
+		);
+		
+		add_settings_section(
+			'bweb_component_check_section', // id
+			'Moduli', // title
+			function(){echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>';}, // callback
+			'bweb-component-settings-admin' // page
+		);
+
+
+		$argsGit = array();
+		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/";
+		$argsGit['headers']['Authorization'] = "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"; // Set the headers
+		$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
+		foreach($responseGit["modules"] as $s){
+			
+			$foldername = $httpGit.$s["folder"];
+			$BCdatacomponent = new BCdatacomponent();
+			$data = $BCdatacomponent->get_component_data( $foldername . '/index.php', $argsGit);
+			$icon = '';
+			if($data['Icon']!=''){
+				if (str_starts_with( $data['Icon'], 'dashicons-' ) ) {
+					$icon = '<span class="dashicons '.$data['Icon'].'"></span>';
+				}
+				if ( str_starts_with( $data['Icon'], 'data:image' ) ) {
+					$icon = '<img src="'.$data['Icon'].'" class="icon">';
+				}
+			}
+			
+			$updatemodule = false;
+			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+				if(isset($this->arraymodulegit)){
+					if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
+						$updatemodule = true;
+					}
+				}
+			}
+			$h = '<label class="component_title">'.$icon.'<span>'.$data['Name'].'</span></label>';
+			
+			if ( $this->find_my_menu_item($data['ID'], true) ) {
+				$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['Name'].'</span></a>';
+			}
+			$d = '';
+			if ( !empty($data['Description']) ) {
+				$d = '<div class="c_descr">'.$data['Description'].'</div>';
+			}
+			add_settings_field(
+				'c_'.$data['ID'], // id
+				$h.$d, // title
+				array($this,'chk_callback'), // callback
+				'bweb-component-settings-admin', // page
+				'bweb_component_check_section', // section
+				array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername),'update' => $updatemodule)
+			);
+			
+            
+        }
+
+		
+	}
+	
+
+	public function chk_callback( $data ) {
+		$foldername = $data['foldername'];
+		if(file_exists(plugin_dir_path( __DIR__ ) ."component/" . $foldername . '/index.php')){
+			printf(
+				'<label><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s> %s</label>',
+				'component_'.$data['ID'],
+				$foldername,
+				( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : '',
+				'Abilita'
+			);
+			if($data['update']){
+				echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
+			}
+		}else{
+			echo '<a href="admin.php?page=bweb-component&download_update='.$foldername.'" class="badge">Scarica</a>';
+		}
+		
+	}
+	
+	
+
+
+    public function load_enqueue($hook){
+		if($hook == 'toplevel_page_bweb-component'){
+			wp_enqueue_style( 'bc_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'assets/css/style.css');
+			wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
+		}
+    }
+
+	private function register_bwebcomponent_category( $categories ) {
+	
+        $categories[] = array(
+            'slug'  => 'bweb-component',
+            'title' => 'Bweb Component'
+        );
+    
+        return $categories;
+    }
+
+	private function scrivi($testo){
 		print_r($testo);
 		ob_flush();
 		flush();
 		usleep(50000);
 	}
-	public function deleteAll($dir) {
+	private function deleteAll($dir) {
 		foreach(glob($dir . '/*') as $file) {
 			if(is_dir($file))
 				$this->deleteAll($file);
@@ -114,101 +248,7 @@ class BwebComponentSettings {
 			rmdir($dir);
 		}
 	}
-	public function bweb_component_settings_page_init() {
-		global $submenu;
-		register_setting(
-			'bweb_component_settings_option_group', // option_group
-			'bweb_component_active' // option_name
-		);
-		
-		add_settings_section(
-			'bweb_component_check_section', // id
-			'Moduli', // title
-			function(){echo 'Abilita i seguenti moduli';}, // callback
-			'bweb-component-settings-admin' // page
-		);
-
-
-		
-		
-
-        foreach (glob(plugin_dir_path( __DIR__ ) ."component/*", GLOB_ONLYDIR) as $foldername){
-			if(file_exists($foldername . '/index.php')){
-				$BCdatacomponent = new BCdatacomponent();
-                $data = $BCdatacomponent->get_component_data( $foldername . '/index.php');
-                $icon = '';
-                if($data['Icon']!=''){
-					if (str_starts_with( $data['Icon'], 'dashicons-' ) ) {
-                    	$icon = '<span class="dashicons '.$data['Icon'].'"></span>';
-					}
-					if ( str_starts_with( $data['Icon'], 'data:image' ) ) {
-						$icon = '<img src="'.$data['Icon'].'" class="icon">';
-					}
-                }
-				
-				$badge = '';
-				if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
-					if(isset($this->arraymodulegit)){
-						if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
-							$badge = '<a href="admin.php?page=bweb-component&updatemodule='.pathinfo($foldername, PATHINFO_BASENAME).'" class="badge"><span class="dashicons dashicons-update"></span></a>';
-						}
-					}
-				}
-				$h = '<label class="component_title">'.$icon.'<span>'.$data['Name'].'</span></label>';
-				
-				if ( $this->find_my_menu_item($data['ID'], true) ) {
-					$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['Name'].'</span></a>';
-				}
-				$d = '';
-				if ( !empty($data['Description']) ) {
-					$d = '<div class="c_descr">'.$data['Description'].'</div>';
-				}
-				if(!filter_var($data['Autoload'], FILTER_VALIDATE_BOOLEAN)):
-					add_settings_field(
-						'c_'.$data['ID'], // id
-						$badge.$h.$d, // title
-						array($this,'chk_callback'), // callback
-						'bweb-component-settings-admin', // page
-						'bweb_component_check_section', // section
-						array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername))
-					);
-				else:
-					add_settings_field(
-						'component_autoload_'.$data['ID'], // id
-						$badge.$h, // title
-						function(){echo '<input type="checkbox" disabled checked>';}, // callback
-						'bweb-component-settings-admin', // page
-						'bweb_component_check_section' // section
-					);
-				endif;
-				
-			}
-            
-        }
-
-		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
-			
-			foreach(array_diff($this->arrayremotemodule(),$this->arraylocalmodule()) as $n){
-				add_settings_section(
-					'bweb_component_new_section', // id
-					'Nuovi moduli', // title
-					function(){echo 'Installa';}, // callback
-					'bweb-component-newmodule' // page
-				);
-				add_settings_field(
-					'c_'.$n, // id
-					'<a href="admin.php?page=bweb-component&updatemodule='.$n.'" class="badge">'.$n.'</a>', // title
-					function(){}, // callback
-					'bweb-component-newmodule', // page
-					'bweb_component_new_section'
-				);
-			}
-		}
-		
-		
-	}
-
-	public function find_my_menu_item( $handle, $sub = false ){
+	private function find_my_menu_item( $handle, $sub = false ){
 		if( !is_admin() || (defined('DOING_AJAX') && DOING_AJAX) )
 		  	return false;
 		global $menu, $submenu;
@@ -229,45 +269,10 @@ class BwebComponentSettings {
 		return false;
 	}
 
-	public function chk_callback( $data ) {
-		$foldername = $data['foldername'];
-		printf(
-			'<input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s>',
-            'component_'.$data['ID'],
-			$foldername,
-			( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : ''
-		);
-	}
-	
-	
 
-
-    public function load_enqueue($hook){
-		if($hook == 'toplevel_page_bweb-component'){
-			wp_enqueue_style( 'bc_settings_css', plugin_dir_url( PLUGIN_FILE_URL ).'assets/css/style.css');
-			wp_enqueue_script( 'bc_settings_js', plugin_dir_url( PLUGIN_FILE_URL ).'assets/script/script.js');
-		}
-    }
-
-	public function register_bwebcomponent_category( $categories ) {
-	
-        $categories[] = array(
-            'slug'  => 'bweb-component',
-            'title' => 'Bweb Component'
-        );
-    
-        return $categories;
-    }
-
-	public function checkupdate(){
-		$datecheckmoduleupdate = get_option('datecheckmoduleupdate');
+	private function checkupdate(){
 		$arraymodulegit = get_option('arraymodulegit');
 		$check = true;
-		/*if(!isset($datecheckmoduleupdate)){
-			$check = true;
-		}else{
-
-		}*/
 		if($check == true){
 
 			$ch = curl_init();
@@ -305,25 +310,8 @@ class BwebComponentSettings {
 					}
 				}
 			}
-			//print_r($components);
-			update_option('datecheckmoduleupdate',date("Y-m-d"));
 			update_option('arraymodulegit',$components);
 		}
-	}
-
-	public function arrayremotemodule(){
-		$ar = array();
-		foreach($this->arraymodulegit as $key => $a){
-			array_push($ar,$key);
-		}
-		return $ar;
-	}
-	public function arraylocalmodule(){
-		$ar = array();
-		foreach (glob(plugin_dir_path( __DIR__ ) ."component/*", GLOB_ONLYDIR) as $foldername){
-			array_push($ar,pathinfo($foldername, PATHINFO_BASENAME));
-		}
-		return $ar;
 	}
 
 }

@@ -2,9 +2,9 @@
 /*
 Plugin Name: Bweb Component
 Plugin URI: https://github.com/EdoardoDevelop/bweb_component/
-Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli attivabili su necessità.
+Description: Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli scaricabili e attivabili su necessità.
 Author: Edoardo Monti (Bweb)
-Version: 1.1.1
+Version: 1.2.0
 Author URI: https://www.bwebagency.it/
 requires: 6.0.0
 tested: 6.2.2

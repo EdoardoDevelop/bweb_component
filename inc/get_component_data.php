@@ -4,11 +4,16 @@ class BCdatacomponent {
 	public function __construct() {	
 
     }
-    public function get_component_data( $file) {
-
-        $fp = fopen( $file, 'r' );
-        $file_data = fread( $fp, 8192 );
-        fclose( $fp );
+    public function get_component_data( $file, $argsGit = [] ) {
+        $file_data = "";
+        if (str_starts_with( $file, 'http' ) ) {
+            $file_data = wp_remote_retrieve_body( wp_remote_get( $file, $argsGit ) );
+        }else{
+            $fp = fopen( $file, 'r' );
+            $file_data = fread( $fp, 8192 );
+            fclose( $fp );
+        }
+        
         $file_data = str_replace( "\r", "\n", $file_data );
         $all_headers = array(
             'ID'        => 'ID',

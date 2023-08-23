@@ -1,5 +1,5 @@
 # bweb_component
-Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli attivabili su necessità.
+Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli scaricabili e attivabili su necessità.
 
 Moduli attivabili/disattivabili:
 - Custom Post Type (con card gutenberg block)
