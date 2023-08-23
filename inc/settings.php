@@ -49,13 +49,16 @@ class BwebComponentSettings {
 				<div id="download_update">
 					<?php
 					
+						if ( !file_exists( plugin_dir_path( PLUGIN_FILE_URL )."component" ) || !is_dir( plugin_dir_path( PLUGIN_FILE_URL )."component" ) ) {
+							mkdir(plugin_dir_path( PLUGIN_FILE_URL )."component");
+						}
 						$component = $_GET['download_update'];
 						$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
 						$this->scrivi('Aggiornamento '.$component.'<br>');
 						$remotecomponents = array();
 						$argsGit = array();
 						$argsGit['headers']['Authorization'] = "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"; // Set the headers
-						$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/bweb_component/git/trees/master?recursive=1", $argsGit ) ), true );
+						$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true );
 						
 						foreach($responseGit as $s){
 							if(is_array($s)){
@@ -93,7 +96,7 @@ class BwebComponentSettings {
 								$this->scrivi('Cartella creata ' . $path.'<br>');
 							}else{
 								//file
-								$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/'.$component.'/'.$path;
+								$url = 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/'.$component.'/'.$path;
 								
 								if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
 									//echo "File downloaded successfully";
@@ -141,7 +144,7 @@ class BwebComponentSettings {
 
 
 		$argsGit = array();
-		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/";
+		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/component/master/";
 		$argsGit['headers']['Authorization'] = "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"; // Set the headers
 		$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
 		foreach($responseGit["modules"] as $s){
@@ -162,7 +165,7 @@ class BwebComponentSettings {
 			$updatemodule = false;
 			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 				if(isset($this->arraymodulegit)){
-					if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/component/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
+					if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
 						$updatemodule = true;
 					}
 				}
@@ -275,24 +278,11 @@ class BwebComponentSettings {
 		$check = true;
 		if($check == true){
 
-			$ch = curl_init();
-			// IMPORTANT: the below line is a security risk, read https://paragonie.com/blog/2017/10/certainty-automated-cacert-pem-management-for-php-software
-			// in most cases, you should set it to true
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-			curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/EdoardoDevelop/bweb_component/git/trees/master?recursive=1');
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type: application/json',
-				'Authorization: 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'
-			)
-			);
-			$result = curl_exec($ch);
-			curl_close($ch);
-
-			$data = json_decode($result,true);
+			$argsGit = array();
+			$argsGit['headers']['Authorization'] = "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"; // Set the headers
+			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true ); // Get JSON and parse it
 			$components = array();
-			foreach($data as $s){
+			foreach($responseGit as $s){
 				if(is_array($s)){
 					foreach($s as $x){
 						$p = explode("/",$x['path']);
