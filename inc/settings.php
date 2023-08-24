@@ -2,15 +2,30 @@
 
 class BwebComponentSettings {
 	private $bweb_component_settings_options;
-	private $arraymodulegit;
+	private $remotefilegit;
+	private $remotemodulesgit;
 
+	private function scrivi($testo){
+		
+		if (ob_get_level() == 0) ob_start();
+		echo $testo;
+		//per Chrome e Safari si deve aggiungere questa istruzione
+		print str_pad('',4096)."\n";
+		//invia il contenuto al buffer
+		ob_flush();
+    	flush();
+		usleep(50000);
+	}
+	
 	public function __construct() {	}
 
     public function load_setting_page(){
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			$this->checkupdate();
 		}
-		$this->arraymodulegit = get_option( 'arraymodulegit' ); 
+		//delete_option( 'remotemodulesgit' ); 
+		$this->remotefilegit = get_option( 'remotefilegit' ); 
+		$this->remotemodulesgit = get_option( 'remotemodulesgit' ); 
 		add_action( 'admin_menu', array( $this, 'bweb_component_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bweb_component_settings_page_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue' ) );
@@ -45,83 +60,94 @@ class BwebComponentSettings {
 			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
-				<?php if(isset($_GET['download_update'])): ?>
-				<div id="download_update">
-					<?php
-					
-						if ( !file_exists( plugin_dir_path( PLUGIN_FILE_URL )."component" ) || !is_dir( plugin_dir_path( PLUGIN_FILE_URL )."component" ) ) {
-							mkdir(plugin_dir_path( PLUGIN_FILE_URL )."component");
-						}
-						$component = $_GET['download_update'];
-						$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
-						$this->scrivi('Aggiornamento '.$component.'<br>');
-						$remotecomponents = array();
-						$argsGit = array();
-						$argsGit['headers']['Authorization'] = "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"; // Set the headers
-						$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true );
-						
-						foreach($responseGit as $s){
-							if(is_array($s)){
-								foreach($s as $x){
-									$p = explode("/",$x['path']);
-									if($p[0] == 'component'){
-										if(!empty($p[1]) && !empty($p[2])){
-											$remotecomponents += array($p[1] => '');
-											if(!empty($remotecomponents[$p[1]])){
-												$remotecomponents[$p[1]] .= ',';
+				<?php 
+
+				
+					if(isset($_GET['download_update'])): 
+						?>
+						<div id="download_update">
+							<?php
+							
+								if ( !file_exists( plugin_dir_path( PLUGIN_FILE_URL )."component" ) || !is_dir( plugin_dir_path( PLUGIN_FILE_URL )."component" ) ) {
+									mkdir(plugin_dir_path( PLUGIN_FILE_URL )."component");
+								}
+								$component = $_GET['download_update'];
+								$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
+								$this->scrivi('Aggiornamento '.$component.'<br>');
+								$remotecomponents = array();
+								$argsGit = array();
+								$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
+								$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true );
+								
+								
+								foreach($responseGit as $s){
+									if(is_array($s)){
+										foreach($s as $x){
+											$p = explode("/",$x['path']);
+											if(!empty($p[0]) && !empty($p[1])){
+													$remotecomponents += array($p[0] => '');
+													if(!empty($remotecomponents[$p[0]])){
+														$remotecomponents[$p[0]] .= ',';
+													}
+													if(isset($p[0])){
+														$remotecomponents[$p[0]] .= str_replace($p[0].'/','',$x['path']);
+													}
 											}
-											if(isset($p[1])){
-												$remotecomponents[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
-											}
+											
 										}
 									}
 								}
-							}
-						}
-
-
-						$cd = explode(",",$remotecomponents[$component]);
-						
-						$this->deleteAll($dir);
-						$this->scrivi('Svuoto cartella '.$component.'<br>');
-						foreach($cd as $path){
-							if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
-								mkdir($dir);
-							}
-							if(pathinfo($path, PATHINFO_EXTENSION) == ''){
-								//cartella
-								if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
-									mkdir($dir.'/'.$path);
-								}
-								$this->scrivi('Cartella creata ' . $path.'<br>');
-							}else{
-								//file
-								$url = 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/'.$component.'/'.$path;
 								
-								if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
-									//echo "File downloaded successfully";
-									$this->scrivi('Download file '.$path.'<br>');
-								}else{
-									$this->scrivi('Download fallito file '.$path.'<br>');
-								}
+								$cd = explode(",",$remotecomponents[$component]);
 								
+								$this->deleteAll($dir);
+								$this->scrivi('Svuoto cartella '.$component.'<br>');
+								foreach($cd as $path){
+									if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
+										mkdir($dir);
+									}
+									if(pathinfo($path, PATHINFO_EXTENSION) == ''){
+										//cartella
+										if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
+											mkdir($dir.'/'.$path);
+										}
+										$this->scrivi('Cartella creata ' . $path.'<br>');
+									}else{
+										//file
+										$url = 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/'.$component.'/'.$path;
+										
+										if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
+											//echo "File downloaded successfully";
+											$this->scrivi('Download file '.$path.'<br>');
+										}else{
+											$this->scrivi('Download fallito file '.$path.'<br>');
+											break;
+										}
+										
+									}
+				
+								}
+								echo '<br><br>Aggiornamento eseguito. <a href="admin.php?page=bweb-component">Torna indietro</a>';
+							
+							?>
+						</div>
+						<?php else: ?>
+						<div class="table_module">
+							
+							<?php
+							settings_fields( 'bweb_component_settings_option_group' );
+							do_settings_sections( 'bweb-component-settings-admin' );
+							if(is_array($this->remotemodulesgit)){
+								if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){}else{
+									submit_button('Abilita selezionati');
+								}
 							}
-		
-						}
-						echo '<br><br>Aggiornamento eseguito. <a href="admin.php?page=bweb-component">Torna indietro</a>';
-					
-					?>
-				</div>
-				<?php else: ?>
-				<div class="table_module">
-					
-					<?php
-					settings_fields( 'bweb_component_settings_option_group' );
-					do_settings_sections( 'bweb-component-settings-admin' );
-					submit_button('Abilita selezionati');
-					?>
-				</div>
-				<?php endif; ?>
+							?>
+						</div>
+						<?php 
+					endif;
+				
+				?>
 			</form>			
 			
 		</div>
@@ -134,62 +160,90 @@ class BwebComponentSettings {
 			'bweb_component_settings_option_group', // option_group
 			'bweb_component_active'
 		);
-		
+		$titlesection = 'Scarica o attiva i moduli';
+		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+			$titlesection = 'Scarica o aggiorna i moduli';
+		}
 		add_settings_section(
 			'bweb_component_check_section', // id
-			'Moduli', // title
-			function(){echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>';}, // callback
+			$titlesection, // title
+			function(){
+				if(is_array($this->remotemodulesgit)){
+					if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
+					}else{
+						echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>';
+					}
+				}else{
+					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Aggiorna elenco</a>';
+				}
+			}, // callback
 			'bweb-component-settings-admin' // page
 		);
 
-
 		$argsGit = array();
 		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/component/master/";
-		$argsGit['headers']['Authorization'] = "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"; // Set the headers
-		$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
-		foreach($responseGit["modules"] as $s){
+		$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
+		$BCdatacomponent = new BCdatacomponent();
+		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
 			
-			$foldername = $httpGit.$s["folder"];
-			$BCdatacomponent = new BCdatacomponent();
-			$data = $BCdatacomponent->get_component_data( $foldername . '/index.php', $argsGit);
-			$icon = '';
-			if($data['Icon']!=''){
-				if (str_starts_with( $data['Icon'], 'dashicons-' ) ) {
-					$icon = '<span class="dashicons '.$data['Icon'].'"></span>';
-				}
-				if ( str_starts_with( $data['Icon'], 'data:image' ) ) {
-					$icon = '<img src="'.$data['Icon'].'" class="icon">';
-				}
+		
+			foreach($responseGit["modules"] as $x => $s){
+					
+					$data = $BCdatacomponent->get_component_data( $httpGit.$s["folder"] . '/index.php', $argsGit);
+					$responseGit["modules"][$x]['ID'] = $data['ID'];
+					$responseGit["modules"][$x]['Icon'] = $data['Icon'];
+					$responseGit["modules"][$x]['Version'] = $data['Version'];
+					$responseGit["modules"][$x]['Description'] = $data['Description'];
+				
 			}
-			
-			$updatemodule = false;
-			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
-				if(isset($this->arraymodulegit)){
-					if(version_compare($data['Version'],$BCdatacomponent->get_component_data( 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/' . pathinfo($foldername, PATHINFO_BASENAME) . '/index.php')['Version'], '<') ){
-						$updatemodule = true;
+			update_option( 'remotemodulesgit', $responseGit );
+			$this->remotemodulesgit = $responseGit;
+		}
+		if(is_array($this->remotemodulesgit)){
+			foreach($this->remotemodulesgit["modules"] as $data){
+				$foldername = $data["folder"];
+				$icon = '';
+				if($data['Icon']!=''){
+					if (str_starts_with( $data['Icon'], 'dashicons-' ) ) {
+						$icon = '<span class="dashicons '.$data['Icon'].'"></span>';
+					}
+					if ( str_starts_with( $data['Icon'], 'data:image' ) ) {
+						$icon = '<img src="'.$data['Icon'].'" class="icon">';
 					}
 				}
-			}
-			$h = '<label class="component_title">'.$icon.'<span>'.$data['Name'].'</span></label>';
-			
-			if ( $this->find_my_menu_item($data['ID'], true) ) {
-				$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['Name'].'</span></a>';
-			}
-			$d = '';
-			if ( !empty($data['Description']) ) {
-				$d = '<div class="c_descr">'.$data['Description'].'</div>';
-			}
-			add_settings_field(
-				'c_'.$data['ID'], // id
-				$h.$d, // title
-				array($this,'chk_callback'), // callback
-				'bweb-component-settings-admin', // page
-				'bweb_component_check_section', // section
-				array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername),'update' => $updatemodule)
-			);
-			
+				
+				$updatemodule = false;
+				if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+					if(isset($this->remotefilegit)){
+						if(file_exists(plugin_dir_path( __DIR__ ) ."component/" . $data["folder"] . '/index.php')){
+							if(version_compare($BCdatacomponent->get_component_data( plugin_dir_path( __DIR__ ) ."component/" . $data["folder"] . '/index.php')['Version'],$data['Version'], '<') ){
+								$updatemodule = true;
+							}
+						}
+					}
+				}
+				$h = '<label class="component_title">'.$icon.'<span>'.$data['name'].'</span></label>';
+				
+				if ( $this->find_my_menu_item($data['ID'], true) ) {
+					$h = '<a href="admin.php?page='.$data['ID'].'" class="component_title">'.$icon.'<span>'.$data['name'].'</span></a>';
+				}
+				$d = '';
+				if ( !empty($data['Description']) ) {
+					$d = '<div class="c_descr">'.$data['Description'].'</div>';
+				}
+				add_settings_field(
+					'c_'.$data['ID'], // id
+					$h.$d, // title
+					array($this,'chk_callback'), // callback
+					'bweb-component-settings-admin', // page
+					'bweb_component_check_section', // section
+					array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername),'update' => $updatemodule)
+				);
             
-        }
+        	}
+		}
 
 		
 	}
@@ -198,15 +252,18 @@ class BwebComponentSettings {
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];
 		if(file_exists(plugin_dir_path( __DIR__ ) ."component/" . $foldername . '/index.php')){
-			printf(
-				'<label><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s> %s</label>',
-				'component_'.$data['ID'],
-				$foldername,
-				( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : '',
-				'Abilita'
-			);
-			if($data['update']){
-				echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
+			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+				if($data['update']){
+					echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
+				}
+			}else{
+				printf(
+					'<label><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s> %s</label>',
+					'component_'.$data['ID'],
+					$foldername,
+					( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : '',
+					'Abilita'
+				);
 			}
 		}else{
 			echo '<a href="admin.php?page=bweb-component&download_update='.$foldername.'" class="badge">Scarica</a>';
@@ -234,12 +291,7 @@ class BwebComponentSettings {
         return $categories;
     }
 
-	private function scrivi($testo){
-		print_r($testo);
-		ob_flush();
-		flush();
-		usleep(50000);
-	}
+	
 	private function deleteAll($dir) {
 		foreach(glob($dir . '/*') as $file) {
 			if(is_dir($file))
@@ -274,12 +326,12 @@ class BwebComponentSettings {
 
 
 	private function checkupdate(){
-		$arraymodulegit = get_option('arraymodulegit');
+		$remotefilegit = get_option('remotefilegit');
 		$check = true;
 		if($check == true){
 
 			$argsGit = array();
-			$argsGit['headers']['Authorization'] = "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"; // Set the headers
+			$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
 			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true ); // Get JSON and parse it
 			$components = array();
 			foreach($responseGit as $s){
@@ -300,7 +352,7 @@ class BwebComponentSettings {
 					}
 				}
 			}
-			update_option('arraymodulegit',$components);
+			update_option('remotefilegit',$components);
 		}
 	}
 

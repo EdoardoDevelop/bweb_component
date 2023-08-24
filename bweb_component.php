@@ -14,6 +14,7 @@ exit; // Exit if accessed directly
 }
 
 define('PLUGIN_FILE_URL', __FILE__);
+define('TOKEN_GTHUB', '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');
 
 
 class BwebComponentRun {
@@ -27,6 +28,7 @@ class BwebComponentRun {
 		});
 		add_action( 'upgrader_process_complete', function( $upgrader_object, $options ) {
 			update_option('bc_version',get_plugin_data( __FILE__ )['Version']);
+			require plugin_dir_path( __FILE__ ) ."inc/after_update.php";
 		}, 10, 2 );
 		$this->load_scripts();
 		
@@ -45,7 +47,7 @@ class BwebComponentRun {
 		$updater = new bc_Updater( __FILE__ );
 		$updater->set_username( 'EdoardoDevelop' );
 		$updater->set_repository( 'bweb_component' );
-		//$updater->authorize( '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' ); // Your auth code goes here for private repos
+		//$updater->authorize( TOKEN_GTHUB ); // Your auth code goes here for private repos
 		$updater->initialize();
 	}
 	public function change_footer_admin () {
