@@ -1,7 +1,6 @@
 # bweb_component
 Plugin per Wordpress per lo sviluppo di siti web. Il plugin contiene componenti/moduli scaricabili e attivabili su necessità.
 
-Moduli attivabili/disattivabili:
 - Custom Post Type (con card gutenberg block)
 - Custom fields
 - Custom option fields
@@ -25,6 +24,4 @@ Moduli attivabili/disattivabili:
 - Swup (Page Transition)
 - Animsition (Page Transition)
 - Minify css/js
-
-Moduli non disattivabili:
 - Plugin consigliati
