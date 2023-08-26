@@ -100,8 +100,8 @@ class BwebComponentSettings {
 								
 								$cd = explode(",",$remotecomponents[$component]);
 								
-								$this->deleteAll($dir);
 								$this->scrivi('Svuoto cartella '.$component.'<br>');
+								$this->deleteAll($dir);
 								foreach($cd as $path){
 									if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
 										mkdir($dir);
@@ -131,22 +131,32 @@ class BwebComponentSettings {
 							
 							?>
 						</div>
-						<?php else: ?>
+					<?php 
+					elseif(isset($_GET['delete'])):
+						$component = $_GET['delete'];
+						$dir = DIR_COMPONENT.$component;
+						$this->deleteAll($dir);
+						$this->scrivi('Rimuovo '.$component.'<br>');
+						echo '<br><br>Eliminazione eseguita. <a href="admin.php?page=bweb-component">Torna indietro</a>';
+					else:
+					?>
 						<div class="table_module">
 							
 							<?php
 							settings_fields( 'bweb_component_settings_option_group' );
 							do_settings_sections( 'bweb-component-settings-admin' );
 							if(is_array($this->remotemodulesgit)){
-								if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){}else{
-									submit_button('Abilita selezionati');
+								if(!isset($_GET['checkupdate'])){
+									if(!isset($_GET['selectdelete'])){
+										submit_button('Abilita selezionati');
+									}
 								}
 							}
 							?>
 						</div>
 						<?php 
 					endif;
-				
+					
 				?>
 			</form>			
 			
@@ -164,6 +174,9 @@ class BwebComponentSettings {
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			$titlesection = 'Scarica o aggiorna i moduli';
 		}
+		if(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
+			$titlesection = 'Elimina i moduli';
+		}
 		add_settings_section(
 			'bweb_component_check_section', // id
 			$titlesection, // title
@@ -171,8 +184,10 @@ class BwebComponentSettings {
 				if(is_array($this->remotemodulesgit)){
 					if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
+					}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
+						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
 					}else{
-						echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a>';
+						echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button">Elimina</a>';
 					}
 				}else{
 					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Aggiorna elenco</a>';
@@ -256,6 +271,8 @@ class BwebComponentSettings {
 				if($data['update']){
 					echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
 				}
+			}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
+				echo '<a href="admin.php?page=bweb-component&delete='.pathinfo($foldername, PATHINFO_BASENAME).'">Elimina</a>';
 			}else{
 				printf(
 					'<label><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s> %s</label>',
