@@ -10,8 +10,8 @@ class BwebActiveComponent {
         
         if ( is_array( $this->bweb_component_settings_options ) ) {
             foreach ($this->bweb_component_settings_options as $foldername){
-                if(file_exists(plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/index.php')){
-                    require plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/index.php';
+                if(file_exists(DIR_COMPONENT. $foldername . '/index.php')){
+                    require DIR_COMPONENT. $foldername . '/index.php';
                 }
             }
         }
@@ -20,14 +20,14 @@ class BwebActiveComponent {
             $c_deactivate = array_diff(get_option( '_component_compare' ),$this->bweb_component_settings_options);
 
             foreach ($c_activate as $foldername){
-                $_a = plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/activate.php';
+                $_a = DIR_COMPONENT. $foldername . '/activate.php';
                 //print_r($_a);
                 if(file_exists($_a)){
                     require $_a;
                 }
             }
             foreach ($c_deactivate as $foldername){
-                $_d = plugin_dir_path( __DIR__ ) .'component/'. $foldername . '/deactivate.php';
+                $_d = DIR_COMPONENT. $foldername . '/deactivate.php';
                 //print_r($_d);
                 if(file_exists($_d)){
                     require $_d;

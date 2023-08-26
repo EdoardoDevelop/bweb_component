@@ -68,16 +68,16 @@ class BwebComponentSettings {
 						<div id="download_update">
 							<?php
 							
-								if ( !file_exists( plugin_dir_path( PLUGIN_FILE_URL )."component" ) || !is_dir( plugin_dir_path( PLUGIN_FILE_URL )."component" ) ) {
-									mkdir(plugin_dir_path( PLUGIN_FILE_URL )."component");
+								if ( !file_exists( DIR_COMPONENT ) || !is_dir( DIR_COMPONENT ) ) {
+									mkdir(DIR_COMPONENT);
 								}
 								$component = $_GET['download_update'];
-								$dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
+								$dir = DIR_COMPONENT.$component;
 								$this->scrivi('Aggiornamento '.$component.'<br>');
 								$remotecomponents = array();
 								$argsGit = array();
 								$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
-								$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true );
+								$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/bweb_component_functions/git/trees/master?recursive=1", $argsGit ) ), true );
 								
 								
 								foreach($responseGit as $s){
@@ -114,7 +114,7 @@ class BwebComponentSettings {
 										$this->scrivi('Cartella creata ' . $path.'<br>');
 									}else{
 										//file
-										$url = 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/'.$component.'/'.$path;
+										$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component_functions/master/'.$component.'/'.$path;
 										
 										if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
 											//echo "File downloaded successfully";
@@ -182,7 +182,7 @@ class BwebComponentSettings {
 		);
 
 		$argsGit = array();
-		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/component/master/";
+		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component_functions/master/";
 		$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
 		$BCdatacomponent = new BCdatacomponent();
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
@@ -217,8 +217,8 @@ class BwebComponentSettings {
 				$updatemodule = false;
 				if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 					if(isset($this->remotefilegit)){
-						if(file_exists(plugin_dir_path( __DIR__ ) ."component/" . $data["folder"] . '/index.php')){
-							if(version_compare($BCdatacomponent->get_component_data( plugin_dir_path( __DIR__ ) ."component/" . $data["folder"] . '/index.php')['Version'],$data['Version'], '<') ){
+						if(file_exists(DIR_COMPONENT . $data["folder"] . '/index.php')){
+							if(version_compare($BCdatacomponent->get_component_data( DIR_COMPONENT . $data["folder"] . '/index.php')['Version'],$data['Version'], '<') ){
 								$updatemodule = true;
 							}
 						}
@@ -251,7 +251,7 @@ class BwebComponentSettings {
 
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];
-		if(file_exists(plugin_dir_path( __DIR__ ) ."component/" . $foldername . '/index.php')){
+		if(file_exists(DIR_COMPONENT . $foldername . '/index.php')){
 			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 				if($data['update']){
 					echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
@@ -332,23 +332,22 @@ class BwebComponentSettings {
 
 			$argsGit = array();
 			$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
-			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true ); // Get JSON and parse it
+			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/bweb_component_functions/git/trees/master?recursive=1", $argsGit ) ), true ); // Get JSON and parse it
 			$components = array();
 			foreach($responseGit as $s){
 				if(is_array($s)){
 					foreach($s as $x){
 						$p = explode("/",$x['path']);
-						if($p[0] == 'component'){
-							if(!empty($p[1]) && !empty($p[2])){
-								$components += array($p[1] => '');
-								if(!empty($components[$p[1]])){
-									$components[$p[1]] .= ',';
+						if(!empty($p[0]) && !empty($p[1])){
+								$components += array($p[0] => '');
+								if(!empty($components[$p[0]])){
+									$components[$p[0]] .= ',';
 								}
-								if(isset($p[1])){
-									$components[$p[1]] .= str_replace($p[0].'/'.$p[1].'/','',$x['path']);
+								if(isset($p[0])){
+									$components[$p[0]] .= str_replace($p[0].'/','',$x['path']);
 								}
-							}
 						}
+						
 					}
 				}
 			}

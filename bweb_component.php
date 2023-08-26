@@ -14,6 +14,7 @@ exit; // Exit if accessed directly
 }
 
 define('PLUGIN_FILE_URL', __FILE__);
+define('DIR_COMPONENT', WP_PLUGIN_DIR . '/bweb_component_functions/');
 define('TOKEN_GTHUB', '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');
 
 
@@ -26,7 +27,9 @@ class BwebComponentRun {
 		register_deactivation_hook( __FILE__, function(){
 			delete_option('bc_version');
 		});
-		add_action( 'upgrader_process_complete', array($this, 'after_update'), 10, 2 );
+		add_action( 'upgrader_process_complete', function($upgrader_object, $options){
+			update_option('bc_version',get_plugin_data( __FILE__ )['Version']);
+		}, 10, 2 );
 
 		$this->run();
 		
@@ -56,70 +59,7 @@ class BwebComponentRun {
 		return 'Version WP '.$wp_version.' - B.C. '.get_plugin_data( __FILE__ )['Version'];
 	}
 
-	public function after_update($upgrader_object, $options){
-		update_option('bc_version',get_plugin_data( __FILE__ )['Version']);
-		$bweb_component_settings_options = get_option( 'bweb_component_active' );
-		if ( is_array( $bweb_component_settings_options ) ) {
-            foreach ($bweb_component_settings_options as $component){
-                
-                if ( !file_exists( plugin_dir_path( PLUGIN_FILE_URL )."component" ) || !is_dir( plugin_dir_path( PLUGIN_FILE_URL )."component" ) ) {
-                    mkdir(plugin_dir_path( PLUGIN_FILE_URL )."component");
-                }
-                
-                $dir = plugin_dir_path( PLUGIN_FILE_URL )."component/".$component;
-                
-                $remotecomponents = array();
-                $argsGit = array();
-                $argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
-                $responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/component/git/trees/master?recursive=1", $argsGit ) ), true );
-                
-                
-                foreach($responseGit as $s){
-                    if(is_array($s)){
-                        foreach($s as $x){
-                            $p = explode("/",$x['path']);
-                            if(!empty($p[0]) && !empty($p[1])){
-                                    $remotecomponents += array($p[0] => '');
-                                    if(!empty($remotecomponents[$p[0]])){
-                                        $remotecomponents[$p[0]] .= ',';
-                                    }
-                                    if(isset($p[0])){
-                                        $remotecomponents[$p[0]] .= str_replace($p[0].'/','',$x['path']);
-                                    }
-                            }
-                            
-                        }
-                    }
-                }
-                
-                $cd = explode(",",$remotecomponents[$component]);
-                
-                
-                foreach($cd as $path){
-                    if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
-                        mkdir($dir);
-                    }
-                    if(pathinfo($path, PATHINFO_EXTENSION) == ''){
-                        //cartella
-                        if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
-                            mkdir($dir.'/'.$path);
-                        }
-                    }else{
-                        //file
-                        $url = 'https://raw.githubusercontent.com/EdoardoDevelop/component/master/'.$component.'/'.$path;
-                        
-                        if (!file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
-                            break;
-                        }
-                        
-                    }
-
-                }
-                
-            }
-        }
-
-	}
+	
 }
 New BwebComponentRun();
 
