@@ -8,7 +8,7 @@ jQuery(function($){
         }
     })
 
-    var tooltips = document.querySelectorAll('.c_descr');
+    /*var tooltips = document.querySelectorAll('.c_descr');
 
     $('.table_module .form-table tbody tr').hover(function () {
             window.onmousemove = function (e) {
@@ -23,7 +23,7 @@ jQuery(function($){
         }, function () {
             window.onmousemove = function (e) { return false; }
         }
-    );
+    );*/
     
 
 });

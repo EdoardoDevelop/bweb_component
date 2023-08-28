@@ -187,7 +187,7 @@ class BwebComponentSettings {
 					}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
 						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
 					}else{
-						echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button">Elimina</a>';
+						echo '<div class="btn_top"><a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button btn_delete"><span class="dashicons dashicons-trash"></span>Elimina</a></div>';
 					}
 				}else{
 					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Aggiorna elenco</a>';
@@ -266,25 +266,30 @@ class BwebComponentSettings {
 
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];
+		echo '<div class="btn_compont">';
 		if(file_exists(DIR_COMPONENT . $foldername . '/index.php')){
 			if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 				if($data['update']){
-					echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'">Aggiorna</a>';
+					echo '<a href="admin.php?page=bweb-component&download_update='.pathinfo($foldername, PATHINFO_BASENAME).'" class="btn_update"><span class="dashicons dashicons-update"></span>Aggiorna</a>';
 				}
 			}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
-				echo '<a href="admin.php?page=bweb-component&delete='.pathinfo($foldername, PATHINFO_BASENAME).'">Elimina</a>';
+				echo '<a href="admin.php?page=bweb-component&delete='.pathinfo($foldername, PATHINFO_BASENAME).'" class="btn_delete"><span class="dashicons dashicons-trash"></span>Elimina</a>';
 			}else{
+
 				printf(
-					'<label><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s> %s</label>',
+					'<section class="slider-checkbox"><input type="checkbox" name="bweb_component_active[]" id="%s" value="%s" %s><label class="label" for="%s"> %s</label></section>',
 					'component_'.$data['ID'],
 					$foldername,
 					( isset( $this->bweb_component_settings_options ) && is_array( $this->bweb_component_settings_options) && in_array( $foldername,$this->bweb_component_settings_options) ) ? 'checked' : '',
+					'component_'.$data['ID'],
 					'Abilita'
 				);
+
 			}
 		}else{
-			echo '<a href="admin.php?page=bweb-component&download_update='.$foldername.'" class="badge">Scarica</a>';
+			echo '<a href="admin.php?page=bweb-component&download_update='.$foldername.'" class="btn_download"><span class="dashicons dashicons-download"></span>Scarica</a>';
 		}
+		echo '</div>';
 		
 	}
 	
