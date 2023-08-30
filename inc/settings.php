@@ -183,14 +183,14 @@ class BwebComponentSettings {
 			function(){
 				if(is_array($this->remotemodulesgit)){
 					if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
-						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
+						echo '<div class="btn_top"><a href="admin.php?page=bweb-component" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-undo"></span> Torna indietro</a></div>';
 					}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
-						echo '<a href="admin.php?page=bweb-component">Torna indietro</a>';
+						echo '<div class="btn_top"><a href="admin.php?page=bweb-component" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-undo"></span> Torna indietro</a></div>';
 					}else{
-						echo '<div class="btn_top"><a href="admin.php?page=bweb-component&checkupdate=1" class="button">Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button btn_delete"><span class="dashicons dashicons-trash"></span>Elimina</a></div>';
+						echo '<div class="btn_top"><a href="admin.php?page=bweb-component&checkupdate=1" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-update"></span> Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button btn_delete"><span class="dashicons dashicons-trash"></span>Elimina</a></div>';
 					}
 				}else{
-					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button">Aggiorna elenco</a>';
+					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-update"></span>Aggiorna elenco</a>';
 				}
 			}, // callback
 			'bweb-component-settings-admin' // page
