@@ -7,7 +7,7 @@ Author: Edoardo Monti (Bweb)
 Version: 1.2.0
 Author URI: https://www.bwebagency.it/
 requires: 6.0.0
-tested: 6.2.2
+tested: 6.3
 */
 if (!defined("ABSPATH")) {
 exit; // Exit if accessed directly
