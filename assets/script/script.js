@@ -7,23 +7,27 @@ jQuery(function($){
             $('.table_php_value :text').attr("disabled","disabled");
         }
     })
-
-    /*var tooltips = document.querySelectorAll('.c_descr');
-
-    $('.table_module .form-table tbody tr').hover(function () {
-            window.onmousemove = function (e) {
-                var x = (e.clientX + 20) + 'px',
-                    y = (e.clientY + 20) + 'px';
-                for (var i = 0; i < tooltips.length; i++) {
-                    tooltips[i].style.top = y;
-                    tooltips[i].style.left = x;
-                }
-            };
-            
-        }, function () {
-            window.onmousemove = function (e) { return false; }
-        }
-    );*/
-    
-
+    $('#filtermodule a').click(function (e) { 
+        e.preventDefault();
+        $filter = $(this).attr('href').replace(/#/g, "");
+        $('.table_module .form-table tbody tr').each(function (index, element) {
+            // element == this
+            //console.log($('.data-tags',element).data('tags'));
+            if(!$('.data-tags',this).data('tags').includes($filter) ){
+                $(this).hide();
+            }else{
+                $(this).show();
+            }
+        });
+        $('#filtermodule a').hide();
+        $('.remove_filter').show();
+        $(this).show();
+    });
+    $('.remove_filter').click(function (e) { 
+        e.preventDefault();
+        $('#filtermodule a').show();
+        $('.table_module .form-table tbody tr').show();
+        $(this).hide();
+    });
+ 
 });

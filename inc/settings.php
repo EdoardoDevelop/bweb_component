@@ -4,6 +4,7 @@ class BwebComponentSettings {
 	private $bweb_component_settings_options;
 	private $remotefilegit;
 	private $remotemodulesgit;
+	private $tagsmodules;
 
 	private function scrivi($testo){
 		
@@ -26,6 +27,7 @@ class BwebComponentSettings {
 		//delete_option( 'remotemodulesgit' ); 
 		$this->remotefilegit = get_option( 'remotefilegit' ); 
 		$this->remotemodulesgit = get_option( 'remotemodulesgit' ); 
+		$this->tagsmodules = get_option( 'tagsmodules' ); 
 		add_action( 'admin_menu', array( $this, 'bweb_component_settings_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'bweb_component_settings_page_init' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'load_enqueue' ) );
@@ -188,6 +190,14 @@ class BwebComponentSettings {
 						echo '<div class="btn_top"><a href="admin.php?page=bweb-component" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-undo"></span> Torna indietro</a></div>';
 					}else{
 						echo '<div class="btn_top"><a href="admin.php?page=bweb-component&checkupdate=1" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-update"></span> Controlla aggiornamenti</a><a style="float:right" href="admin.php?page=bweb-component&selectdelete=1" class="button btn_delete"><span class="dashicons dashicons-trash"></span>Elimina</a></div>';
+						echo '<br><div id="filtermodule">Filter: ';
+
+						sort($this->tagsmodules);
+						foreach($this->tagsmodules as $x => $tag){
+							echo '<a href="#'.$tag.'">'.$tag . '</a>   ';
+						}
+						echo '<a href="#" class="remove_filter">Rimuovi filtro</a>';
+						echo '</div>';
 					}
 				}else{
 					echo '<a href="admin.php?page=bweb-component&checkupdate=1" class="button"><span style="vertical-align: text-top;" class="dashicons dashicons-update"></span>Aggiorna elenco</a>';
@@ -200,6 +210,7 @@ class BwebComponentSettings {
 		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component_functions/master/";
 		$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
 		$BCdatacomponent = new BCdatacomponent();
+		$tags = array();
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
 			
@@ -211,12 +222,17 @@ class BwebComponentSettings {
 					$responseGit["modules"][$x]['Icon'] = $data['Icon'];
 					$responseGit["modules"][$x]['Version'] = $data['Version'];
 					$responseGit["modules"][$x]['Description'] = $data['Description'];
-				
+					$responseGit["modules"][$x]['Tag'] = $s["tag"];
+					$tags = array_merge($tags,str_getcsv($s["tag"]));
 			}
+			$tags = array_unique($tags);
 			update_option( 'remotemodulesgit', $responseGit );
+			update_option( 'tagsmodules', $tags );
 			$this->remotemodulesgit = $responseGit;
+			$this->tagsmodules = $tags;
 		}
 		if(is_array($this->remotemodulesgit)){
+			asort($this->remotemodulesgit["modules"]);
 			foreach($this->remotemodulesgit["modules"] as $data){
 				$foldername = $data["folder"];
 				$icon = '';
@@ -239,6 +255,7 @@ class BwebComponentSettings {
 						}
 					}
 				}
+				$t = '<div class="data-tags" data-tags="'.$data['Tag'].'"></div>';
 				$h = '<label class="component_title">'.$icon.'<span>'.$data['name'].'</span></label>';
 				
 				if ( $this->find_my_menu_item($data['ID'], true) ) {
@@ -250,7 +267,7 @@ class BwebComponentSettings {
 				}
 				add_settings_field(
 					'c_'.$data['ID'], // id
-					$h.$d, // title
+					$t.$h.$d, // title
 					array($this,'chk_callback'), // callback
 					'bweb-component-settings-admin', // page
 					'bweb_component_check_section', // section

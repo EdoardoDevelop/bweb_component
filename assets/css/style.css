@@ -179,3 +179,7 @@ label.component_title{cursor: text;}
     position: sticky;
     bottom: 0;
 }
+.remove_filter{
+    display: none;
+    float: right;
+}
