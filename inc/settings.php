@@ -320,7 +320,7 @@ class BwebComponentSettings {
 		}
     }
 
-	private function register_bwebcomponent_category( $categories ) {
+	public function register_bwebcomponent_category( $categories ) {
 	
         $categories[] = array(
             'slug'  => 'bweb-component',
