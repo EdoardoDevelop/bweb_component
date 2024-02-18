@@ -1,0 +1,140 @@
+{
+    "modules": [
+        {
+            "name" : "Animsition",
+            "folder" : "animsition",
+            "tag": "look,animation"
+        },
+        {
+            "name" : "Image size threshold",
+            "folder" : "big_image_size_threshold",
+            "tag": "utility"
+        },
+        {
+            "name" : "Custom Dashboard",
+            "folder" : "custom_dashboard",
+            "tag": "utility,admin"
+        },
+        {
+            "name" : "Campi Personalizzati",
+            "folder" : "custom_field",
+            "tag": "utility"
+        },
+        {
+            "name" : "Campi Opzioni Personalizzati",
+            "folder" : "custom_option",
+            "tag": "utility"
+        },
+        {
+            "name" : "Pagine Personalizzate",
+            "folder" : "custom_post_type",
+            "tag": "utility"
+        },
+        {
+            "name" : "Disabilita commenti",
+            "folder" : "disable_comment",
+            "tag": "utility"
+        },
+        {
+            "name" : "Duplica post/page",
+            "folder" : "duplicate_post",
+            "tag": "utility,admin"
+        },
+        {
+            "name" : "Forms",
+            "folder" : "forms",
+            "tag": "utility"
+        },
+        {
+            "name" : "Google Fonts in local",
+            "folder" : "gfonts",
+            "tag": "look"
+        },
+        {
+            "name" : "Nascondi menu admin",
+            "folder" : "hide_menu",
+            "tag": "utility,admin"
+        },
+        {
+            "name" : "Light theme Admin",
+            "folder" : "light_theme_admin",
+            "tag": "utility,admin,look"
+        },
+        {
+            "name" : "Magnific Popup",
+            "folder" : "magnific-popup",
+            "tag": "look,popUp"
+        },
+        {
+            "name" : "Date on name file log",
+            "folder" : "log_data",
+            "tag": "utility"
+        },
+        {
+            "name" : "Sito in manuntenzione",
+            "folder" : "maintenance",
+            "tag": "maintenance"
+        },
+        {
+            "name" : "Minify css/js",
+            "folder" : "minify",
+            "tag": "utility"
+        },
+        {
+            "name" : "Polylang Slug",
+            "folder" : "polylang_slug",
+            "tag": "language"
+        },
+        {
+            "name" : "PopUp",
+            "folder" : "popUp",
+            "tag": "popUp"
+        },
+        {
+            "name" : "Post Order",
+            "folder" : "post_order",
+            "tag": "utility"
+        },
+        {
+            "name" : "Scroll Reveal",
+            "folder" : "scroll_reveal",
+            "tag": "look,animation"
+        },
+        {
+            "name" : "Slider Block",
+            "folder" : "slider_block",
+            "tag": "look"
+        },
+        {
+            "name" : "WP SVG",
+            "folder" : "svg",
+            "tag": "utility"
+        },
+        {
+            "name" : "Swup",
+            "folder" : "swup",
+            "tag": "look,animation"
+        },
+        {
+            "name" : "Plugin consigliati",
+            "folder" : "tgm-plugin-activation",
+            "tag": "utility"
+        },
+        {
+            "name" : "Tema",
+            "folder" : "theme",
+            "tag": "utility,look"
+        },
+        {
+            "name" : "Upload/memory limit",
+            "folder" : "upload_memory_limit",
+            "tag": "utility,admin"
+        },
+        {
+            "name" : "WP Login",
+            "folder" : "wp_login",
+            "tag": "utility,admin,look"
+        }
+        
+    ]
+}
