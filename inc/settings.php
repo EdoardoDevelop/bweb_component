@@ -237,14 +237,35 @@ class BwebComponentSettings {
 				if ( !empty($data['Description']) ) {
 					$d = '<div class="c_descr">'.$data['Description'].'</div>';
 				}
-				add_settings_field(
-					'c_'.$data['ID'], // id
-					$t.$h.$d, // title
-					array($this,'chk_callback'), // callback
-					'bweb-component-settings-admin', // page
-					'bweb_component_check_section', // section
-					array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername),'update' => $updatemodule)
-				);
+
+				$fieldvisibile = true;
+				if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
+					if(file_exists(DIR_COMPONENT . basename($foldername) . '/index.php')){
+						$fieldvisibile = true;
+					}else{
+						$fieldvisibile = false;
+					}
+				}elseif(isset($_GET['selectdelete']) && $_GET['selectdelete']==1){
+					if(file_exists(DIR_COMPONENT . basename($foldername) . '/index.php')){
+						$fieldvisibile = true;
+					}else{
+						$fieldvisibile = false;
+					}
+				}else{
+					$fieldvisibile = true;
+				}
+
+				if($fieldvisibile){
+				
+					add_settings_field(
+						'c_'.$data['ID'], // id
+						$t.$h.$d, // title
+						array($this,'chk_callback'), // callback
+						'bweb-component-settings-admin', // page
+						'bweb_component_check_section', // section
+						array('ID'=>$data['ID'],'Description'=>$data['Description'],'foldername'=>basename($foldername),'update' => $updatemodule)
+					);
+				}
             
         	}
 		}
