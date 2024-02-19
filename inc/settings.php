@@ -22,7 +22,7 @@ class BwebComponentSettings {
 
     public function load_setting_page(){
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
-			$this->checkupdate();
+			//$this->checkupdate();
 		}
 		//delete_option( 'remotemodulesgit' ); 
 		$this->remotefilegit = get_option( 'remotefilegit' ); 
@@ -62,9 +62,7 @@ class BwebComponentSettings {
 			<?php settings_errors(); ?>
 
 			<form method="post" action="options.php">
-				<?php 
-
-				
+				<?php
 					if(isset($_GET['download_update'])): 
 						?>
 						<div id="download_update">
@@ -75,60 +73,35 @@ class BwebComponentSettings {
 								}
 								$component = $_GET['download_update'];
 								$dir = DIR_COMPONENT.$component;
-								$this->scrivi('Aggiornamento '.$component.'<br>');
-								$remotecomponents = array();
-								$argsGit = array();
-								$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
-								$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( "https://api.github.com/repos/EdoardoDevelop/bweb_component_functions/git/trees/master?recursive=1", $argsGit ) ), true );
-								
-								
-								foreach($responseGit as $s){
-									if(is_array($s)){
-										foreach($s as $x){
-											$p = explode("/",$x['path']);
-											if(!empty($p[0]) && !empty($p[1])){
-													$remotecomponents += array($p[0] => '');
-													if(!empty($remotecomponents[$p[0]])){
-														$remotecomponents[$p[0]] .= ',';
-													}
-													if(isset($p[0])){
-														$remotecomponents[$p[0]] .= str_replace($p[0].'/','',$x['path']);
-													}
-											}
-											
-										}
-									}
-								}
-								
-								$cd = explode(",",$remotecomponents[$component]);
+								$this->scrivi('Aggiornamento '.$component.'<br>');								
+
+								$file_url = 'https://github.com/EdoardoDevelop/bweb_component_'.$component.'/archive/refs/heads/main.zip';
+								$this->scrivi('Download file!');      
+								$tmp_file = download_url( $file_url );
+
+								// Sets file final destination.
+								$filepath = ABSPATH . 'wp-content/uploads/'.$component.'.zip';
+
+								// Copies the file to the final destination and deletes temporary file.
+								copy( $tmp_file, $filepath );
+								@unlink( $tmp_file );
+
 								
 								$this->scrivi('Svuoto cartella '.$component.'<br>');
 								$this->deleteAll($dir);
-								foreach($cd as $path){
-									if ( !file_exists( $dir ) || !is_dir( $dir ) ) {
-										mkdir($dir);
-									}
-									if(pathinfo($path, PATHINFO_EXTENSION) == ''){
-										//cartella
-										if ( !file_exists( $dir.'/'.$path ) || !is_dir( $dir.'/'.$path) ) {
-											mkdir($dir.'/'.$path);
-										}
-										$this->scrivi('Cartella creata ' . $path.'<br>');
-									}else{
-										//file
-										$url = 'https://raw.githubusercontent.com/EdoardoDevelop/bweb_component_functions/master/'.$component.'/'.$path;
-										
-										if (file_put_contents($dir.'/'.$path, fopen($url, 'r'))){
-											//echo "File downloaded successfully";
-											$this->scrivi('Download file '.$path.'<br>');
-										}else{
-											$this->scrivi('Download fallito file '.$path.'<br>');
-											break;
-										}
-										
-									}
-				
-								}
+								
+								
+								WP_Filesystem();
+								$unzipfile = unzip_file( ABSPATH . 'wp-content/uploads/'.$component.'.zip', DIR_COMPONENT);
+
+								rename(DIR_COMPONENT.'bweb_component_'.$component.'-main',$dir);
+								   
+								   if ( $unzipfile ) {
+									$this->scrivi('Successfully unzipped the file!');       
+								   } else {
+									$this->scrivi('There was an error unzipping the file.');       
+								   }
+
 								echo '<br><br>Aggiornamento eseguito. <a href="admin.php?page=bweb-component">Torna indietro</a>';
 							
 							?>
@@ -207,21 +180,20 @@ class BwebComponentSettings {
 		);
 
 		$argsGit = array();
-		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component_functions/master/";
+		$httpGit = "https://raw.githubusercontent.com/EdoardoDevelop/bweb_component/master/";
 		$argsGit['headers']['Authorization'] = TOKEN_GTHUB; // Set the headers
 		$BCdatacomponent = new BCdatacomponent();
 		$tags = array();
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
 			$responseGit = json_decode( wp_remote_retrieve_body( wp_remote_get( $httpGit."modules.json", $argsGit ) ), true ); // Get JSON and parse it
-			
 		
 			foreach($responseGit["modules"] as $x => $s){
 					
-					$data = $BCdatacomponent->get_component_data( $httpGit.$s["folder"] . '/index.php', $argsGit);
-					$responseGit["modules"][$x]['ID'] = $data['ID'];
-					$responseGit["modules"][$x]['Icon'] = $data['Icon'];
-					$responseGit["modules"][$x]['Version'] = $data['Version'];
-					$responseGit["modules"][$x]['Description'] = $data['Description'];
+					//$data = $BCdatacomponent->get_component_data( $httpGit.$s["folder"] . '/index.php', $argsGit);
+					$responseGit["modules"][$x]['ID'] = $s['folder'];
+					$responseGit["modules"][$x]['Icon'] = $s['icon'];
+					$responseGit["modules"][$x]['Version'] = $s['version'];
+					$responseGit["modules"][$x]['Description'] = $s['description'];
 					$responseGit["modules"][$x]['Tag'] = $s["tag"];
 					$tags = array_merge($tags,str_getcsv($s["tag"]));
 			}
