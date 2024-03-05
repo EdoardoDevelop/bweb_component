@@ -204,7 +204,7 @@
             "name" : "Block Theme",
             "folder" : "blocktheme",
             "tag": "utility,look",
-            "icon": "dashicons-admin-appearance",
+            "icon": "dashicons-admin-customizer",
             "description": "Generatore di tema a blocchi",
             "version" : "1.0"
         },
