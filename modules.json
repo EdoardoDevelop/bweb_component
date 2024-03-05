@@ -201,6 +201,14 @@
             "version" : "1.6"
         },
         {
+            "name" : "Block Theme",
+            "folder" : "blocktheme",
+            "tag": "utility,look",
+            "icon": "dashicons-admin-appearance",
+            "description": "Generatore di tema a blocchi",
+            "version" : "1.0"
+        },
+        {
             "name" : "Upload/memory limit",
             "folder" : "upload_memory_limit",
             "tag": "utility,admin",
