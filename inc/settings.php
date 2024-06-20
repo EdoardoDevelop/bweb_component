@@ -53,7 +53,6 @@ class BwebComponentSettings {
 
 	public function bweb_component_settings_create_admin_page() {
 		$this->bweb_component_settings_options = get_option( 'bweb_component_active' ); 
-		
 		?>
 
 		<div class="wrap bc_settings_table">
@@ -143,7 +142,8 @@ class BwebComponentSettings {
 		global $submenu;
 		register_setting(
 			'bweb_component_settings_option_group', // option_group
-			'bweb_component_active'
+			'bweb_component_active',
+			array($this, '_sanitize_callback')
 		);
 		$titlesection = 'Scarica o attiva i moduli';
 		if(isset($_GET['checkupdate']) && $_GET['checkupdate']==1){
@@ -273,7 +273,10 @@ class BwebComponentSettings {
 		
 	}
 	
-
+	public function _sanitize_callback($input){
+		update_option( '_component_compare', $input );
+		return $input;
+	}
 	public function chk_callback( $data ) {
 		$foldername = $data['foldername'];
 		echo '<div class="btn_compont">';

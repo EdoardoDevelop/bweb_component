@@ -15,6 +15,7 @@ class BwebActiveComponent {
                 }
             }
         }
+        
         if( is_array(get_option( '_component_compare' )) && is_array($this->bweb_component_settings_options) ){
             $c_activate = array_diff($this->bweb_component_settings_options,get_option( '_component_compare' ));
             $c_deactivate = array_diff(get_option( '_component_compare' ),$this->bweb_component_settings_options);
